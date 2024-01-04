@@ -1,6 +1,7 @@
 package com.study.studyproject.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Post extends BaseTimeEntity{
+public class Board extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
@@ -22,6 +23,8 @@ public class Post extends BaseTimeEntity{
     @Column
     private String title;                                                     // 포스트 타이틀
 
+    private Long viewCount;     //조회수
+
     @Column
     private String content;                                                   // 포스트 내용
 
@@ -31,9 +34,28 @@ public class Post extends BaseTimeEntity{
     @Column
     private Category category;                                                  // 카테고리
 
-
     @OneToMany(mappedBy = "post") //지연로딩
     private List<PostLike> postLikes;
+
+    @Builder
+    public Board(Member member, String title, Long viewCount, String content, String nickname) {
+        this.member = member;
+        this.title = title;
+        this.viewCount = viewCount;
+        this.content = content;
+        this.nickname = nickname;
+        this.category = Category.모집중;
+    }
+
+
+    public Board update(String title, String content){
+        this.title = title;
+        this.content = content;
+        return this;
+    }
+
+
+
 
 
 }
