@@ -13,7 +13,7 @@ import java.util.List;
 public class Board extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
+    @Column(name = "board_id")
     private Long id;                                                          // 고유 ID
 
     @ManyToOne
@@ -45,11 +45,11 @@ public class Board extends BaseTimeEntity{
         this.viewCount = viewCount;
         this.content = content;
         this.nickname = nickname;
-        this.category = Category.모집중;
+        this.category = Category.Recruiting;
     }
 
 
-    public Board update(String title, String content){
+    public Board updateBoard(String title, String content){
         this.title = title;
         this.content = content;
         return this;
@@ -60,6 +60,8 @@ public class Board extends BaseTimeEntity{
         this.viewCount = viewCount+1;
         return this;
     }
+
+
 
 
 
