@@ -52,5 +52,11 @@ public class reply extends BaseTimeEntity{
         this.is_delete = true;
     }
 
+    //수정
+    public void updateReply(String content) {
+        this.content = content;
+    }
+
+
 
 }
