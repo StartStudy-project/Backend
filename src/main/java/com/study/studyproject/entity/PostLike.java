@@ -19,7 +19,8 @@ public class PostLike extends BaseTimeEntity{
 
     @ManyToOne(fetch = FetchType.LAZY) //지연로딩
     @JoinColumn(name = "post_id")
-    private Post post;
+    private Board board;
+
 
 
 

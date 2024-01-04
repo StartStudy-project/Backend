@@ -1,6 +1,6 @@
 package com.study.studyproject.entity;
 
 public enum Role {
-    user, admin
+    ROLE_USER, ROLE_ADMIN
 
 }
