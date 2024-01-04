@@ -1,4 +1,4 @@
-package com.study.studyproject.domain;
+package com.study.studyproject.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

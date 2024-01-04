@@ -1,9 +1,10 @@
-package com.study.studyproject.domain;
+package com.study.studyproject.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @Entity
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class Post extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "post_id")
     private Long id;                                                          // 고유 ID
 
     @ManyToOne
@@ -28,6 +30,10 @@ public class Post extends BaseTimeEntity{
 
     @Column
     private Category category;                                                  // 카테고리
+
+
+    @OneToMany(mappedBy = "post") //지연로딩
+    private List<PostLike> postLikes;
 
 
 }

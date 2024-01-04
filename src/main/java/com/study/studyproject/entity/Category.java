@@ -1,4 +1,4 @@
-package com.study.studyproject.domain;
+package com.study.studyproject.entity;
 
 public enum Category{
 

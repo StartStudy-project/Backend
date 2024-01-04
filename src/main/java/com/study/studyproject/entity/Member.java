@@ -1,11 +1,11 @@
-package com.study.studyproject.domain;
+package com.study.studyproject.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -27,4 +27,11 @@ public class Member extends BaseTimeEntity {
 
     private Role role;
 
+    @OneToMany(mappedBy = "member")
+    private List<PostLike> postLikes = new ArrayList<>();
+
+
+    public void setPostLikes(List<PostLike> postLikes) {
+        this.postLikes = postLikes;
+    }
 }
