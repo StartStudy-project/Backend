@@ -23,7 +23,8 @@ public class Board extends BaseTimeEntity{
     @Column
     private String title;                                                     // 포스트 타이틀
 
-    private Long viewCount;     //조회수
+    @Column
+    private Long viewCount;
 
     @Column
     private String content;                                                   // 포스트 내용
@@ -54,6 +55,11 @@ public class Board extends BaseTimeEntity{
         return this;
     }
 
+    //조회수 증가
+    public Board updateViewCnt(Long viewCount){
+        this.viewCount = viewCount+1;
+        return this;
+    }
 
 
 
