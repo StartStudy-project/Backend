@@ -1,6 +1,13 @@
 package com.study.studyproject.entity;
 
-public enum Category{
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-    모집중, 모집완료
-}
+@Getter
+@RequiredArgsConstructor
+public enum Category{
+    Recruiting("모집중"),
+    Recruited("모집완료");
+    private final String text;
+
+    }
