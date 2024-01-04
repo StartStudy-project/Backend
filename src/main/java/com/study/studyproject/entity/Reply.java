@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter
-public class reply extends BaseTimeEntity{
+public class Reply extends BaseTimeEntity{
 
     @Id
     @GeneratedValue
@@ -29,7 +29,7 @@ public class reply extends BaseTimeEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member user;
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
@@ -37,17 +37,19 @@ public class reply extends BaseTimeEntity{
 
 
     @Builder
-    public reply(String nickname, String content, String ip, int depth, int ref,  Member user, Board board) {
+    public Reply(String nickname, String content, String ip, int depth, int ref, Member member, Board board) {
         this.nickname = nickname;
         this.content = content;
         this.ip = ip;
         this.depth = 0;
         this.ref = 1;
         this.is_delete = false;
-        this.user = user;
+        this.member = member;
         this.board = board;
     }
 
+
+    //삭제
     public void deleteReply() {
         this.is_delete = true;
     }
@@ -57,6 +59,9 @@ public class reply extends BaseTimeEntity{
         this.content = content;
     }
 
+    public void UpdateMember(Member member) {
+        this.member = member; // 1
+        member.getReplies().add(this);
 
-
+    }
 }
