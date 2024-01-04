@@ -1,6 +1,17 @@
 package com.study.studyproject.entity;
 
-public enum Role {
-    ROLE_USER, ROLE_ADMIN
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
+@Getter
+@RequiredArgsConstructor
+public enum Role {
+    USER("ROLE_USER"),ADMIN("ROLE_ADMIN"),
+    private final String text;
+
+    public static boolean containsStockType(Role type) {
+        return List.of(USER, ADMIN).contains(type);
+    }
 }
