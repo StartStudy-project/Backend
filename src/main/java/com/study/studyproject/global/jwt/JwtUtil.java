@@ -1,11 +1,11 @@
-package com.study.studyproject.login.config;
+package com.study.studyproject.global.jwt;
 
-import com.example.refreshjwt.dto.TokenDto;
-import com.example.refreshjwt.model.RefreshToken;
-import com.example.refreshjwt.repository.RefreshTokenRepository;
-import com.example.refreshjwt.service.UserDetailsServiceImpl;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.study.studyproject.entity.RefreshToken;
+import com.study.studyproject.global.auth.UserDetailsServiceImpl;
+import com.study.studyproject.global.exception.ex.TokenNotValidatException;
+import com.study.studyproject.login.dto.TokenDtoResponse;
+import com.study.studyproject.login.repository.RefreshRepository;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,18 +29,15 @@ import java.util.Optional;
 public class JwtUtil {
 
     private final UserDetailsServiceImpl userDetailsService;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshRepository refreshTokenRepository;
 
-//    private static final long ACCESS_TIME = 30 * 60 * 1000L;
-//    private static final long REFRESH_TIME =  7 * 24 * 60 * 60 * 1000L;
-
-    private static final long ACCESS_TIME =  60 * 1000L;
-    private static final long REFRESH_TIME =  2 * 60 * 1000L;
+    private static final long ACCESS_TIME = 60 * 1000L;
+    private static final long REFRESH_TIME = 2 * 60 * 1000L;
     public static final String ACCESS_TOKEN = "Access_Token";
     public static final String REFRESH_TOKEN = "Refresh_Token";
 
 
-    @Value("${jwt.secret.key}")
+    @Value("${jwt.secret}")
     private String secretKey;
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -54,22 +51,20 @@ public class JwtUtil {
 
     // header 토큰을 가져오는 기능
     public String getHeaderToken(HttpServletRequest request, String type) {
-        return type.equals("Access") ? request.getHeader(ACCESS_TOKEN) :request.getHeader(REFRESH_TOKEN);
+        return type.equals("Access") ? request.getHeader(ACCESS_TOKEN) : request.getHeader(REFRESH_TOKEN);
     }
 
     // 토큰 생성
-    public TokenDto createAllToken(String nickname) {
-        return new TokenDto(createToken(nickname, "Access"), createToken(nickname, "Refresh"));
+    public TokenDtoResponse createAllToken(String email) {
+        return new TokenDtoResponse(createToken(email, "Access"), createToken(email, "Refresh"));
     }
 
-    public String createToken(String nickname, String type) {
+    public String createToken(String email, String type) {
 
         Date date = new Date();
-
         long time = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
-
         return Jwts.builder()
-                .setSubject(nickname)
+                .setSubject(email)
                 .setExpiration(new Date(date.getTime() + time))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
@@ -78,27 +73,32 @@ public class JwtUtil {
     }
 
     // 토큰 검증
-    public Boolean tokenValidation(String token) {
+    public Boolean tokenValidation(String token) throws ExpiredJwtException, TokenNotValidatException {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-            return false;
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.error("잘못된 JWT 서명입니다.");
+            throw new TokenNotValidatException("잘못된 JWT 서명입니다.", e);
+        } catch (ExpiredJwtException e) {
+            log.error("만료된 JWT 토큰입니다.");
+            throw new TokenNotValidatException("만료된 JWT 토큰입니다.", e);
+        } catch (UnsupportedJwtException e) {
+            log.error("지원되지 않는 JWT 토큰입니다.", e);
+            throw new UnsupportedJwtException("지원되지 않는 JWT 토큰입니다.", e);
+        } catch (IllegalArgumentException e) {
+            log.error("JWT 토큰이 잘못되었습니다.");
+            throw new UnsupportedJwtException("JWT 토큰이 잘못되었습니다.", e);
         }
     }
 
-    // refreshToken 토큰 검증
-    // db에 저장되어 있는 token과 비교
-    // db에 저장한다는 것이 jwt token을 사용한다는 강점을 상쇄시킨다.
-    // db 보다는 redis를 사용하는 것이 더욱 좋다. (in-memory db기 때문에 조회속도가 빠르고 주기적으로 삭제하는 기능이 기본적으로 존재합니다.)
-    public Boolean refreshTokenValidation(String token) {
 
-        // 1차 토큰 검증
-        if(!tokenValidation(token)) return false;
+    public Boolean refreshTokenValidation(String token) throws TokenNotValidatException {
+
+        if (!tokenValidation(token)) return false;
 
         // DB에 저장한 토큰 비교
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountEmail(getEmailFromToken(token));
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByEmail(getEmailFromToken(token));
 
         return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
     }

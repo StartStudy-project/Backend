@@ -6,12 +6,12 @@ import lombok.Getter;
 @Getter
 public class LoginRequest {
 
-    private String id;
+    private String email;
     private String pwd;
 
     @Builder
     public LoginRequest(String id, String pwd) {
-        this.id = id;
+        this.email = id;
         this.pwd = pwd;
     }
 }

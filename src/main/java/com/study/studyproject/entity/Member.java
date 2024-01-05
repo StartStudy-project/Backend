@@ -18,13 +18,12 @@ public class Member extends BaseTimeEntity {
     @Column(name = "member_id")
     private Long id;
 
+    private String email; // 아이디 
+    private String password; //비밀번호
+    
+    private String nickname;
     private String username;
 
-    private String password;
-
-    private String nickname;
-
-    private String email;
 
     @Enumerated(EnumType.STRING)
     private Role role;
