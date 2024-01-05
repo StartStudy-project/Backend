@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,9 +75,18 @@ public class LoginService {
             throw new RuntimeException("비밀번호가 틀립니다.");
         }
 
+
+        //중복 확인
+        if (memberRepository.findByEmail(signRequest.getEmail()).isPresent()) {
+            throw new RuntimeException("이미 회원가입 하였습니다.");
+        }
+
+
+
+        String encodePwd = passwordEncoder.encode(signRequest.getPwd());
         Member member = Member.builder().role(Role.USER)
                 .username(signRequest.getName())
-                .password(signRequest.getPwd())
+                .password(encodePwd)
                 .email(signRequest.getEmail()).build();
 
         memberRepository.save(member);
