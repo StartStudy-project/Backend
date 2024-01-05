@@ -23,7 +23,7 @@ public class UserDetailsImpl implements UserDetails {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() { //권한주는
-                return member.getRole().getText();
+                return member.getRole().toString();
             }
         });
         return collection;
