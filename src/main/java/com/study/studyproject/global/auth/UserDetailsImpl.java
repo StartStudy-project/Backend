@@ -14,7 +14,7 @@ import java.util.Collection;
 public class UserDetailsImpl implements UserDetails {
 
 
-    private Member member;
+    private final Member member;
 
 
     @Override
@@ -25,37 +25,37 @@ public class UserDetailsImpl implements UserDetails {
             public String getAuthority() { //권한주는
                 return member.getRole().getText();
             }
-        })
-        ;
+        });
+        return collection;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return member.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return member.getUsername();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
