@@ -35,7 +35,7 @@ public class Board extends BaseTimeEntity{
     @Column
     private Category category;                                                  // 카테고리
 
-    @OneToMany(mappedBy = "post") //지연로딩
+    @OneToMany(mappedBy = "board") //지연로딩
     private List<PostLike> postLikes;
 
     @Builder
@@ -60,6 +60,8 @@ public class Board extends BaseTimeEntity{
         this.viewCount = viewCount+1;
         return this;
     }
+
+
 
 
 
