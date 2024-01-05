@@ -13,9 +13,9 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@ToString(of = {"id", "email", "password", "nickname"})
-
+@ToString(of = {"id", "email", "password"})
 public class Member extends BaseTimeEntity {
+
     @Id
     @GeneratedValue
     @Column(name = "member_id")
