@@ -1,4 +1,4 @@
-package com.study.studyproject.login.config;
+package com.study.studyproject.global.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
