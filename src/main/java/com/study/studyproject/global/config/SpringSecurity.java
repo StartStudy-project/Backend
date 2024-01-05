@@ -1,5 +1,7 @@
 package com.study.studyproject.global.config;
 
+import com.study.studyproject.global.jwt.JwtAccessDeniedHandler;
+import com.study.studyproject.global.jwt.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,10 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SpringSecurity {
+
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -37,7 +43,13 @@ public class SpringSecurity {
         http.csrf(cs -> cs.disable()) //
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 생성x
                 .formLogin(f -> f.disable())
-                .httpBasic(h -> h.disable());
+                .httpBasic(h -> h.disable())
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedHandler(jwtAccessDeniedHandler)
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                )
+        ;
+
 
         http.authorizeHttpRequests(authorize ->
                 authorize
