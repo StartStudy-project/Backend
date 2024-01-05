@@ -1,11 +1,13 @@
 package com.study.studyproject.login.dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class LoginRequest {
+public class SignRequest {
+
+    @NotEmpty
+    private String name;
 
     @NotEmpty
     private String email;
@@ -13,9 +15,7 @@ public class LoginRequest {
     @NotEmpty
     private String pwd;
 
-    @Builder
-    public LoginRequest(String id, String pwd) {
-        this.email = id;
-        this.pwd = pwd;
-    }
+    @NotEmpty
+    private String checkPwd;
+
 }

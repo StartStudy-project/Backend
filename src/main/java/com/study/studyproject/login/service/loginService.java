@@ -2,10 +2,12 @@ package com.study.studyproject.login.service;
 
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.RefreshToken;
+import com.study.studyproject.entity.Role;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.LoginRequest;
+import com.study.studyproject.login.dto.SignRequest;
 import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.login.repository.RefreshRepository;
 import com.study.studyproject.member.repository.MemberRepository;
@@ -32,7 +34,6 @@ public class LoginService {
 
 
     public GlobalResultDto loginService(LoginRequest loginRequest, HttpServletResponse response) {
-
 
         Member member = memberRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
 
@@ -67,4 +68,20 @@ public class LoginService {
     }
 
 
+    //회원가입
+    public GlobalResultDto sign(SignRequest signRequest) {
+        if (!signRequest.getPwd().equals(signRequest.getCheckPwd())) {
+            throw new RuntimeException("비밀번호가 틀립니다.");
+        }
+
+        Member member = Member.builder().role(Role.USER)
+                .username(signRequest.getName())
+                .password(signRequest.getPwd())
+                .email(signRequest.getEmail()).build();
+
+        memberRepository.save(member);
+        
+        return new GlobalResultDto("회원가입 성공",HttpStatus.OK.value());
+
+    }
 }

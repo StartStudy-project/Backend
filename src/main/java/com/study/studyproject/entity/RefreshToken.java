@@ -1,19 +1,21 @@
 package com.study.studyproject.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 
 @Getter
-@Setter
 @NoArgsConstructor
+@Entity
 public class RefreshToken {
-    @Id
-    private String id;
+     @Id
+     @GeneratedValue
+    private Long id;
     private String refreshToken;
 
     private String email;
@@ -28,4 +30,5 @@ public class RefreshToken {
         this.refreshToken = token;
         return this;
     }
+
 }

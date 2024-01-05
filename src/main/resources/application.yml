@@ -1,12 +1,11 @@
 
 spring:
-
   h2:
     console:
       enabled: true
 
   datasource:
-    url: jdbc:h2:tcp://localhost/~/JWT_meta
+    url: jdbc:h2:tcp://localhost/~/bookstore
     driver-class-name: org.h2.Driver
     username: sa
     password:
