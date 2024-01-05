@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class TokenNotValidatException extends Throwable {
-    public TokenNotValidatException(String s, JwtException e) {
+
+    public TokenNotValidatException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
 
