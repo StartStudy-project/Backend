@@ -37,6 +37,8 @@ public class JwtUtil {
     public static final String REFRESH_TOKEN = "Refresh_Token";
 
 
+
+
     @Value("${jwt.secret}")
     private String secretKey;
     private Key key;
@@ -51,7 +53,7 @@ public class JwtUtil {
 
     // header 토큰을 가져오는 기능
     public String getHeaderToken(HttpServletRequest request, String type) {
-        return type.equals("Access") ? request.getHeader(ACCESS_TOKEN) : request.getHeader(REFRESH_TOKEN);
+        return type.equals(ACCESS_TOKEN) ? request.getHeader(ACCESS_TOKEN) : request.getHeader(REFRESH_TOKEN);
     }
 
     // 토큰 생성
@@ -62,7 +64,7 @@ public class JwtUtil {
     public String createToken(String email, String type) {
 
         Date date = new Date();
-        long time = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
+        long time = type.equals(ACCESS_TOKEN) ? ACCESS_TIME : REFRESH_TIME;
         return Jwts.builder()
                 .setSubject(email)
                 .setExpiration(new Date(date.getTime() + time))
@@ -117,11 +119,11 @@ public class JwtUtil {
 
     // 어세스 토큰 헤더 설정
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        response.setHeader("Access_Token", accessToken);
+        response.setHeader(ACCESS_TOKEN, accessToken);
     }
 
     // 리프레시 토큰 헤더 설정
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-        response.setHeader("Refresh_Token", refreshToken);
+        response.setHeader(REFRESH_TOKEN, refreshToken);
     }
 }
