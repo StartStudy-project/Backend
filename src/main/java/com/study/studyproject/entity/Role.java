@@ -8,10 +8,12 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public enum Role {
-    USER("ROLE_USER"), ADMIN("ROLE_ADMIN");
+    ROLE_USER("USER"),
+    ROLE_ADMIN("ADMIN");
     private final String text;
 
-    public static boolean containsStockType(Role type) {
-        return List.of(USER, ADMIN).contains(type);
+    public static boolean containsRoleType(Role type) {
+        return List.of(ROLE_USER, ROLE_ADMIN).contains(type);
     }
+
 }

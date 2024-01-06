@@ -1,4 +1,4 @@
-package com.study.studyproject.config;
+package com.study.studyproject.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
