@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class GlobalResultDto {
-    private String msg;
+    private String message;
     private int statusCode;
 
     public GlobalResultDto(String msg, int statusCode) {
-        this.msg = msg;
+        this.message = msg;
         this.statusCode = statusCode;
     }
 

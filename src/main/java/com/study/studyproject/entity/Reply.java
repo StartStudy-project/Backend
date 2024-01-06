@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Reply extends BaseTimeEntity{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nickname;

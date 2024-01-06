@@ -109,6 +109,7 @@ public class JwtUtil {
     public Authentication createAuthentication(String email) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         // spring security 내에서 가지고 있는 객체입니다. (UsernamePasswordAuthenticationToken)
+        userDetails.getAuthorities();
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

@@ -1,7 +1,6 @@
 package com.study.studyproject.global.jwt;
 
-import com.study.studyproject.global.exception.ex.jwtException;
-import io.jsonwebtoken.Jwt;
+import com.study.studyproject.global.exception.ex.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -40,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 jwtUtil.setHeaderAccessToken(response, newAccessToken);
                 setAuthentication(jwtUtil.getEmailFromToken(newAccessToken));
             } else {
-                throw new jwtException("RefreshToken Expired");
+                throw new JwtException("RefreshToken Expired");
             }
 
         }

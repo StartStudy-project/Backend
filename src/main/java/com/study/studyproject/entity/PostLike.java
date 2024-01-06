@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PostLike extends BaseTimeEntity{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "postLike_id")
     private Long id;
 

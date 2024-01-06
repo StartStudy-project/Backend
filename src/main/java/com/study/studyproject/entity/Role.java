@@ -8,7 +8,8 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public enum Role {
-    ROLE_USER("USER"), ROLE_ADMIN("ADMIN");
+    ROLE_USER("USER"),
+    ROLE_ADMIN("ADMIN");
     private final String text;
 
     public static boolean containsRoleType(Role type) {

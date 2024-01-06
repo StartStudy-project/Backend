@@ -1,9 +1,11 @@
 package com.study.studyproject.global.auth;
 
 import com.study.studyproject.entity.Member;
+import com.study.studyproject.entity.Role;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -20,12 +22,16 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collection = new ArrayList<>();
+
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() { //권한주는
-                return member.getRole().toString();
+                return Role.ROLE_USER.toString();
             }
-        });
+
+        })
+        ;
+
         return collection;
     }
 

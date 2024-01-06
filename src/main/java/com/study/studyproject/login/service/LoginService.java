@@ -72,13 +72,13 @@ public class LoginService {
     //회원가입
     public GlobalResultDto sign(SignRequest signRequest) {
         if (!signRequest.getPwd().equals(signRequest.getCheckPwd())) {
-            throw new RuntimeException("비밀번호가 틀립니다.");
+            throw new IllegalArgumentException("비밀번호가 틀립니다.");
         }
 
 
         //중복 확인
         if (memberRepository.findByEmail(signRequest.getEmail()).isPresent()) {
-            throw new RuntimeException("이미 회원가입 하였습니다.");
+            throw new IllegalStateException("이미 회원가입 하였습니다.");
         }
 
 
