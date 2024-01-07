@@ -57,14 +57,18 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public TokenDtoResponse createAllToken(String email) {
-        return new TokenDtoResponse(createToken(email, "Access"), createToken(email, "Refresh"));
+    public TokenDtoResponse createAllToken(String email, Long id) {
+        String access = creatAccesseToken(email);
+        String refresh = createRefreshToken(email, id);
+
+
+        return new TokenDtoResponse(access,refresh
+        );
     }
 
-    public String createToken(String email, String type) {
-
+    public String creatAccesseToken(String email) {
         Date date = new Date();
-        long time = type.equals(ACCESS_TOKEN) ? ACCESS_TIME : REFRESH_TIME;
+        long time =  ACCESS_TIME;
         return Jwts.builder()
                 .setSubject(email)
                 .setExpiration(new Date(date.getTime() + time))
@@ -73,6 +77,22 @@ public class JwtUtil {
                 .compact();
 
     }
+
+    public String createRefreshToken(String email,Long id) {
+        Date date = new Date();
+        long time =  REFRESH_TIME;
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("id",id)
+                .setExpiration(new Date(date.getTime() + time))
+                .setIssuedAt(date)
+                .signWith(key, signatureAlgorithm)
+                .compact();
+
+    }
+
+
+
 
     // 토큰 검증
     public Boolean tokenValidation(String token) throws ExpiredJwtException, TokenNotValidatException {
@@ -117,6 +137,12 @@ public class JwtUtil {
     public String getEmailFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
+
+    // 토큰에서 id 가져오는 기능
+    public Long getIdFromToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("id",Long.class);
+    }
+
 
     // 어세스 토큰 헤더 설정
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {

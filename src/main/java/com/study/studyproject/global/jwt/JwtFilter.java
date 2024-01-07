@@ -34,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             if (isRefreshToken) {
                 String loginId = jwtUtil.getEmailFromToken(refreshToken);
-                String newAccessToken = jwtUtil.createToken(loginId, JwtUtil.ACCESS_TOKEN);
+                String newAccessToken = jwtUtil.creatAccesseToken(loginId);
                 jwtUtil.setHeaderAccessToken(response, newAccessToken);
                 setAuthentication(jwtUtil.getEmailFromToken(newAccessToken));
             } else {
