@@ -42,8 +42,9 @@ public class LoginService {
             throw new UserNotFoundException("비밀번호가 일치하지 않습니다.");
         }
 
-        TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail());
+        TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail(),member.getId());
 
+         jwtUtil.setCookie(tokensDto.getRefreshToken(),response);
 
         Optional<RefreshToken> refreshToken = refreshRepository.findByEmail(loginRequest.getEmail());
 

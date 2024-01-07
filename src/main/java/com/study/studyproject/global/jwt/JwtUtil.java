@@ -8,6 +8,7 @@ import com.study.studyproject.login.repository.RefreshRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -58,15 +59,14 @@ public class JwtUtil {
 
     // 토큰 생성
     public TokenDtoResponse createAllToken(String email, Long id) {
-        String access = creatAccesseToken(email);
+        String access = creatAccessToken(email);
         String refresh = createRefreshToken(email, id);
-
 
         return new TokenDtoResponse(access,refresh
         );
     }
 
-    public String creatAccesseToken(String email) {
+    public String creatAccessToken(String email) {
         Date date = new Date();
         long time =  ACCESS_TIME;
         return Jwts.builder()
@@ -88,8 +88,15 @@ public class JwtUtil {
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
                 .compact();
-
     }
+
+    public void setCookie(String refreshToken,HttpServletResponse response) {
+        Cookie cookie = new Cookie("REFRESH_TOKEN",refreshToken);
+        cookie.setMaxAge((int) REFRESH_TIME);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
+    }
+
 
 
 
