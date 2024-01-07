@@ -1,5 +1,6 @@
 package com.study.studyproject.entity;
 
+import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,11 +48,11 @@ public class Board extends BaseTimeEntity{
         this.recruit = Recruit.Recruiting;
     }
 
-    public Board updateBoard(String title, String content,Category category,Recruit recruit){
-        this.title = title;
-        this.content = content;
-        this.category = category;
-        this.recruit = recruit;
+    public Board updateBoard(BoardReUpdateRequestDto boardReUpdateRequestDto){
+        this.title = boardReUpdateRequestDto.getTitle();
+        this.content = boardReUpdateRequestDto.getContent();
+        this.category = boardReUpdateRequestDto.getCategory();
+        this.recruit = boardReUpdateRequestDto.getRecruit();
         return this;
     }
 
