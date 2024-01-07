@@ -37,19 +37,21 @@ public class Board extends BaseTimeEntity{
     private List<PostLike> postLikes;
 
     @Builder
-    public Board(Member member, String title, Long viewCount, String content, String nickname, Category category) {
+    public Board(Member member, String title, String content, String nickname, Category category) {
         this.member = member;
         this.title = title;
-        this.viewCount = viewCount;
+        this.viewCount = 0L;
         this.content = content;
         this.nickname = nickname;
         this.category = category;
         this.recruit = Recruit.Recruiting;
     }
 
-    public Board updateBoard(String title, String content){
+    public Board updateBoard(String title, String content,Category category,Recruit recruit){
         this.title = title;
         this.content = content;
+        this.category = category;
+        this.recruit = recruit;
         return this;
     }
 
