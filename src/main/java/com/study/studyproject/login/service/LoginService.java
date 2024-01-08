@@ -62,10 +62,9 @@ public class LoginService {
         return new GlobalResultDto("로그인 되었습니다.", HttpStatus.OK.value());
 
     }
-
     private void setHeader(HttpServletResponse response, TokenDtoResponse tokensDto) {
-        response.addHeader(JwtUtil.ACCESS_TOKEN, tokensDto.getAccessToken());
-        response.addHeader(JwtUtil.REFRESH_TOKEN, tokensDto.getRefreshToken());
+        response.addHeader(JwtUtil.ACCESS_TOKEN, JwtUtil.BEARER+tokensDto.getAccessToken());
+        response.addHeader(JwtUtil.REFRESH_TOKEN, JwtUtil.BEARER+tokensDto.getRefreshToken());
 
     }
 

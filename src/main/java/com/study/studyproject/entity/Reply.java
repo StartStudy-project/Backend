@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -14,14 +16,20 @@ public class Reply extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "reply_id")
     private Long id;
 
     private String nickname;
     private String content;
-    private String ip;
 
-    private int depth; // 원글 0 : 댓글 :1
-    private int ref; // 부모 ip 참조
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Reply parent;
+
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    private List<Reply> children = new ArrayList<>();
+
+
     private boolean is_delete; // 삭제여뷰
     private LocalDateTime delete_at; // 삭제시간
 
@@ -37,16 +45,18 @@ public class Reply extends BaseTimeEntity{
 
 
     @Builder
-    public Reply(String nickname, String content, String ip, int depth, int ref, Member member, Board board) {
+    public Reply(String nickname, String content, Reply parent, List<Reply> children, boolean is_delete, LocalDateTime delete_at, Member member, Board board) {
         this.nickname = nickname;
         this.content = content;
-        this.ip = ip;
-        this.depth = 0;
-        this.ref = 1;
-        this.is_delete = false;
+        this.parent = parent;
+        this.children = children;
+        this.is_delete = is_delete;
+        this.delete_at = delete_at;
         this.member = member;
         this.board = board;
     }
+
+    @Builder
 
 
     //삭제

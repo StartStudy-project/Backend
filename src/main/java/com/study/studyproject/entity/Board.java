@@ -1,5 +1,6 @@
 package com.study.studyproject.entity;
 
+import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -36,9 +37,16 @@ public class Board extends BaseTimeEntity{
     private Recruit recruit;
 
 
-
     @OneToMany(mappedBy = "board") //지연로딩
     private List<PostLike> postLikes;
+
+
+    @OneToMany(mappedBy = "board") //지연로딩
+    private List<Reply> replies;
+
+
+
+
 
     @Builder
     public Board(Member member, String title, String content, String nickname, Category category) {
@@ -48,7 +56,7 @@ public class Board extends BaseTimeEntity{
         this.content = content;
         this.nickname = nickname;
         this.category = category;
-        this.recruit = Recruit.Recruiting;
+        this.recruit = Recruit.모집중;
     }
 
     public Board updateBoard(BoardReUpdateRequestDto boardReUpdateRequestDto){

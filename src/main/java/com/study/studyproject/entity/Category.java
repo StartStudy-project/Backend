@@ -6,13 +6,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Category {
-
-    ETC("기타"),
-    ALL("전체"),
-    CS("CS"),
-    CODE_TEST("코테"),
-    PROJECT("프로젝트");
-    private final String text;
-
-
+    기타,
+    CS,
+    전체,
+    코테,
+    프로젝트;
 }

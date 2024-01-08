@@ -32,7 +32,8 @@ public class LoginController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<GlobalResultDto> login(@Validated @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+    public ResponseEntity<GlobalResultDto> login( @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+        System.out.println("loginRequest = " + loginRequest);
         return ResponseEntity.ok(loginService.loginService(loginRequest, response));
 
 

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 
 @Entity
 @NoArgsConstructor
@@ -16,11 +18,11 @@ public class PostLike extends BaseTimeEntity{
     private Long id;
 
 
-    @ManyToOne(fetch = FetchType.LAZY) //지연로딩
+    @ManyToOne(fetch = LAZY) //지연로딩
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY) //지연로딩
+    @ManyToOne(fetch = LAZY) //지연로딩
     @JoinColumn(name = "board_id")
     private Board board;
 

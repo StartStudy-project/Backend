@@ -20,7 +20,6 @@ public class Member extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
-
     private String email; // 아이디 
     private String password; //비밀번호
     
@@ -48,6 +47,8 @@ public class Member extends BaseTimeEntity {
         this.email = email;
         this.role = role;
     }
+
+
 
 
 }

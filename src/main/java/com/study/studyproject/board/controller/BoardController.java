@@ -1,6 +1,7 @@
 
 package com.study.studyproject.board.controller;
 
+import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
 import com.study.studyproject.board.service.BoardService;
@@ -18,7 +19,7 @@ public class BoardController {
 
 
     //글쓰기 수정
-    @PatchMapping("/updateWrite")
+    @PatchMapping("/member/updateWrite")
     public void updateWriting(@RequestBody BoardReUpdateRequestDto boardReUpdateRequestDto) {
 
         System.out.println("boardReUpdateRequestDto = " + boardReUpdateRequestDto);
@@ -26,7 +27,7 @@ public class BoardController {
     }
 
     //글쓰기 작성
-    @PostMapping("/writing")
+    @PostMapping("/member/writing")
     public ResponseEntity<GlobalResultDto> writing(@CookieValue(value = "Refresh_Token") String token, @RequestBody BoardWriteRequestDto boardWriteRequestDto) {
         System.out.println("boardWriteRequestDto = " + boardWriteRequestDto);
         System.out.println("token = " + token);
@@ -34,6 +35,22 @@ public class BoardController {
         return ResponseEntity.ok(body);
     }
 
+    
+    //삭제
+    @DeleteMapping("/delete")
+    public ResponseEntity<GlobalResultDto> deleteBoard(@RequestParam Long boardId) {
+        return ResponseEntity.ok(boardService.boardDeleteOne(boardId));
+
+    }
 
 
-}
+    //글 조회 1개 - 댓글 기능 (x)
+    @GetMapping("/{boardId}")
+    public ResponseEntity<BoardOneResponseDto> writing(@PathVariable Long boardId) {
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId);
+        return ResponseEntity.ok(boardOneResponseDto);
+
+    }
+
+
+    }
