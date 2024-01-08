@@ -1,4 +1,4 @@
-package com.study.studyproject.board.dto;
+package com.study.studyproject.main.dto;
 
 public class MainResponsetDto {
     String type; //전체 코테
