@@ -17,6 +17,7 @@ public class BoardWriteRequestDto {
     String content;
     Category category;
     String title;
+    String nickname;
 
 
 
@@ -26,6 +27,7 @@ public class BoardWriteRequestDto {
                 .title(title)
                 .content(content)
                 .category(category)
+                .nickname(nickname)
                 .build();
     }
 

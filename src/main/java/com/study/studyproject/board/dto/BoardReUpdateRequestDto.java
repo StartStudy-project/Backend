@@ -8,15 +8,10 @@ import lombok.Data;
 
 @Data
 public class BoardReUpdateRequestDto {
-
     //모집구분
     Long boardId;
     Recruit recruit;
     String content;
     Category category;
     String title;
-
-
-
-
 }

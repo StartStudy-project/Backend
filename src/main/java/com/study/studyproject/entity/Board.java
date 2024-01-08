@@ -29,7 +29,10 @@ public class Board extends BaseTimeEntity{
 
     private String nickname;                                                  // 작성자 닉네임
 
+    @Enumerated(EnumType.STRING)
     private Category category;                                                  // 카테고리
+
+    @Enumerated(EnumType.STRING)
     private Recruit recruit;
 
 
