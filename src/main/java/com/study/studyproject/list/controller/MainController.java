@@ -5,6 +5,7 @@ import com.study.studyproject.board.dto.ListResponseDto;
 import com.study.studyproject.board.dto.MainRequest;
 import com.study.studyproject.board.service.BoardService;
 import com.study.studyproject.list.service.ListService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.jdt.internal.compiler.batch.Main;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "메인 기능 구현")
 public class MainController {
 //
 
