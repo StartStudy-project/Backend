@@ -1,6 +1,6 @@
 package com.study.studyproject;
 
-import com.study.studyproject.board.controller.MainController;
+import com.study.studyproject.list.controller.MainController;
 import com.study.studyproject.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.databind.ObjectMapper;

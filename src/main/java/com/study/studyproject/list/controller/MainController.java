@@ -1,9 +1,10 @@
-package com.study.studyproject.board.controller;
+package com.study.studyproject.list.controller;
 
 import com.study.studyproject.board.dto.ListRequestDto;
 import com.study.studyproject.board.dto.ListResponseDto;
 import com.study.studyproject.board.dto.MainRequest;
 import com.study.studyproject.board.service.BoardService;
+import com.study.studyproject.list.service.ListService;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.jdt.internal.compiler.batch.Main;
 import org.springframework.data.domain.Page;
@@ -19,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class MainController {
 //
 
-    private final BoardService boardService;
+    private final ListService listService;
 
     @GetMapping("/")
     public ResponseEntity<Page<ListResponseDto>> mainList(@RequestBody MainRequest mainRequestDto,
                                                           @PageableDefault(size = 10) Pageable pageable) {
 
-        Page<ListResponseDto> list = boardService.list(mainRequestDto, pageable);
+        Page<ListResponseDto> list = listService.list(mainRequestDto, pageable);
 
 
         return ResponseEntity.ok(list);

@@ -55,11 +55,6 @@ public class BoardService {
 
 
 
-    //조회
-    public Page<ListResponseDto> list(MainRequest boardListPage, Pageable pageable) {
-        Page<ListResponseDto> listResponseDtos = boardRepository.boardListPage(boardListPage, pageable);
-        return listResponseDtos;
-    }
 //
     //글 1개ㅁ만 가져오기
     public BoardOneResponseDto boardOne(Long boardId) {
