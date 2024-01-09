@@ -65,7 +65,7 @@ public class BoardRepositoryImpl implements  BoardRepositoryCustom {
                 .on(board.id.eq(reply.board.id))
                 .where(
                         getType(condition.getType()), //모집여부
-                        getUser(condition.getUserId()), //사용자 아이디
+                        getUser(condition.getEmail()), //사용자 이메일
                         getCategory(condition.getCategory())
 
                 )
@@ -95,7 +95,7 @@ public class BoardRepositoryImpl implements  BoardRepositoryCustom {
                 .from(board)
                 .where(
                         getType(condition.getType()),
-                        getUser(condition.getUserId())
+                        getUser(condition.getEmail())
                 );
     }
 
@@ -106,8 +106,8 @@ public class BoardRepositoryImpl implements  BoardRepositoryCustom {
         return isEmpty(type) ? null : board.recruit.eq(type);
     }
 
-    private BooleanExpression getUser(Integer userId) {
-        return isEmpty(userId) ? null : member.id.eq(Long.valueOf(userId));
+    private BooleanExpression getUser(String userEmail) {
+        return isEmpty(userEmail) ? null : member.email.eq(userEmail);
     }
 
     private OrderSpecifier<?> getOrder(int num) {

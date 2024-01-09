@@ -10,7 +10,8 @@ public abstract class ListRequestDto {
     Recruit type;   // 모집중
     Category category;   // cs
     int order ; // 0 -> 최신순
-    Integer  userId ;
+    String email;
+
 
 //
 //    public ListRequestDto(Recruit type, Category category, int order) {
