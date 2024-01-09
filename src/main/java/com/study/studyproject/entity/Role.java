@@ -8,9 +8,8 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public enum Role {
-    ROLE_USER("USER"),
-    ROLE_ADMIN("ADMIN");
-    private final String text;
+    ROLE_USER,
+    ROLE_ADMIN;
 
     public static boolean containsRoleType(Role type) {
         return List.of(ROLE_USER, ROLE_ADMIN).contains(type);

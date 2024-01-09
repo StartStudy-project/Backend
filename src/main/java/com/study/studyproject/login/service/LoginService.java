@@ -42,8 +42,9 @@ public class LoginService {
             throw new UserNotFoundException("비밀번호가 일치하지 않습니다.");
         }
 
-        TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail());
+        TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail(),member.getId());
 
+         jwtUtil.setCookie(tokensDto.getRefreshToken(),response);
 
         Optional<RefreshToken> refreshToken = refreshRepository.findByEmail(loginRequest.getEmail());
 
@@ -61,10 +62,9 @@ public class LoginService {
         return new GlobalResultDto("로그인 되었습니다.", HttpStatus.OK.value());
 
     }
-
     private void setHeader(HttpServletResponse response, TokenDtoResponse tokensDto) {
-        response.addHeader(JwtUtil.ACCESS_TOKEN, tokensDto.getAccessToken());
-        response.addHeader(JwtUtil.REFRESH_TOKEN, tokensDto.getRefreshToken());
+        response.addHeader(JwtUtil.ACCESS_TOKEN, JwtUtil.BEARER+tokensDto.getAccessToken());
+        response.addHeader(JwtUtil.REFRESH_TOKEN, JwtUtil.BEARER+tokensDto.getRefreshToken());
 
     }
 
@@ -82,10 +82,12 @@ public class LoginService {
         }
 
 
+        String[] splitEmail = signRequest.getEmail().split("@");
 
         String encodePwd = passwordEncoder.encode(signRequest.getPwd());
         Member member = Member.builder().role(Role.ROLE_USER)
                 .username(signRequest.getName())
+                .nickname(splitEmail[1])
                 .password(encodePwd)
                 .email(signRequest.getEmail()).build();
 

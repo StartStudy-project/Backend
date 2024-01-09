@@ -8,6 +8,7 @@ import com.study.studyproject.login.repository.RefreshRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class JwtUtil {
     private static final long REFRESH_TIME = 2 * 60 * 1000L;
     public static final String ACCESS_TOKEN = "Access_Token";
     public static final String REFRESH_TOKEN = "Refresh_Token";
+    public static final String BEARER = "Bearer ";
 
 
 
@@ -57,14 +59,18 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public TokenDtoResponse createAllToken(String email) {
-        return new TokenDtoResponse(createToken(email, "Access"), createToken(email, "Refresh"));
+    public TokenDtoResponse createAllToken(String email, Long id) {
+        String access = creatAccessToken(email);
+        String refresh = createRefreshToken(email, id);
+
+        return new TokenDtoResponse(access,refresh
+        );
     }
 
-    public String createToken(String email, String type) {
-
+    public String creatAccessToken(String email) {
         Date date = new Date();
-        long time = type.equals(ACCESS_TOKEN) ? ACCESS_TIME : REFRESH_TIME;
+        long time =  ACCESS_TIME;
+
         return Jwts.builder()
                 .setSubject(email)
                 .setExpiration(new Date(date.getTime() + time))
@@ -74,24 +80,54 @@ public class JwtUtil {
 
     }
 
+    public String createRefreshToken(String email,Long id) {
+        Date date = new Date();
+        long time =  REFRESH_TIME;
+        return  Jwts.builder()
+                .setSubject(email)
+                .claim("id", id)
+                .setExpiration(new Date(date.getTime() + time))
+                .setIssuedAt(date)
+                .signWith(key, signatureAlgorithm)
+                .compact();
+
+    }
+
+    public void setCookie(String refreshToken,HttpServletResponse response) {
+        Cookie cookie = new Cookie(REFRESH_TOKEN,refreshToken);
+        cookie.setMaxAge((int) REFRESH_TIME);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
+
+    public void removeCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie(REFRESH_TOKEN,null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+
+    }
+
+
+
     // 토큰 검증
     public Boolean tokenValidation(String token) throws ExpiredJwtException, TokenNotValidatException {
+        System.out.println("token = " + token);
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.error("잘못된 JWT 서명입니다.");
-            throw new TokenNotValidatException("잘못된 JWT 서명입니다.", e);
+            log.error("잘못된 JWT 서명입니다.SecurityException");
         } catch (ExpiredJwtException e) {
-            log.error("만료된 JWT 토큰입니다.");
-            throw new TokenNotValidatException("만료된 JWT 토큰입니다.", e);
+            log.error("잘못된 JWT 서명입니다.ExpiredJwtException");
         } catch (UnsupportedJwtException e) {
             log.error("지원되지 않는 JWT 토큰입니다.", e);
-            throw new UnsupportedJwtException("지원되지 않는 JWT 토큰입니다.", e);
         } catch (IllegalArgumentException e) {
-            log.error("JWT 토큰이 잘못되었습니다.");
-            throw new UnsupportedJwtException("JWT 토큰이 잘못되었습니다.", e);
+            log.error("잘못된 JWT 서명입니다. IllegalArgumentException");
         }
+        return false;
     }
 
 
@@ -107,9 +143,9 @@ public class JwtUtil {
 
     // 인증 객체 생성
     public Authentication createAuthentication(String email) {
+        System.out.println("email = " + email);
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         // spring security 내에서 가지고 있는 객체입니다. (UsernamePasswordAuthenticationToken)
-        userDetails.getAuthorities();
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -118,13 +154,19 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
 
+    // 토큰에서 id 가져오는 기능
+    public Long getIdFromToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("id",Long.class);
+    }
+
+
     // 어세스 토큰 헤더 설정
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        response.setHeader(ACCESS_TOKEN, accessToken);
+        response.setHeader(ACCESS_TOKEN,BEARER+accessToken);
     }
 
     // 리프레시 토큰 헤더 설정
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-        response.setHeader(REFRESH_TOKEN, refreshToken);
+        response.setHeader(REFRESH_TOKEN,BEARER+refreshToken);
     }
 }

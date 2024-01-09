@@ -5,9 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum Recruit{
-    Recruiting("모집중"),
-    Recruited("모집완료");
-    private final String text;
+public enum Recruit {
 
-    }
+    모집중, 모집완료
+
+}
