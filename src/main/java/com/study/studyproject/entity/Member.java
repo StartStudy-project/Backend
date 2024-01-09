@@ -1,5 +1,6 @@
 package com.study.studyproject.entity;
 
+import com.study.studyproject.member.dto.MemberUpdateResDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,8 +23,9 @@ public class Member extends BaseTimeEntity {
     private Long id;
     private String email; // 아이디 
     private String password; //비밀번호
-    
+
     private String username;
+    private String nickname;
 
 
     @Enumerated(EnumType.STRING)
@@ -41,14 +43,17 @@ public class Member extends BaseTimeEntity {
 
 
     @Builder
-    public Member(String username, String password, String email, Role role) {
-        this.username = username;
-        this.password = password;
+    public Member(String email, String password, String username, String nickname, Role role) {
         this.email = email;
+        this.password = password;
+        this.username = username;
+        this.nickname = nickname;
         this.role = role;
     }
 
-
-
-
+    public Member updateMemberInfo(MemberUpdateResDto dto) {
+        this.username = dto.getUsername();
+        this.nickname = dto.getNickname();
+        return this;
+    }
 }

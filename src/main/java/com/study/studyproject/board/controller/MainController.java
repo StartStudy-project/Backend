@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class MainController {
-
+//
 
     private final BoardService boardService;
 
@@ -25,7 +25,6 @@ public class MainController {
     public ResponseEntity<Page<ListResponseDto>> mainList(@RequestBody MainRequest mainRequestDto,
                                                           @PageableDefault(size = 10) Pageable pageable) {
 
-        System.out.println("mainRequestDto = " + mainRequestDto);
         Page<ListResponseDto> list = boardService.list(mainRequestDto, pageable);
 
 
