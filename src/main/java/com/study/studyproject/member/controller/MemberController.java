@@ -3,10 +3,17 @@ package com.study.studyproject.member.controller;
 import com.study.studyproject.board.dto.ListResponseDto;
 import com.study.studyproject.board.dto.MainRequest;
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.exception.ex.TokenNotValidatException;
+import com.study.studyproject.global.exception.ex.UserNotFoundException;
+import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.MemberUpdateResDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.member.service.MemberServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,20 +36,22 @@ public class MemberController {
         return ResponseEntity.ok(memberService.userInfoService(token));
     }
 
-    //리스트
+    //수정
     @PatchMapping("/info/update")
     public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody MemberUpdateResDto memberUpdateResDto, @CookieValue(value = "Refresh_Token") String token) {
         return ResponseEntity.ok(memberService.userInfoUpdate(token, memberUpdateResDto));
     }
 
+
+    @Operation(summary = "사용자 게시글 조회", description = "사용자 스터디 게시글 조회")
     @GetMapping("/list")
     public ResponseEntity<Page<ListResponseDto>> mainList(
             @CookieValue(value = "Refresh_Token") String token,
-            @RequestBody MainRequest mainRequestDto,
-                                                          @PageableDefault(size = 10) Pageable pageable) {
-
-        Page<ListResponseDto> list = boardService.list(mainRequestDto, pageable);
-
-
-        return ResponseEntity.ok(list);
+            @RequestBody MemberListRequestDto memberListRequestDto,
+            @PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(memberService.listMember(token, memberListRequestDto, pageable));
     }
+
+
+
+}

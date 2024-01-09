@@ -97,10 +97,18 @@ public class JwtUtil {
         Cookie cookie = new Cookie(REFRESH_TOKEN,refreshToken);
         cookie.setMaxAge((int) REFRESH_TIME);
         cookie.setSecure(true);
+        cookie.setPath("/");
         response.addCookie(cookie);
     }
 
+    public void removeCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie(REFRESH_TOKEN,null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
+
+    }
 
 
 
