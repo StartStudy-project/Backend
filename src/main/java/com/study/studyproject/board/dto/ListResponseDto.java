@@ -2,7 +2,6 @@ package com.study.studyproject.board.dto;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.annotations.QueryProjection;
-import com.study.studyproject.entity.QBoard;
 import com.study.studyproject.entity.Recruit;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;

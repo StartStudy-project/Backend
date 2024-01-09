@@ -82,10 +82,12 @@ public class LoginService {
         }
 
 
+        String[] splitEmail = signRequest.getEmail().split("@");
 
         String encodePwd = passwordEncoder.encode(signRequest.getPwd());
         Member member = Member.builder().role(Role.ROLE_USER)
                 .username(signRequest.getName())
+                .nickname(splitEmail[1])
                 .password(encodePwd)
                 .email(signRequest.getEmail()).build();
 
