@@ -7,12 +7,11 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class MainRequest{
+public class MainRequest {
 
     Recruit type;
     Category category;
     int order; // 0 -> 최신순
-
 
     @Builder
     public MainRequest(Recruit type, Category category, int order) {

@@ -64,7 +64,7 @@ public class MyPageQueryRepository {
                 .on(board.id.eq(reply.board.id))
                 .where(
                         getType(condition.getType()), //모집여부
-                        getUser(condition.getEmail()), //사용자 이메일
+                        getUser(condition.getMemberId()), //사용자 아이디 유무
                         getCategory(condition.getCategory())
                 )
                 .orderBy(
@@ -93,7 +93,7 @@ public class MyPageQueryRepository {
                 .from(board)
                 .where(
                         getType(condition.getType()), //모집여부
-                        getUser(condition.getEmail()), //사용자 이메일
+                        getUser(condition.getMemberId()), //사용자 이메일
                         getCategory(condition.getCategory())
                 );
     }
@@ -107,8 +107,9 @@ public class MyPageQueryRepository {
 
 
 
-    private BooleanExpression getUser(String userEmail) {
-        return isEmpty(userEmail) ? null : member.email.eq(userEmail);
+    private BooleanExpression getUser(Long userId) {
+
+        return isEmpty(userId) ? null : board.member.id.eq(userId);
     }
 
     private OrderSpecifier<?> getOrder(int num) {
