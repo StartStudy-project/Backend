@@ -1,15 +1,13 @@
 package com.study.studyproject.member.service;
 
 
-import com.study.studyproject.board.dto.ListResponseDto;
+import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.MemberUpdateResDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 
 public interface MemberService {
 

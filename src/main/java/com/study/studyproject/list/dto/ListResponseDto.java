@@ -1,4 +1,4 @@
-package com.study.studyproject.board.dto;
+package com.study.studyproject.list.dto;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.annotations.QueryProjection;

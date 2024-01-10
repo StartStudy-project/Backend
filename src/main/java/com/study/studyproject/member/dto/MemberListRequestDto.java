@@ -1,13 +1,12 @@
 package com.study.studyproject.member.dto;
 
-import com.study.studyproject.board.dto.ListRequestDto;
 import com.study.studyproject.entity.Category;
 import com.study.studyproject.entity.Recruit;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class MemberListRequestDto extends ListRequestDto {
+public class MemberListRequestDto  {
 
     @Schema(description = "모집구분", defaultValue = "모집중")
     Recruit type;   // 모집중

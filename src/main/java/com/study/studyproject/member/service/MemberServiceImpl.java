@@ -1,6 +1,6 @@
 package com.study.studyproject.member.service;
 
-import com.study.studyproject.board.dto.ListResponseDto;
+import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.global.GlobalResultDto;
@@ -11,7 +11,7 @@ import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.MemberUpdateResDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.member.repository.MemberRepository;
-import jakarta.servlet.http.HttpServletResponse;
+import com.study.studyproject.member.repository.MyPageQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +28,7 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
+    private final MyPageQueryRepository myPageQueryRepository;
 
     private final RefreshRepository refreshRepository;
 
@@ -48,7 +49,6 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public GlobalResultDto userInfoUpdate(String token, MemberUpdateResDto memberUpdateResDto) {
         Long idFromToken = jwtUtil.getIdFromToken(token);
-        System.out.println("idFromToken = " + idFromToken);
         Member member = memberRepository.findById(idFromToken).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
         member.updateMemberInfo(memberUpdateResDto);
 
@@ -61,7 +61,7 @@ public class MemberServiceImpl implements MemberService{
     public Page<ListResponseDto> listMember(String token, MemberListRequestDto memberListRequestDto, Pageable pageable) {
         String emailFromToken = jwtUtil.getEmailFromToken(token);
         memberListRequestDto.setEmail(emailFromToken);
-        return boardRepository.boardListPage(memberListRequestDto, pageable);
+        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable);
     }
 
 

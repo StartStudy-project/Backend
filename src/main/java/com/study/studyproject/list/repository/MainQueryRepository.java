@@ -1,47 +1,46 @@
-package com.study.studyproject.board.repository;
+package com.study.studyproject.list.repository;
 
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.study.studyproject.board.dto.ListRequestDto;
-import com.study.studyproject.board.dto.ListResponseDto;
-import com.study.studyproject.board.dto.QListResponseDto;
+import com.study.studyproject.list.dto.ListResponseDto;
+import com.study.studyproject.board.dto.MainRequest;
 import com.study.studyproject.entity.*;
+import com.study.studyproject.list.dto.QListResponseDto;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static com.querydsl.jpa.JPAExpressions.select;
 import static com.study.studyproject.entity.QBoard.*;
-import static com.study.studyproject.entity.QMember.*;
 import static com.study.studyproject.entity.QReply.reply;
 import static org.springframework.util.StringUtils.isEmpty;
 
-public class BoardRepositoryImpl implements  BoardRepositoryCustom {
+@Repository
+public class MainQueryRepository  {
 
     private final JPAQueryFactory queryFactory;
 
-    public BoardRepositoryImpl(EntityManager em) {
+    public MainQueryRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    @Override
-    public Page<ListResponseDto> boardListPage(ListRequestDto condition, Pageable pageable) {
+    public Page<ListResponseDto> boardListPage(String findContent, MainRequest condition, Pageable pageable) {
 
-        List<ListResponseDto> content = getContent(condition, pageable);
+        List<ListResponseDto> content = getContent(findContent,condition, pageable);
         System.out.println("content.toString() = " + content.toString());
 
-        JPAQuery<Board> countQuery = getTotal(condition);
+        JPAQuery<Board> countQuery = getTotal(findContent,condition);
 
         return PageableExecutionUtils.getPage(content,pageable, countQuery::fetchCount);
     }
 
-    public List<ListResponseDto> getContent(ListRequestDto condition, Pageable pageable) {
+    public List<ListResponseDto> getContent(String findContent,MainRequest condition, Pageable pageable) {
 
         return queryFactory
                 .select(
@@ -56,7 +55,6 @@ public class BoardRepositoryImpl implements  BoardRepositoryCustom {
                                 board.viewCount.intValue(),
                                 reply.count().intValue(),
                                 board.count().intValue()
-
                         )
 
                 )
@@ -65,9 +63,8 @@ public class BoardRepositoryImpl implements  BoardRepositoryCustom {
                 .on(board.id.eq(reply.board.id))
                 .where(
                         getType(condition.getType()), //모집여부
-                        getUser(condition.getEmail()), //사용자 이메일
-                        getCategory(condition.getCategory())
-
+                        getCategory(condition.getCategory()),
+                        getFindContent(findContent)
                 )
                 .orderBy(
                         getOrder(condition.getOrder()) // 순서
@@ -87,7 +84,7 @@ public class BoardRepositoryImpl implements  BoardRepositoryCustom {
         return category.equals(Category.전체) ? null : board.category.eq(category);
     }
 
-    public JPAQuery<Board> getTotal(ListRequestDto condition) {
+    public JPAQuery<Board> getTotal(String findContent,MainRequest condition) {
         return queryFactory
                 .select(
                         board
@@ -95,8 +92,8 @@ public class BoardRepositoryImpl implements  BoardRepositoryCustom {
                 .from(board)
                 .where(
                         getType(condition.getType()), //모집여부
-                        getUser(condition.getEmail()), //사용자 이메일
-                        getCategory(condition.getCategory())
+                        getCategory(condition.getCategory()),
+                        getFindContent(findContent)
                 );
     }
 
@@ -107,9 +104,12 @@ public class BoardRepositoryImpl implements  BoardRepositoryCustom {
         return isEmpty(type) ? null : board.recruit.eq(type);
     }
 
-    private BooleanExpression getUser(String userEmail) {
-        return isEmpty(userEmail) ? null : member.email.eq(userEmail);
+
+    private BooleanExpression getFindContent(String findContent) {
+        return isEmpty(findContent) ? null : board.title.startsWith(findContent);
     }
+
+
 
     private OrderSpecifier<?> getOrder(int num) {
         if (num == 0) {

@@ -1,6 +1,6 @@
 package com.study.studyproject.member.controller;
 
-import com.study.studyproject.board.dto.ListResponseDto;
+import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.board.dto.MainRequest;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.TokenNotValidatException;

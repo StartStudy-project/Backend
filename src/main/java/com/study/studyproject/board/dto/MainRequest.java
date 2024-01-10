@@ -7,16 +7,17 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class MainRequest extends ListRequestDto{
+public class MainRequest{
 
     Recruit type;
     Category category;
     int order; // 0 -> 최신순
 
-//    @Builder
-//    public MainRequest(Recruit type, Category category, int order) {
-//        this.type = type;
-//        this.category = category;
-//        this.order = order;
-//    }
+
+    @Builder
+    public MainRequest(Recruit type, Category category, int order) {
+        this.type = type;
+        this.category = category;
+        this.order = order;
+    }
 }
