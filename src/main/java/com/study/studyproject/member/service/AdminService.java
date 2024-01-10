@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface AdminService {
 
-    Page<UserInfoResponseDto> userInfoAll(Pageable pageable);
+    Page<UserInfoResponseDto> userInfoAll(String usernam,Pageable pageable);
 }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,7 +19,10 @@ public class AdminController {
     private final AdminServiceImpl adminService;
 
     @GetMapping("/userAll")
-    public Page<UserInfoResponseDto> userAllInfo(@PageableDefault(size = 10) Pageable pageable) {
-        return adminService.userInfoAll(pageable);
+    public Page<UserInfoResponseDto> userAllInfo(
+            @RequestParam(required = false) String username,
+            @PageableDefault(size = 10) Pageable pageable) {
+
+        return adminService.userInfoAll(username,pageable);
     }
 }

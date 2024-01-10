@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface MemberRepositoryCustom {
 
-    Page<UserInfoResponseDto> adminUserBoardList(List<UserInfoResponseDto> userInfoResponseDtos, Pageable pageable);
-    List<Member> getContent(Pageable pageable);
+    Page<UserInfoResponseDto> adminUserBoardList(String username, List<UserInfoResponseDto> userInfoResponseDtos, Pageable pageable);
+    List<Member> getContent(String username, Pageable pageable);
 
 
 }

@@ -1,5 +1,6 @@
 package com.study.studyproject.member.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.study.studyproject.entity.Member;
@@ -12,6 +13,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import java.util.List;
 
 import static com.study.studyproject.entity.QMember.*;
+import static org.springframework.util.StringUtils.isEmpty;
 
 public class MemberRepositoryImpl implements MemberRepositoryCustom{
     private final JPAQueryFactory queryFactory;
@@ -22,21 +24,32 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
 
 
     @Override
-    public Page<UserInfoResponseDto> adminUserBoardList(List<UserInfoResponseDto> userInfoResponseDtos , Pageable pageable) {
-        JPAQuery<Member> countQuery = getTotal();
+    public Page<UserInfoResponseDto> adminUserBoardList(String username,List<UserInfoResponseDto> userInfoResponseDtos , Pageable pageable) {
+
+        JPAQuery<Member> countQuery = getTotal(username);
         return PageableExecutionUtils.getPage(userInfoResponseDtos,pageable, countQuery::fetchCount);
     }
 
     @Override
-    public List<Member> getContent(Pageable pageable) {
+    public List<Member> getContent(String username, Pageable pageable) {
+
         return queryFactory.
                 selectFrom(member)
+                .where(getUsername(username))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
     }
-    public JPAQuery<Member> getTotal() {
+
+    private BooleanExpression getUsername(String username) {
+        return isEmpty(username) ? null : member.username.startsWith(username);
+    }
+
+    public JPAQuery<Member> getTotal(String username) {
         return queryFactory.
-                selectFrom(member);
+                selectFrom(member)
+                .where(getUsername(username))
+
+        ;
     }
 }
