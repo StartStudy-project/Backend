@@ -94,8 +94,9 @@ public class BoardRepositoryImpl implements  BoardRepositoryCustom {
                 )
                 .from(board)
                 .where(
-                        getType(condition.getType()),
-                        getUser(condition.getEmail())
+                        getType(condition.getType()), //모집여부
+                        getUser(condition.getEmail()), //사용자 이메일
+                        getCategory(condition.getCategory())
                 );
     }
 
