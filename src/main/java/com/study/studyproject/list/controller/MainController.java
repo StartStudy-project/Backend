@@ -24,11 +24,11 @@ public class MainController {
 
     @GetMapping("/")
     public ResponseEntity<Page<ListResponseDto>> mainList(
-            @RequestParam(required = false) String content,
+            @RequestParam(required = false) String title,
             @RequestBody MainRequest mainRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
 
-        Page<ListResponseDto> list = listService.list(content, mainRequestDto, pageable);
+        Page<ListResponseDto> list = listService.list(title, mainRequestDto, pageable);
 
 
         return ResponseEntity.ok(list);

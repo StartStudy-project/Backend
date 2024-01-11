@@ -33,8 +33,6 @@ public class MainQueryRepository  {
     public Page<ListResponseDto> boardListPage(String findContent, MainRequest condition, Pageable pageable) {
 
         List<ListResponseDto> content = getContent(findContent,condition, pageable);
-        System.out.println("content.toString() = " + content.toString());
-
         JPAQuery<Board> countQuery = getTotal(findContent,condition);
 
         return PageableExecutionUtils.getPage(content,pageable, countQuery::fetchCount);
