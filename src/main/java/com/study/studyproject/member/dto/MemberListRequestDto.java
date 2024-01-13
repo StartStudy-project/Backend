@@ -20,7 +20,7 @@ public class MemberListRequestDto  {
     int order ; // 0 -> 최신순
 
 
-    String  email;
+    Long memberId;
     
     
     @Builder

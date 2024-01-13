@@ -32,10 +32,11 @@ public class BoardController {
         boardService.updateWrite(boardReUpdateRequestDto);
     }
 
-    //글쓰기 작성
     @PostMapping("member/writing")
     @Operation(summary = "글쓰기 작성",description = "글쓰기 작성")
     public ResponseEntity<GlobalResultDto> writing(@CookieValue(value = "Refresh_Token") String token, @RequestBody BoardWriteRequestDto boardWriteRequestDto) {
+
+
         System.out.println("boardWriteRequestDto = " + boardWriteRequestDto);
         System.out.println("token = " + token);
         GlobalResultDto body = boardService.boardSave(boardWriteRequestDto, token);
@@ -55,8 +56,10 @@ public class BoardController {
     //글 조회 1개 - 댓글 기능 (x) -  추후 추가
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세",description = "게시글 상세페이지")
-    public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable Long boardId) {
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId);
+    public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable Long boardId,
+                                                       @CookieValue(value = "Refresh_Token") String token
+    ) {
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(token,boardId);
         return ResponseEntity.ok(boardOneResponseDto);
 
     }

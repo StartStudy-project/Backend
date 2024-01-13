@@ -24,7 +24,7 @@ public class MainController {
 
     @GetMapping("/")
     public ResponseEntity<Page<ListResponseDto>> mainList(
-            @RequestParam(required = false) String title,
+            @RequestParam(value = "title",required = false) String title,
             @RequestBody MainRequest mainRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
 

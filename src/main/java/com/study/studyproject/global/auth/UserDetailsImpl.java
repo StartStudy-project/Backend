@@ -35,6 +35,10 @@ public class UserDetailsImpl implements UserDetails {
         return collection;
     }
 
+    public Long getMemberId() {
+        return member.getId();
+    }
+
     @Override
     public String getPassword() {
         return member.getPassword();

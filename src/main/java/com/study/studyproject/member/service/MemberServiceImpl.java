@@ -27,11 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
-    private final BoardRepository boardRepository;
     private final MyPageQueryRepository myPageQueryRepository;
-
-    private final RefreshRepository refreshRepository;
-
     private final JwtUtil jwtUtil;
 
     //사용자 정보조회
@@ -59,8 +55,8 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public Page<ListResponseDto> listMember(String token, MemberListRequestDto memberListRequestDto, Pageable pageable) {
-        String emailFromToken = jwtUtil.getEmailFromToken(token);
-        memberListRequestDto.setEmail(emailFromToken);
+        Long idFromToken = jwtUtil.getIdFromToken(token);
+        memberListRequestDto.setMemberId(idFromToken);
         return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable);
     }
 

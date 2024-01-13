@@ -1,9 +1,13 @@
 package com.study.studyproject.entity;
 
+import com.study.studyproject.board.dto.BoardOneResponseDto;
+import com.study.studyproject.reply.dto.ReplyRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +16,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
+@ToString(of = {"id","content"})
 public class Reply extends BaseTimeEntity{
 
     @Id
@@ -19,7 +24,6 @@ public class Reply extends BaseTimeEntity{
     @Column(name = "reply_id")
     private Long id;
 
-    private String nickname;
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,11 +32,6 @@ public class Reply extends BaseTimeEntity{
 
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<Reply> children = new ArrayList<>();
-
-
-    private boolean is_delete; // 삭제여뷰
-    private LocalDateTime delete_at; // 삭제시간
-
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,23 +44,24 @@ public class Reply extends BaseTimeEntity{
 
 
     @Builder
-    public Reply(String nickname, String content, Reply parent, List<Reply> children, boolean is_delete, LocalDateTime delete_at, Member member, Board board) {
-        this.nickname = nickname;
+    public Reply(String content, Reply parent,  Member member, Board board) {
         this.content = content;
         this.parent = parent;
-        this.children = children;
-        this.is_delete = is_delete;
-        this.delete_at = delete_at;
         this.member = member;
         this.board = board;
     }
 
-    @Builder
 
+    public static Reply toEntity(ReplyRequestDto replyRequestDto, Board board, Member member) {
+        return Reply.builder()
+                .content(replyRequestDto.getContent())
+                .member(member)
+                .board(board)
+                .build();
+    }
 
-    //삭제
-    public void deleteReply() {
-        this.is_delete = true;
+    public void updateParent(Reply parent) {
+        this.parent = parent;
     }
 
     //수정
@@ -69,9 +69,5 @@ public class Reply extends BaseTimeEntity{
         this.content = content;
     }
 
-    public void UpdateMember(Member member) {
-        this.member = member; // 1
-        member.getReplies().add(this);
 
-    }
 }

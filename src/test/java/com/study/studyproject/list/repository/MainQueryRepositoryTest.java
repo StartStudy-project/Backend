@@ -105,6 +105,7 @@ class MainQueryRepositoryTest {
 
     }
 
+
     @Test
     @DisplayName("메인페이지에 찾고자 하는 값을 검색하여 정보를 추출한다.")
     void boardListPage() {

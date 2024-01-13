@@ -1,6 +1,5 @@
 package com.study.studyproject.member.dto;
 
-import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.entity.Board;
 import com.study.studyproject.entity.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
