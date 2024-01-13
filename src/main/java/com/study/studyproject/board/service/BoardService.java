@@ -37,7 +37,6 @@ public class BoardService {
 
 
     public GlobalResultDto boardSave(BoardWriteRequestDto boardWriteRequestDto, String token) {
-        System.out.println("boardWriteRequestDto = " + boardWriteRequestDto);
         Member member = memberRepository.findById(jwtUtil.getIdFromToken(token))
                 .orElseThrow(() -> new IllegalArgumentException("ID가 없습니다."));
         Board entity = boardWriteRequestDto.toEntity(member);
