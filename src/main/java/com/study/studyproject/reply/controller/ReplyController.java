@@ -32,7 +32,6 @@ public class ReplyController {
         replyService.deleteReply(bno);
     }
 
-    public void findDetailBoard(@CookieValue(value = "Refresh_Token") String token, Long bno) {
 
 }
 
