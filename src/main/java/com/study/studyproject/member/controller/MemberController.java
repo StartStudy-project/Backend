@@ -1,6 +1,6 @@
 package com.study.studyproject.member.controller;
 
-import com.study.studyproject.board.dto.ListResponseDto;
+import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.board.dto.MainRequest;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.TokenNotValidatException;
@@ -32,13 +32,14 @@ public class MemberController {
     private final MemberServiceImpl memberService;
 
     //사용자 정보 조회
-    @Operation(summary = "사용자 정보 조회", description = "자신의 사용자 정보를 조회합니다..")
+    @Operation(summary = "사용자 정보 조회", description = "자신의 사용자 정보를 조회")
     @GetMapping("/info")
     public ResponseEntity<UserInfoResponseDto> userInfo(@CookieValue(value = "Refresh_Token") String token) {
         return ResponseEntity.ok(memberService.userInfoService(token));
     }
 
     //수정
+    @Operation(summary = "사용자 정보 수정", description = "사용자 정보 수정 기능")
     @PatchMapping("/info/update")
     public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody MemberUpdateResDto memberUpdateResDto, @CookieValue(value = "Refresh_Token") String token) {
         return ResponseEntity.ok(memberService.userInfoUpdate(token, memberUpdateResDto));

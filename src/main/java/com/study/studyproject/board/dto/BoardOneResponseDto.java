@@ -1,12 +1,11 @@
 package com.study.studyproject.board.dto;
 
 import com.study.studyproject.entity.Board;
-import com.study.studyproject.entity.Member;
+import com.study.studyproject.reply.dto.ReplyResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -26,22 +25,30 @@ public class BoardOneResponseDto {
     @Schema(description = "조회수", defaultValue = "3")
     int viewCnt;
 
+    @Schema(description = "댓글")
+    ReplyResponseDto replyResponseDto;
+
     @Builder
-    public BoardOneResponseDto(String title, String userId,  LocalDateTime updateTime, String content, int viewCnt) {
+    public BoardOneResponseDto(String title, String userId, LocalDateTime updateTime, String content, int viewCnt, ReplyResponseDto replyResponseDto) {
         this.title = title;
         this.userId = userId;
         this.updateTime = updateTime;
         this.content = content;
         this.viewCnt = viewCnt;
+        this.replyResponseDto = replyResponseDto;
     }
 
-    public static BoardOneResponseDto of(Board board) {
+
+
+    public static BoardOneResponseDto of(Board board, ReplyResponseDto replies) {
         return BoardOneResponseDto.builder()
                 .updateTime(board.getLastModifiedDate())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .viewCnt(Math.toIntExact(board.getViewCount()))
                 .userId(board.getNickname())
+                .replyResponseDto(replies)
                 .build();
     }
+
 }

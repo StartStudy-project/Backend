@@ -32,8 +32,8 @@ public class JwtUtil {
     private final UserDetailsServiceImpl userDetailsService;
     private final RefreshRepository refreshTokenRepository;
 
-    private static final long ACCESS_TIME = 60 * 1000L;
-    private static final long REFRESH_TIME = 2 * 60 * 1000L;
+    private static final long ACCESS_TIME = 60 * 40 * 1000L;
+    private static final long REFRESH_TIME =  60 *60* 1000L;
     public static final String ACCESS_TOKEN = "Access_Token";
     public static final String REFRESH_TOKEN = "Refresh_Token";
     public static final String BEARER = "Bearer ";
@@ -61,7 +61,9 @@ public class JwtUtil {
     // 토큰 생성
     public TokenDtoResponse createAllToken(String email, Long id) {
         String access = creatAccessToken(email);
+        System.out.println("발급access = " + access);
         String refresh = createRefreshToken(email, id);
+        System.out.println("발급 refresh = " + refresh);
 
         return new TokenDtoResponse(access,refresh
         );

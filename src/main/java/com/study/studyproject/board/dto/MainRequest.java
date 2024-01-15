@@ -5,18 +5,20 @@ import com.study.studyproject.entity.Recruit;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class MainRequest extends ListRequestDto{
+@NoArgsConstructor
+public class MainRequest {
 
     Recruit type;
     Category category;
     int order; // 0 -> 최신순
 
-//    @Builder
-//    public MainRequest(Recruit type, Category category, int order) {
-//        this.type = type;
-//        this.category = category;
-//        this.order = order;
-//    }
+    @Builder
+    public MainRequest(Recruit type, Category category, int order) {
+        this.type = type;
+        this.category = category;
+        this.order = order;
+    }
 }
