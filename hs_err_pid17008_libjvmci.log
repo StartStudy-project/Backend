@@ -1,0 +1,248 @@
+Fatal error: java.lang.OutOfMemoryError: Could not allocate an aligned heap chunk
+
+Current timestamp: 1704689457532
+
+Printing Instructions (ip=0x00007ffe1bdff264):
+  0x00007ffe1bdff244: 0x00 0x41 0xc7 0x87 0xfc 0x00 0x00 0x00 0xfe 0xfe 0xfe 0x7e 0x48 0x8b 0x54 0x24
+  0x00007ffe1bdff254: 0x18 0x4c 0x8b 0x44 0x24 0x08 0x4c 0x8b 0x4c 0x24 0x10 0xe8 0x7c 0xfc 0xff 0xff
+  0x00007ffe1bdff264: 0x90 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0x55 0x48 0x8b 0xec
+  0x00007ffe1bdff274: 0x48 0x83 0xec 0x30 0x48 0x89 0x54 0x24 0x28 0x49 0x3b 0x67 0x08 0x0f 0x86 0x66
+
+Top of stack (sp=0x000000e19e8fdd60):
+  0x000000e19e8fdd60: 0x0000000000abfe20 0x0000028b6a000000
+  0x000000e19e8fdd70: 0x0000028b6aa73dc0 0x00007ffe1bdc73c4
+  0x000000e19e8fdd80: 0x000000e19e8fdda0 0x00007ffe1be80fb8
+  0x000000e19e8fdd90: 0x0000028b5075f460 0x000000e19e8fdfc0
+  0x000000e19e8fdda0: 0x000000e19e8fddc0 0x00007ffe1bdc73c4
+  0x000000e19e8fddb0: 0x0000028b6efe3b00 0x0000028b6efe3b00
+  0x000000e19e8fddc0: 0x000000e19e8fde20 0x00007ffe1be7aae0
+  0x000000e19e8fddd0: 0x0000028b50609470 0x000000e19e8fded0
+  0x000000e19e8fdde0: 0x0000028b6a000000 0x0000028b6aa99f50
+  0x000000e19e8fddf0: 0x0000000000742a60 0x0000028b6ac6e5d0
+  0x000000e19e8fde00: 0x0000028b6efe3b00 0x0000000000000000
+  0x000000e19e8fde10: 0x0000000000000000 0x000000e19e8fdfc0
+  0x000000e19e8fde20: 0x000000e19e8fde70 0x00007ffe1be7b597
+  0x000000e19e8fde30: 0x00007ffe1cd4d1f7 0x0000000000000000
+  0x000000e19e8fde40: 0x0000028b6ac6e5d0 0x00007ffe1be7851b
+  0x000000e19e8fde50: 0x0000028b6aa729e0 0x0000028b6ac32fd8
+  0x000000e19e8fde60: 0x0000028b6abc9a38 0x000000e19e8fdfc0
+  0x000000e19e8fde70: 0x000000e19e8fdec0 0x00007ffe1be7bcb7
+  0x000000e19e8fde80: 0x000000e19e8f0100 0x0000028b6a687188
+  0x000000e19e8fde90: 0x0000028b6ac32f88 0x0000028b6abc9a38
+  0x000000e19e8fdea0: 0x0000028b6a687188 0x0000028b6ac32fd8
+  0x000000e19e8fdeb0: 0x0000028b6aa729e0 0x0000000100000001
+  0x000000e19e8fdec0: 0x000000e19e8fdf00 0x00007ffe1be7bad4
+  0x000000e19e8fded0: 0x00006a8ed5825e58 0x0000028b6aa729e0
+  0x000000e19e8fdee0: 0x0000028b6ac6e5d0 0x0000000000ac0de0
+  0x000000e19e8fdef0: 0x0000028b6aac0de0 0x000000e19e8fdfc0
+  0x000000e19e8fdf00: 0x000000e19e8fdf40 0x00007ffe1be7c119
+  0x000000e19e8fdf10: 0x00006a8ed5825e38 0x00007ffe1c4bff15
+  0x000000e19e8fdf20: 0x0000028b6ac71458 0x0000028b6ac6e5d0
+  0x000000e19e8fdf30: 0x0000028b6aa99f50 0x000000e19e8fdfc0
+  0x000000e19e8fdf40: 0x000000e19e8fdf60 0x00007ffe1be74348
+  0x000000e19e8fdf50: 0x0000028b6efe3b00 0x00007ffe1cd2a10f
+
+Top frame info:
+  TotalFrameSize in CodeInfoTable 48
+  
+Threads:
+  0x0000028b6efe3b00 STATUS_IN_JAVA (PREVENT_VM_FROM_REACHING_SAFEPOINT) "JVMCI-native CompilerThread0" - 0x0000028b6c701158, stack(0x000000e19e800000,0x000000e19e900000)
+  
+VM thread locals for the failing thread 0x0000028b6efe3b00:
+  0 (8 bytes): JNIThreadLocalEnvironment.jniFunctions = (bytes) 
+    0x0000028b6efe3b00: 0x0000028b6a6a0010
+  8 (8 bytes): StackOverflowCheckImpl.stackBoundaryTL = (Word) 1 (0x0000000000000001)
+  16 (4 bytes): Safepoint.safepointRequested = (int) 2143980374 (0x7fca8b56)
+  20 (4 bytes): StatusSupport.statusTL = (int) 1 (0x00000001)
+  24 (32 bytes): ThreadLocalAllocation.regularTLAB = (bytes) 
+    0x0000028b6efe3b18: 0x0000000000000000 0x0000000000000000
+    0x0000028b6efe3b28: 0x0000000000000000 0x0000000000000000
+  56 (8 bytes): PlatformThreads.currentThread = (Object) java.lang.Thread (0x0000028b6c701158)
+  64 (8 bytes): JavaFrameAnchors.lastAnchor = (Word) 0 (0x0000000000000000)
+  72 (8 bytes): AccessControlContextStack = (Object) null
+  80 (8 bytes): ExceptionUnwind.currentException = (Object) null
+  88 (8 bytes): IdentityHashCodeSupport.hashCodeGeneratorTL = (Object) java.util.SplittableRandom (0x0000028b6c7c8e40)
+  96 (8 bytes): IsolatedCompileClient.currentClient = (Object) null
+  104 (8 bytes): IsolatedCompileContext.currentContext = (Object) null
+  112 (8 bytes): JNIObjectHandles.handles = (Object) com.oracle.svm.core.handles.ThreadLocalHandles (0x0000028b6c701258)
+  120 (8 bytes): JNIThreadLocalPendingException.pendingException = (Object) null
+  128 (8 bytes): JNIThreadLocalPinnedObjects.pinnedObjectsListHead = (Object) null
+  136 (8 bytes): JNIThreadOwnedMonitors.ownedMonitors = (Object) null
+  144 (8 bytes): NoAllocationVerifier.openVerifiers = (Object) null
+  152 (8 bytes): ThreadingSupportImpl.activeTimer = (Object) null
+  160 (8 bytes): SubstrateDiagnostics.threadOnlyAttachedForCrashHandler = (bytes) 
+    0x0000028b6efe3ba0: 0x0000000000000000
+  168 (8 bytes): ThreadLocalAllocation.allocatedBytes = (Word) 15665416 (0x0000000000ef0908)
+  176 (8 bytes): VMThreads.IsolateTL = (Word) 2797802094592 (0x0000028b6a000000)
+  184 (8 bytes): VMThreads.OSThreadHandleTL = (Word) 4908 (0x000000000000132c)
+  192 (8 bytes): VMThreads.OSThreadIdTL = (Word) 16640 (0x0000000000004100)
+  200 (8 bytes): VMThreads.StackBase = (Word) 969027878912 (0x000000e19e900000)
+  208 (8 bytes): VMThreads.StackEnd = (Word) 969026830336 (0x000000e19e800000)
+  216 (8 bytes): VMThreads.StartedByCurrentIsolate = (bytes) 
+    0x0000028b6efe3bd8: 0x0000000000000000
+  224 (8 bytes): VMThreads.nextTL = (Word) 0 (0x0000000000000000)
+  232 (8 bytes): VMThreads.unalignedIsolateThreadMemoryTL = (Word) 2797885864672 (0x0000028b6efe3ae0)
+  240 (4 bytes): ActionOnExitSafepointSupport.actionTL = (int) 0 (0x00000000)
+  244 (4 bytes): ActionOnTransitionToJavaSupport.actionTL = (int) 0 (0x00000000)
+  248 (4 bytes): ImplicitExceptions.implicitExceptionsAreFatal = (int) 1 (0x00000001)
+  252 (4 bytes): StackOverflowCheckImpl.yellowZoneStateTL = (int) 2130640638 (0x7efefefe)
+  256 (4 bytes): StatusSupport.safepointBehaviorTL = (int) 1 (0x00000001)
+  260 (4 bytes): ThreadingSupportImpl.currentPauseDepth = (int) 1 (0x00000001)
+  
+VMOperation in progress: Garbage collection
+  Safepoint: true
+  QueuingThread: 0x0000028b6efe3b00
+  ExecutingThread: 0x0000028b6efe3b00
+  
+The 15 most recent VM operation status changes (oldest first):
+  1704689455617 - Started Garbage collection (safepoint: true, queueingThread: 0x0000028b6e06f000, executingThread: 0x0000028b6e06f000, safepointId: 71)
+  1704689455625 - Finished Garbage collection (safepoint: true, queueingThread: 0x0000028b6e06f000, executingThread: 0x0000028b6e06f000, safepointId: 71)
+  1704689456196 - Started Garbage collection (safepoint: true, queueingThread: 0x0000028b6e06f540, executingThread: 0x0000028b6e06f540, safepointId: 72)
+  1704689456202 - Finished Garbage collection (safepoint: true, queueingThread: 0x0000028b6e06f540, executingThread: 0x0000028b6e06f540, safepointId: 72)
+  1704689456807 - Started Garbage collection (safepoint: true, queueingThread: 0x0000028b6efe35c0, executingThread: 0x0000028b6efe35c0, safepointId: 73)
+  1704689456808 - Finished Garbage collection (safepoint: true, queueingThread: 0x0000028b6efe35c0, executingThread: 0x0000028b6efe35c0, safepointId: 73)
+  1704689456899 - Started Garbage collection (safepoint: true, queueingThread: 0x0000028b6efe4580, executingThread: 0x0000028b6efe4580, safepointId: 74)
+  1704689456901 - Finished Garbage collection (safepoint: true, queueingThread: 0x0000028b6efe4580, executingThread: 0x0000028b6efe4580, safepointId: 74)
+  1704689457166 - Started Garbage collection (safepoint: true, queueingThread: 0x0000028b6efe46c0, executingThread: 0x0000028b6efe46c0, safepointId: 75)
+  1704689457169 - Finished Garbage collection (safepoint: true, queueingThread: 0x0000028b6efe46c0, executingThread: 0x0000028b6efe46c0, safepointId: 75)
+  1704689457251 - Started Garbage collection (safepoint: true, queueingThread: 0x0000028b6efe4580, executingThread: 0x0000028b6efe4580, safepointId: 76)
+  1704689457259 - Finished Garbage collection (safepoint: true, queueingThread: 0x0000028b6efe4580, executingThread: 0x0000028b6efe4580, safepointId: 76)
+  1704689457397 - Started Garbage collection (safepoint: true, queueingThread: 0x0000028b6efe39c0, executingThread: 0x0000028b6efe39c0, safepointId: 77)
+  1704689457399 - Finished Garbage collection (safepoint: true, queueingThread: 0x0000028b6efe39c0, executingThread: 0x0000028b6efe39c0, safepointId: 77)
+  1704689457528 - Started Garbage collection (safepoint: true, queueingThread: 0x0000028b6efe3b00, executingThread: 0x0000028b6efe3b00, safepointId: 78)
+  
+Counters:
+  
+Java frame anchors for the failing thread 0x0000028b6efe3b00:
+  No anchors
+  
+Stacktrace for the failing thread 0x0000028b6efe3b00:
+  SP 0x000000e19e8fdd60 IP 0x00007ffe1bdff264  [image code] com.oracle.svm.core.jdk.VMErrorSubstitutions.shutdown(VMErrorSubstitutions.java:116)
+  SP 0x000000e19e8fdd60 IP 0x00007ffe1bdff264  [image code] com.oracle.svm.core.jdk.VMErrorSubstitutions.shouldNotReachHere(VMErrorSubstitutions.java:109)
+  SP 0x000000e19e8fdd90 IP 0x00007ffe1be80fb8  [image code] com.oracle.svm.core.util.VMError.shouldNotReachHere(VMError.java:72)
+  SP 0x000000e19e8fddb0 IP 0x00007ffe1bdc73c4  [image code] com.oracle.svm.core.genscavenge.GCImpl$CollectionVMOperation.operate(GCImpl.java:1247)
+  SP 0x000000e19e8fddd0 IP 0x00007ffe1be7aae0  [image code] com.oracle.svm.core.thread.VMOperation.execute(VMOperation.java:108)
+  SP 0x000000e19e8fde30 IP 0x00007ffe1be7b597  [image code] com.oracle.svm.core.thread.VMOperationControl$WorkQueues.drain(VMOperationControl.java:627)
+  SP 0x000000e19e8fde80 IP 0x00007ffe1be7bcb7  [image code] com.oracle.svm.core.thread.VMOperationControl$WorkQueues.executeAllQueuedVMOperations(VMOperationControl.java:597)
+  SP 0x000000e19e8fded0 IP 0x00007ffe1be7bad4  [image code] com.oracle.svm.core.thread.VMOperationControl$WorkQueues.enqueueAndExecute(VMOperationControl.java:534)
+  SP 0x000000e19e8fdf10 IP 0x00007ffe1be7c119  [image code] com.oracle.svm.core.thread.VMOperationControl.enqueue(VMOperationControl.java:302)
+  SP 0x000000e19e8fdf50 IP 0x00007ffe1be74348  [image code] com.oracle.svm.core.thread.VMOperationControl.enqueue(VMOperationControl.java:264)
+  SP 0x000000e19e8fdf50 IP 0x00007ffe1be74348  [image code] com.oracle.svm.core.thread.NativeVMOperation.enqueue(NativeVMOperation.java:47)
+  SP 0x000000e19e8fdf70 IP 0x00007ffe1bdc85e6  [image code] com.oracle.svm.core.genscavenge.GCImpl.enqueueCollectOperation(GCImpl.java:187)
+  SP 0x000000e19e8fdf70 IP 0x00007ffe1bdc85e6  [image code] com.oracle.svm.core.genscavenge.GCImpl.collectWithoutAllocating(GCImpl.java:181)
+  SP 0x000000e19e8fe020 IP 0x00007ffe1bdc9202  [image code] com.oracle.svm.core.genscavenge.GCImpl.maybeCollectOnAllocation(GCImpl.java:145)
+  SP 0x000000e19e8fe040 IP 0x00007ffe1bddbbab  [image code] com.oracle.svm.core.genscavenge.ThreadLocalAllocation.slowPathNewArrayLikeObject0(ThreadLocalAllocation.java:292)
+  SP 0x000000e19e8fe080 IP 0x00007ffe1bddb742  [image code] com.oracle.svm.core.genscavenge.ThreadLocalAllocation.slowPathNewArrayLikeObject(ThreadLocalAllocation.java:279)
+  SP 0x000000e19e8fe0e0 IP 0x00007ffe1bddb5fa  [image code] com.oracle.svm.core.genscavenge.ThreadLocalAllocation.slowPathNewArray(ThreadLocalAllocation.java:242)
+  SP 0x000000e19e8fe100 IP 0x00007ffe1c0d90ff  [image code] java.util.ArrayList.grow(ArrayList.java:232)
+  SP 0x000000e19e8fe130 IP 0x00007ffe1c0d7323  [image code] java.util.ArrayList.grow(ArrayList.java:244)
+  SP 0x000000e19e8fe130 IP 0x00007ffe1c0d7323  [image code] java.util.ArrayList.add(ArrayList.java:454)
+  SP 0x000000e19e8fe160 IP 0x00007ffe1cac9108  [image code] java.util.ArrayList.add(ArrayList.java:467)
+  SP 0x000000e19e8fe160 IP 0x00007ffe1cac9108  [image code] org.graalvm.compiler.serviceprovider.SpeculationEncodingAdapter.flatten(SpeculationEncodingAdapter.java:67)
+  SP 0x000000e19e8fe1c0 IP 0x00007ffe1cac6725  [image code] org.graalvm.compiler.serviceprovider.GraalServices.createSpeculationReason(GraalServices.java:310)
+  SP 0x000000e19e8fe210 IP 0x00007ffe1c9819c3  [image code] org.graalvm.compiler.serviceprovider.SpeculationReasonGroup.createSpeculationReason(SpeculationReasonGroup.java:79)
+  SP 0x000000e19e8fe210 IP 0x00007ffe1c9819c3  [image code] org.graalvm.compiler.phases.common.inlining.InliningUtil.createSpeculation(InliningUtil.java:1118)
+  SP 0x000000e19e8fe270 IP 0x00007ffe1c9a5e1d  [image code] org.graalvm.compiler.phases.common.inlining.walker.InliningData.getTypeCheckedInlineInfo(InliningData.java:283)
+  SP 0x000000e19e8fe390 IP 0x00007ffe1c9a44b8  [image code] org.graalvm.compiler.phases.common.inlining.walker.InliningData.getInlineInfo(InliningData.java:255)
+  SP 0x000000e19e8fe420 IP 0x00007ffe1c9a9188  [image code] org.graalvm.compiler.phases.common.inlining.walker.InliningData.processNextInvoke(InliningData.java:523)
+  SP 0x000000e19e8fe480 IP 0x00007ffe1c9a888a  [image code] org.graalvm.compiler.phases.common.inlining.walker.InliningData.moveForward(InliningData.java:755)
+  SP 0x000000e19e8fe4d0 IP 0x00007ffe1c9806aa  [image code] org.graalvm.compiler.phases.common.inlining.InliningPhase.run(InliningPhase.java:97)
+  SP 0x000000e19e8fe510 IP 0x00007ffe1c9804d3  [image code] org.graalvm.compiler.phases.common.inlining.InliningPhase.run(InliningPhase.java:40)
+  SP 0x000000e19e8fe530 IP 0x00007ffe1c92bbee  [image code] org.graalvm.compiler.phases.BasePhase.apply(BasePhase.java:446)
+  SP 0x000000e19e8fe600 IP 0x00007ffe1c476941  [image code] org.graalvm.compiler.phases.BasePhase.apply(BasePhase.java:334)
+  SP 0x000000e19e8fe600 IP 0x00007ffe1c476941  [image code] org.graalvm.compiler.core.phases.BaseTier.run(BaseTier.java:52)
+  SP 0x000000e19e8fe660 IP 0x00007ffe1c92bbee  [image code] org.graalvm.compiler.phases.BasePhase.apply(BasePhase.java:446)
+  SP 0x000000e19e8fe730 IP 0x00007ffe1c3d2725  [image code] org.graalvm.compiler.phases.BasePhase.apply(BasePhase.java:334)
+  SP 0x000000e19e8fe730 IP 0x00007ffe1c3d2725  [image code] org.graalvm.compiler.core.GraalCompiler.emitFrontEnd(GraalCompiler.java:270)
+  SP 0x000000e19e8fe7f0 IP 0x00007ffe1c3d1d61  [image code] org.graalvm.compiler.core.GraalCompiler.compile(GraalCompiler.java:147)
+  SP 0x000000e19e8fe860 IP 0x00007ffe1c3d22bd  [image code] org.graalvm.compiler.core.GraalCompiler.compileGraph(GraalCompiler.java:132)
+  SP 0x000000e19e8fe8d0 IP 0x00007ffe1c50e850  [image code] org.graalvm.compiler.hotspot.HotSpotGraalCompiler.compileHelper(HotSpotGraalCompiler.java:239)
+  SP 0x000000e19e8fe9a0 IP 0x00007ffe1c50e4c9  [image code] org.graalvm.compiler.hotspot.HotSpotGraalCompiler.compile(HotSpotGraalCompiler.java:253)
+  SP 0x000000e19e8fe9e0 IP 0x00007ffe1c4e0f77  [image code] org.graalvm.compiler.hotspot.CompilationTask$HotSpotCompilationWrapper.performCompilation(CompilationTask.java:186)
+  SP 0x000000e19e8fea60 IP 0x00007ffe1c4e0cf7  [image code] org.graalvm.compiler.hotspot.CompilationTask$HotSpotCompilationWrapper.performCompilation(CompilationTask.java:98)
+  SP 0x000000e19e8fea80 IP 0x00007ffe1c3d0b04  [image code] org.graalvm.compiler.core.CompilationWrapper.run(CompilationWrapper.java:224)
+  SP 0x000000e19e8fead0 IP 0x00007ffe1c4e32a5  [image code] org.graalvm.compiler.hotspot.CompilationTask.runCompilation(CompilationTask.java:376)
+  SP 0x000000e19e8feb40 IP 0x00007ffe1c4e2e7f  [image code] org.graalvm.compiler.hotspot.CompilationTask.runCompilation(CompilationTask.java:350)
+  SP 0x000000e19e8feb70 IP 0x00007ffe1c50f2b9  [image code] org.graalvm.compiler.hotspot.HotSpotGraalCompiler.compileMethod(HotSpotGraalCompiler.java:158)
+  SP 0x000000e19e8fec30 IP 0x00007ffe1c50ecd4  [image code] org.graalvm.compiler.hotspot.HotSpotGraalCompiler.compileMethod(HotSpotGraalCompiler.java:681)
+  SP 0x000000e19e8fec70 IP 0x00007ffe1c50ebe7  [image code] org.graalvm.compiler.hotspot.HotSpotGraalCompiler.compileMethod(HotSpotGraalCompiler.java:109)
+  SP 0x000000e19e8fec90 IP 0x00007ffe1c325c46  [image code] jdk.vm.ci.hotspot.HotSpotJVMCIRuntime.compileMethod(HotSpotJVMCIRuntime.java:938)
+  SP 0x000000e19e8fecd0 IP 0x00007ffe1be30989  [image code] com.oracle.svm.core.jni.JNIJavaCallWrapperHolder.invoke_933534d18920673463b37187ac6a37fffc051899(JNIJavaCallWrapperHolder.java:0)
+  SP 0x000000e19e8fed20 IP 0x00007ffe1be13170  [image code] com.oracle.svm.core.jni.JNIJavaCallVariantWrapperHolder.invokeJJIJIJI_J_VA_LIST_Nonvirtual(JNIJavaCallVariantWrapperHolder.java:0)
+  
+VM mutexes:
+  mutex "mainVMOperationControlWorkQueue" is locked by thread 0x0000028b6efe3b00
+  mutex "referencePendingList" is unlocked.
+  mutex "thread" is locked by thread 0x0000028b6efe3b00
+  
+AOT compiled code is mapped at 0x00007ffe1bd61000 - 0x00007ffe1cd3617f
+
+Heap settings and statistics:
+  Supports isolates: true
+  Heap base: 0x0000028b6a000000
+  Object reference size: 8
+  Aligned chunk size: 1048576
+  Incremental collections: 77
+  Complete collections: 37
+  
+Native image heap boundaries:
+  ReadOnly Primitives: 0x0000028b6a101028 - 0x0000028b6a3c8ab0
+  ReadOnly References: 0x0000028b6a3c8ab0 - 0x0000028b6a69fbc8
+  ReadOnly Relocatables: 0x0000028b6a6a0000 - 0x0000028b6a828b00
+  Writable Primitives: 0x0000028b6a829000 - 0x0000028b6a8d0790
+  Writable References: 0x0000028b6a8d0790 - 0x0000028b6ac85048
+  Writable Huge: 0x0000028b6ad00030 - 0x0000028b6ad58200
+  ReadOnly Huge: 0x0000028b6ad59030 - 0x0000028b6b137f60
+
+Heap:
+  Young generation: 
+    Eden: 
+      edenSpace:
+        aligned: 31457280/30 unaligned: 0/0
+        aligned chunks:
+          0x0000028b50d00000 (0x0000028b50d01028-0x0000028b50d1b148)
+          0x0000028b6e100000 (0x0000028b6e101028-0x0000028b6e1fffd0)
+          0x0000028b6c400000 (0x0000028b6c401028-0x0000028b6c4ffff8)
+          0x0000028b6ba00000 (0x0000028b6ba01028-0x0000028b6bafffd0)
+          0x0000028b50e00000 (0x0000028b50e01028-0x0000028b50efffe0)
+          0x0000028b6e300000 (0x0000028b6e301028-0x0000028b6e400000)
+          0x0000028b6b500000 (0x0000028b6b501028-0x0000028b6b5fc908)
+          0x0000028b6be00000 (0x0000028b6be01028-0x0000028b6befffd0)
+          0x0000028b6bc00000 (0x0000028b6bc01028-0x0000028b6bcffff0)
+          0x0000028b6c000000 (0x0000028b6c001028-0x0000028b6c100000)
+          0x0000028b6b800000 (0x0000028b6b801028-0x0000028b6b8fffe0)
+          0x0000028b6bd00000 (0x0000028b6bd01028-0x0000028b6be00000)
+          0x0000028b6b700000 (0x0000028b6b701028-0x0000028b6b771be0)
+          0x0000028b6b200000 (0x0000028b6b201028-0x0000028b6b2ffff8)
+          0x0000028b6e200000 (0x0000028b6e201028-0x0000028b6e2fffe8)
+          0x0000028b6c600000 (0x0000028b6c601028-0x0000028b6c6fffd0)
+          0x0000028b6b900000 (0x0000028b6b901028-0x0000028b6b9ffdc0)
+          0x0000028b50c00000 (0x0000028b50c01028-0x0000028b50d00000)
+          0x0000028b6eb00000 (0x0000028b6eb01028-0x0000028b6ebffff0)
+          0x0000028b50f00000 (0x0000028b50f01028-0x0000028b50ffffe8)
+          0x0000028b6b300000 (0x0000028b6b301028-0x0000028b6b3ffff8)
+          0x0000028b6ea00000 (0x0000028b6ea01028-0x0000028b6eafffe8)
+          0x0000028b6b400000 (0x0000028b6b401028-0x0000028b6b4fffe8)
+          0x0000028b6bf00000 (0x0000028b6bf01028-0x0000028b6bffffe8)
+          0x0000028b6b600000 (0x0000028b6b601028-0x0000028b6b6ffff0)
+          0x0000028b6ed00000 (0x0000028b6ed01028-0x0000028b6edffff8)
+          0x0000028b6c100000 (0x0000028b6c101028-0x0000028b6c1fffa8)
+          0x0000028b6ec00000 (0x0000028b6ec01028-0x0000028b6ecffff0)
+          0x0000028b6c200000 (0x0000028b6c201028-0x0000028b6c2fffc0)
+          0x0000028b6c700000 (0x0000028b6c701028-0x0000028b6c7fff08)
+    Survivors: 
+      
+  Old generation: 
+    oldFromSpace:
+      aligned: 0/0 unaligned: 0/0
+    oldToSpace:
+      aligned: 3145728/3 unaligned: 0/0
+      aligned chunks:
+        0x0000028b6c500000 (0x0000028b6c501028-0x0000028b6c5ffff8)
+        0x0000028b6e400000 (0x0000028b6e401028-0x0000028b6e4ffff8)
+        0x0000028b6bb00000 (0x0000028b6bb01028-0x0000028b6bbfff80)
+    
+  Unused:
+    aligned: 0/0
+
+Fatal error: java.lang.OutOfMemoryError: Could not allocate an aligned heap chunk
