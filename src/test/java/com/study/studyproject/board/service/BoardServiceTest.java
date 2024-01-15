@@ -49,9 +49,6 @@ class BoardServiceTest {
 
 
 
-
-
-
     @Test
     @DisplayName("게시글 저장을 한다.")
     void boardSave(){
@@ -114,7 +111,9 @@ class BoardServiceTest {
         Board board2 = createBoard(member1, "제목3", "내용3", "닉네임1", 기타);
 
         List<Board> products = List.of(board, board1, board2);
-        boardRepository.saveAll(products);
+        System.out.println("products = " + products);
+        List<Board> boards = boardRepository.saveAll(products);
+        System.out.println("boards = " + boards);
 
         TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", 1L);
 
