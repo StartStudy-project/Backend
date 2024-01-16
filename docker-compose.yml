@@ -1,28 +1,27 @@
-version: '3'
+version : "3.3"
 services:
-  mysql:
-    image: mysql:latest
+  database:
+    image: mysql:8.0.30
+    restart: always
+    container_name: database
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: project
-      MYSQL_USER: study
-      MYSQL_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: 1234
     volumes:
-      - mysql-volume:/var/lib/mysql
+      - ./db:/var/lib/mysql
     ports:
       - "3306:3306"
-
-  spring-boot-app:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://52.79.162.144:3306/project?useSSL=false&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: study
-      SPRING_DATASOURCE_PASSWORD: 1234
+    restart: always
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
-volumes:
-  mysql-volume:
+      - database
+    container_name: app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://52.79.162.144:3306/project?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
