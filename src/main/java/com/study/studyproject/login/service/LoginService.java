@@ -88,7 +88,7 @@ public class LoginService {
         String encodePwd = passwordEncoder.encode(signRequest.getPwd());
         Member member = Member.builder().role(Role.ROLE_USER)
                 .username(signRequest.getName())
-                .nickname(splitEmail[1])
+                .nickname(splitEmail[0])
                 .password(encodePwd)
                 .email(signRequest.getEmail()).build();
 

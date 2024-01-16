@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoardServiceTest {
 
     @Autowired
- BoardRepository boardRepository;
+  BoardRepository boardRepository;
 
     @Autowired
      MemberRepository memberRepository;
