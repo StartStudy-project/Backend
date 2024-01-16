@@ -11,6 +11,8 @@ services:
       - ./db:/var/lib/mysql
     ports:
       - "3306:3306"
+    networks:
+      - springboot-mysql-net
   app:
     build:
       context: .
@@ -25,3 +27,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://52.79.162.144:3306/project?useSSL=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
+    networks:
+      - springboot-mysql-net
+networks:
+  springboot-mysql-net:
+    driver: bridge
+
