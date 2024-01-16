@@ -1,14 +1,13 @@
-
 spring:
   datasource:
-    url: jdbc:mysql://13.209.41.255:3306/project?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://13.209.41.255:3306/project
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: study
-    password: !study1234
+    password: 1234
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
