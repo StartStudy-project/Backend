@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://13.209.41.255:3306/project
+    url: jdbc:mysql://52.79.162.144:3306/project
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: study
     password: 1234
