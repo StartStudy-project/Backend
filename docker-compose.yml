@@ -31,13 +31,15 @@ services:
     networks:
       - springboot-mysql-net
   nginx:
-      container_name: nginx
-      image: "nginx:test"
-      ports:
+    container_name: nginx
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
         - "80:80"
-      depends_on:
+    depends_on:
         - app
-      networks:
+    networks:
         - springboot-mysql-net
 networks:
   springboot-mysql-net:
