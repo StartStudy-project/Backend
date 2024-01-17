@@ -1,11 +1,5 @@
 version : "3.3"
 services:
-  nginx: # nginx 컨테이너 이름 (원하는 이름)
-    image: nginx
-    ports:
-      - 80:80
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
   database:
     image: mysql:8.0.30
     restart: always
