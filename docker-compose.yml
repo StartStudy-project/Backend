@@ -30,17 +30,17 @@ services:
       SPRING_DATASOURCE_PASSWORD: 1234
     networks:
       - springboot-mysql-net
-  nginx:
-    container_name: nginx
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
-    ports:
-        - "80:80"
-    depends_on:
-        - app
-    networks:
-        - springboot-mysql-net
+#  nginx:
+#    container_name: nginx
+#    build:
+#      dockerfile: Dockerfile
+#      context: ./nginx
+#    ports:
+#        - "80:80"
+#    depends_on:
+#        - app
+#    networks:
+#        - springboot-mysql-net
 networks:
   springboot-mysql-net:
     driver: bridge
