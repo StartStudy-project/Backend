@@ -1,15 +1,11 @@
 version : "3.3"
 services:
-  nginx:
-    restart: always
+  nginx: # nginx 컨테이너 이름 (원하는 이름)
     image: nginx
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
     ports:
       - 80:80
-
-
+    volumes:
+      - /etc/nginx/:/etc/nginx/    # Nginx 컨테이너 내부 /etc/nginx 디렉토리가 위에서 설치한 EC2 내부에 /etc/nginx 디렉토리를 참조함
   database:
     image: mysql:8.0.30
     restart: always
