@@ -1,5 +1,15 @@
 version : "3.3"
 services:
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+        - spring
+
   database:
     image: mysql:8.0.30
     restart: always
@@ -13,7 +23,7 @@ services:
       - "3306:3306"
     networks:
       - springboot-mysql-net
-  app:
+  spring:
     build:
       context: .
       dockerfile: Dockerfile
