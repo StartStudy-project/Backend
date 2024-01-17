@@ -1,16 +1,6 @@
 version : "3.3"
 services:
-  nginx:
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
-    container_name: nginx
-    image: "nginx:study"
-    ports:
-      - "80:80"
-    networks:
-      - springboot-mysql-net
+
   database:
     image: mysql:8.0.30
     restart: always
@@ -40,6 +30,15 @@ services:
       SPRING_DATASOURCE_PASSWORD: 1234
     networks:
       - springboot-mysql-net
+  nginx:
+      container_name: nginx
+      image: "nginx:test"
+      ports:
+        - "80:80"
+      depends_on:
+        - app
+      networks:
+        - springboot-mysql-net
 networks:
   springboot-mysql-net:
     driver: bridge
