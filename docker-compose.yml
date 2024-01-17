@@ -1,12 +1,16 @@
 version : "3.3"
 services:
   nginx:
-    image: nginx  # 존재하는 nginx 이미지 사용
-    container_name: nginx   # Nginx Container 이름 지정
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    container_name: nginx
+    image: "nginx:study"
     ports:
-      - 80:80
-    volumes:
-      - /etc/nginx/:/etc/nginx/      # EC2 Nginx와 Docker Nginx Container 를 매핑
+      - "80:80"
+    networks:
+      - springboot-mysql-net
   database:
     image: mysql:8.0.30
     restart: always
