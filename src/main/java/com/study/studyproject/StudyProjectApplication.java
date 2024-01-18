@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -31,13 +32,20 @@ public class StudyProjectApplication {
 	@Autowired
 	ReplyRepository replyRepository;
 
-//	@PostConstruct
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
+
+
+	@PostConstruct
 	void init() {
+		String encode = passwordEncoder.encode("1234");
 		Member memberOne = Member.builder()
 				.role(Role.ROLE_USER)
 				.username("김하임")
 				.email("kimSky@naver.com")
-				.password("1234")
+				.nickname("kimSky")
+				.password(encode)
 				.build();
 
 		memberRepository.save(memberOne);
@@ -46,7 +54,8 @@ public class StudyProjectApplication {
 				.role(Role.ROLE_ADMIN)
 				.username("김일우")
 				.email("admin@naver.com")
-				.password("1234")
+				.nickname("admin")
+				.password(encode)
 				.build();
 		memberRepository.save(membertwo);
 
@@ -55,8 +64,10 @@ public class StudyProjectApplication {
 				.role(Role.ROLE_USER)
 				.username("김지우")
 				.email("huj@naver.com")
-				.password("1234")
+				.nickname("huj")
+				.password(encode)
 				.build();
+
 		memberRepository.save(membertree);
 
 		Category[] arr  = {

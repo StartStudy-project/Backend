@@ -32,6 +32,7 @@ public class SpringSecurity {
 
     private final CorsFilter corsFilter;
 
+
     //제외될 url
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,6 +85,7 @@ public class LoginService {
 
 
         String[] splitEmail = signRequest.getEmail().split("@");
+        System.out.println("Arrays.toString(splitEmail) = " + Arrays.toString(splitEmail));
 
         String encodePwd = passwordEncoder.encode(signRequest.getPwd());
         Member member = Member.builder().role(Role.ROLE_USER)
