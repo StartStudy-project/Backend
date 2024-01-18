@@ -9,7 +9,7 @@ services:
 #    depends_on:
 #      - app
 #    networks:
-#      - springboot-mysql-net
+#      - springboo`t-mysql-net
   database:
     image: mysql:8.0.30
     restart: always
