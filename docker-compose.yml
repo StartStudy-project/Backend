@@ -8,8 +8,8 @@ services:
       - /etc/nginx/:/etc/nginx/
     depends_on:
       - app
-#    networks:
-#      - springboo`t-mysql-net
+    networks:
+      - springboot-mysql-net
   database:
     image: mysql:8.0.30
     restart: always
@@ -21,8 +21,8 @@ services:
       - ./db:/var/lib/mysql
     ports:
       - "3306:3306"
-#    networks:
-#      - springboot-mysql-net
+    networks:
+      - springboot-mysql-net
   app:
     build:
       context: .
@@ -38,12 +38,10 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
       SPRING_PROFILES_ACTIVE: prod
+    networks:
+      - springboot-mysql-net
 
-
-#    networks:
-#      - springboot-mysql-net
-
-#networks:
-#  springboot-mysql-net:
-#    driver: bridge
+networks:
+  springboot-mysql-net:
+    driver: bridge
 
