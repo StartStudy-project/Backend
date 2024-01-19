@@ -58,7 +58,7 @@ public class SpringSecurity {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
-                        .requestMatchers("/board/**").authenticated()
+                        .requestMatchers("/board/member/**").authenticated()
                         .requestMatchers("/user/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()

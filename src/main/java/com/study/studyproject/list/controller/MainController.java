@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "메인 기능 구현")
 public class MainController {
-//
 
     private final ListService listService;
 
@@ -33,5 +32,13 @@ public class MainController {
 
         return ResponseEntity.ok(list);
     }
+
+
+    @GetMapping("/get")
+    public String writing() {
+        return "get요청완";
+
+    }
+
 
 }

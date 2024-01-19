@@ -60,12 +60,13 @@ public class BoardController {
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
     public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable Long boardId,
-                                                       @CookieValue(value = "Refresh_Token") String token
+                                                       @CookieValue(value = "Refresh_Token",required = false) String token
     ) {
         BoardOneResponseDto boardOneResponseDto = boardService.boardOne(token, boardId);
         return ResponseEntity.ok(boardOneResponseDto);
 
     }
+
 
 
 }
