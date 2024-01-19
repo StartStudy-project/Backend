@@ -3,12 +3,15 @@ package com.study.studyproject.board.dto;
 import com.study.studyproject.entity.Board;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardOneResponseDto {
     @Schema(description = "제목", defaultValue = "제목제목")
     String title;

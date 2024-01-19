@@ -1,5 +1,6 @@
 package com.study.studyproject.entity;
 
+import com.study.studyproject.board.dto.BoardChangeRecruitRequestDto;
 import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import jakarta.persistence.*;
@@ -63,9 +64,15 @@ public class Board extends BaseTimeEntity{
         this.title = boardReUpdateRequestDto.getTitle();
         this.content = boardReUpdateRequestDto.getContent();
         this.category = boardReUpdateRequestDto.getCategory();
-        this.recruit = boardReUpdateRequestDto.getRecruit();
         return this;
     }
+
+    public Board ChangeRecuritBoard(BoardChangeRecruitRequestDto boardChangeRecruitRequestDto){
+        this.recruit = boardChangeRecruitRequestDto.getRecruit();
+        return this;
+    }
+
+
 
     //조회수 증가
     public Board updateViewCnt(Long viewCount){

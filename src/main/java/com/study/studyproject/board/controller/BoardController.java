@@ -1,6 +1,7 @@
 
 package com.study.studyproject.board.controller;
 
+import com.study.studyproject.board.dto.BoardChangeRecruitRequestDto;
 import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
@@ -27,7 +28,6 @@ public class BoardController {
     @PatchMapping("member/updateWrite")
     @Operation(summary = "글쓰기 수정", description = "글쓰기 수정 기능")
     public void updateWriting(@RequestBody BoardReUpdateRequestDto boardReUpdateRequestDto) {
-
         System.out.println("boardReUpdateRequestDto = " + boardReUpdateRequestDto);
         boardService.updateWrite(boardReUpdateRequestDto);
     }
@@ -35,13 +35,17 @@ public class BoardController {
     @PostMapping("member/writing")
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
     public ResponseEntity<GlobalResultDto> writing(@CookieValue(value = "Refresh_Token") String token, @RequestBody BoardWriteRequestDto boardWriteRequestDto) {
-
-
-        System.out.println("boardWriteRequestDto = " + boardWriteRequestDto);
-        System.out.println("token = " + token);
         GlobalResultDto body = boardService.boardSave(boardWriteRequestDto, token);
         return ResponseEntity.ok(body);
     }
+
+    @Operation(summary = "모집구분 변경", description = "모집구분 변경")
+    @PatchMapping("/member/changeRecruit")
+    public ResponseEntity<GlobalResultDto> changeRecruit(@RequestBody BoardChangeRecruitRequestDto boardChangeRecruitRequestDto) {
+        GlobalResultDto body = boardService.changeRecruit(boardChangeRecruitRequestDto);
+        return ResponseEntity.ok(body);
+    }
+
 
 
     //삭제

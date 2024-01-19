@@ -36,13 +36,15 @@ public class BoardService {
 
 
 
+    //작성
     public GlobalResultDto boardSave(BoardWriteRequestDto boardWriteRequestDto, String token) {
+        System.out.println("안녕");
         Member member = memberRepository.findById(jwtUtil.getIdFromToken(token))
                 .orElseThrow(() -> new IllegalArgumentException("ID가 없습니다."));
+        System.out.println("member = " + member);
         Board entity = boardWriteRequestDto.toEntity(member);
         boardRepository.save(entity);
-
-
+        System.out.println("작성");
         return new GlobalResultDto("글 작성 완료", HttpStatus.OK.value());
 
     }
@@ -54,8 +56,6 @@ public class BoardService {
         System.out.println("board = " + board);
         board.updateBoard(boardReUpdateRequestDto);
     }
-
-
 
 
     //글 1개만 가져오기
@@ -93,5 +93,12 @@ public class BoardService {
     public GlobalResultDto boardDeleteOne(Long boardId) {
         boardRepository.deleteById(boardId);
         return new GlobalResultDto("게시글 삭제 완료", HttpStatus.OK.value());
+    }
+
+    //모집 구분 변경
+    public GlobalResultDto changeRecruit(BoardChangeRecruitRequestDto boardChangeRecruitRequestDto) {
+        Board board = boardRepository.findById(boardChangeRecruitRequestDto.getBoardId() ).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
+        board.ChangeRecuritBoard(boardChangeRecruitRequestDto);
+        return new GlobalResultDto("모집 구분 변경 완료", HttpStatus.OK.value());
     }
 }

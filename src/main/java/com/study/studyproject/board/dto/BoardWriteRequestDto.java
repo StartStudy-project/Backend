@@ -4,17 +4,18 @@ import com.study.studyproject.entity.Board;
 import com.study.studyproject.entity.Category;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.Recruit;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.boot.archive.scan.spi.ClassDescriptor;
 
 
 //Member member, String title, Long viewCount, String content, String nickname, Category category
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardWriteRequestDto {
 
-    //모집구분
-    Recruit recruit;
     String content;
     Category category;
     String title;
@@ -33,8 +34,7 @@ public class BoardWriteRequestDto {
     }
 
     @Builder
-    public BoardWriteRequestDto(Recruit recruit, String content, Category category, String title, String nickname) {
-        this.recruit = recruit;
+    public BoardWriteRequestDto(String content, Category category, String title, String nickname) {
         this.content = content;
         this.category = category;
         this.title = title;
