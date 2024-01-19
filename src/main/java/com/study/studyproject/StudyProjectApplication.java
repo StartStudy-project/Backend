@@ -37,7 +37,7 @@ public class StudyProjectApplication {
 
 
 
-	@PostConstruct
+//	@PostConstruct
 	void init() {
 		String encode = passwordEncoder.encode("1234");
 		Member memberOne = Member.builder()
