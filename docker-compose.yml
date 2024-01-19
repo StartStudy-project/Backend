@@ -1,15 +1,15 @@
 version : "3.3"
 services:
-#  web: # nginx 컨테이너 이름 (원하는 이름)
-#    image: nginx
-#    ports:
-#      - 80:80
-#    volumes:
-#      - /etc/nginx/:/etc/nginx/
-#    depends_on:
-#      - app
-#    networks:
-#      - springboot-mysql-net
+  web: # nginx 컨테이너 이름 (원하는 이름)
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - /etc/nginx/:/etc/nginx/
+    depends_on:
+      - app
+    networks:
+      - springboot-mysql-net
   database:
     image: mysql:8.0.30
     restart: always
