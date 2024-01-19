@@ -178,7 +178,6 @@ class BoardServiceTest {
     ){
         return BoardReUpdateRequestDto.builder().
                 boardId(boardId)
-                .recruit(Recruit.모집중)
                 .content(content)
                 .category(category)
                 .title(title)
@@ -189,7 +188,6 @@ class BoardServiceTest {
     ) {
         return BoardWriteRequestDto.builder()
                 .category(category)
-                .recruit(Recruit.모집중)
                 .nickname(nickname)
                 .title("title")
                 .content("내용")
