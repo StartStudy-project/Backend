@@ -3,11 +3,10 @@ package com.study.studyproject.member.dto;
 import com.study.studyproject.entity.Category;
 import com.study.studyproject.entity.Recruit;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberListRequestDto  {
 
     @Schema(description = "모집구분", defaultValue = "모집중")

@@ -16,6 +16,4 @@ public class BoardChangeRecruitRequestDto {
     @Schema(description = "모집 구분", defaultValue = "모집중")
     Recruit recruit;
 
-
-
 }

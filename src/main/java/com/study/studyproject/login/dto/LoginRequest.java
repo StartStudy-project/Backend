@@ -1,11 +1,10 @@
 package com.study.studyproject.login.dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LoginRequest {
 
     @NotEmpty(message = "아이디를 입력해주세요")

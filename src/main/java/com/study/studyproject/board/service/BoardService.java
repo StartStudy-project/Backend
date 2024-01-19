@@ -50,11 +50,12 @@ public class BoardService {
     }
 
     //수정
-    public void updateWrite(BoardReUpdateRequestDto boardReUpdateRequestDto) {
+    public GlobalResultDto updateWrite(BoardReUpdateRequestDto boardReUpdateRequestDto) {
         System.out.println("boardReUpdateRequestDto = " + boardReUpdateRequestDto);
         Board board = boardRepository.findById(boardReUpdateRequestDto.getBoardId()).orElseThrow(() -> new IllegalArgumentException("작성된 게시글이 없습니다."));
         System.out.println("board = " + board);
         board.updateBoard(boardReUpdateRequestDto);
+        return new GlobalResultDto("글 작성 완료", HttpStatus.OK.value());
     }
 
 

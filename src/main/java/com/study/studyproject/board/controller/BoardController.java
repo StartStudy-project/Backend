@@ -27,23 +27,22 @@ public class BoardController {
     //글쓰기 수정
     @PatchMapping("member/updateWrite")
     @Operation(summary = "글쓰기 수정", description = "글쓰기 수정 기능")
-    public void updateWriting(@RequestBody BoardReUpdateRequestDto boardReUpdateRequestDto) {
+    public ResponseEntity<GlobalResultDto> updateWriting(@RequestBody BoardReUpdateRequestDto boardReUpdateRequestDto) {
         System.out.println("boardReUpdateRequestDto = " + boardReUpdateRequestDto);
-        boardService.updateWrite(boardReUpdateRequestDto);
+        return ResponseEntity.ok(boardService.updateWrite(boardReUpdateRequestDto));
+
     }
 
     @PostMapping("member/writing")
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
     public ResponseEntity<GlobalResultDto> writing(@CookieValue(value = "Refresh_Token") String token, @RequestBody BoardWriteRequestDto boardWriteRequestDto) {
-        GlobalResultDto body = boardService.boardSave(boardWriteRequestDto, token);
-        return ResponseEntity.ok(body);
+        return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto, token));
     }
 
     @Operation(summary = "모집구분 변경", description = "모집구분 변경")
     @PatchMapping("/member/changeRecruit")
     public ResponseEntity<GlobalResultDto> changeRecruit(@RequestBody BoardChangeRecruitRequestDto boardChangeRecruitRequestDto) {
-        GlobalResultDto body = boardService.changeRecruit(boardChangeRecruitRequestDto);
-        return ResponseEntity.ok(body);
+        return ResponseEntity.ok(boardService.changeRecruit(boardChangeRecruitRequestDto));
     }
 
 
