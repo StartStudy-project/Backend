@@ -35,7 +35,7 @@ public class MainController {
 
 
     @GetMapping("/get")
-    public String writing() {
+    public String writddding() {
         return "get요청완";
 
     }
