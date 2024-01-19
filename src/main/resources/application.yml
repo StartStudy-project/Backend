@@ -1,19 +1,21 @@
-
 spring:
-  datasource:
-    url: jdbc:mysql://43.202.144.181:3306/project?allowPublicKeyRetrieval=true&useSSL=false
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 1234
-  jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        format_sql: true
-        show_sql: true
-    defer-datasource-initialization: true
+  profiles:
+    active: local
+---
+spring:
+  profiles:
+    activate:
+      on-profile: local
+
+
+---
+spring:
+  profiles:
+    activate:
+      on-profile: prod
+
+---
+
 
 jwt:
   secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK

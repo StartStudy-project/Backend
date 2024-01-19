@@ -37,6 +37,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://43.202.144.181:3306/project?useSSL=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
+
 #    networks:
 #      - springboot-mysql-net
 
