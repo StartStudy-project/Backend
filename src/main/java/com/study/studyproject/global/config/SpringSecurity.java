@@ -32,7 +32,7 @@ public class SpringSecurity {
         return new BCryptPasswordEncoder();
     }
 
-    private final CorsFilter corsFilter;
+    private final CorsConfig  corsConfig;
 
     //제외될 url
     @Bean
@@ -40,11 +40,14 @@ public class SpringSecurity {
         return web -> web.ignoring().requestMatchers("/h2-console/**"); //제외될 url
     }
 
+    private final CorsFilter filter;
+
     private final JwtUtil jwtUtil;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.addFilterBefore(corsFilter,UsernamePasswordAuthenticationFilter.class);
+        http.addFilter(filter);
+        http.addFilterBefore(corsConfig.corsFilter(), UsernamePasswordAuthenticationFilter.class); // Add CorsFilter
         http.addFilterBefore(new JwtFilter(jwtUtil), CorsFilter.class);
         http.csrf(cs -> cs.disable()) //
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 생성x
