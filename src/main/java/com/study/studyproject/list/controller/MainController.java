@@ -1,22 +1,23 @@
 package com.study.studyproject.list.controller;
 
+import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.board.dto.MainRequest;
 import com.study.studyproject.list.service.ListService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "메인 기능 구현")
+@Slf4j
 public class MainController {
 
     private final ListService listService;
@@ -35,10 +36,13 @@ public class MainController {
 
 
     @GetMapping("/get")
-    public String writddding() {
-        return "get요청완";
+        public ResponseEntity<GlobalResultDto> gets() {
+        log.info("Handling GET request for \"/get\"");
+        System.out.println("들어오");
 
-    }
+        return ResponseEntity.ok(new GlobalResultDto("ds", 200));
+
+        }
 
 
 }
