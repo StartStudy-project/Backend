@@ -7,9 +7,11 @@ import com.study.studyproject.global.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -46,9 +48,10 @@ public class SpringSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.addFilter(filter);
-        http.addFilter(corsConfig.corsFilter());
-        http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilter(filter)
+                .addFilterBefore(corsConfig.corsFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(jwtUtil),CorsFilter.class);
+
         http.csrf(cs -> cs.disable()) //
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 생성x
                 .formLogin(f -> f.disable())
@@ -71,4 +74,7 @@ public class SpringSecurity {
         return http.build();
 
     }
+
+
+
 }
