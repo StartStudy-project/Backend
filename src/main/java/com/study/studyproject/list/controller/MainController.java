@@ -34,7 +34,7 @@ public class MainController {
         return ResponseEntity.ok(list);
     }
 
-
+    @CrossOrigin(origins="*")
     @GetMapping("/get")
         public ResponseEntity<GlobalResultDto> gets() {
         log.info("Handling GET request for \"/get\"");
