@@ -19,10 +19,10 @@ public class MainRequest {
 
 
     @Nullable
-    int order; // 0 -> 최신순
+    Integer order; // 0 -> 최신순
 
     @Builder
-    public MainRequest(Recruit type, Category category, int order) {
+    public MainRequest(Recruit type, Category category, Integer order) {
         this.type = type;
         this.category = category;
         this.order = order;
