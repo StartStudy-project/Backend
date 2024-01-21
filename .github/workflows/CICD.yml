@@ -40,4 +40,18 @@ jobs:
     - name: Push Docker
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/studyProject:latest
     
-
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker compose
+        uses: appleboy/ssh-action@master
+        with:
+          username: ubuntu
+          host: ${{ secrets.LIVE_SERVER_IP }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script_stop: true
+          script: |
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/studyProject:latest
+            sudo docker-compose up -d
+      
