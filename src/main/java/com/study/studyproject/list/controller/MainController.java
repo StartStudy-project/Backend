@@ -25,7 +25,7 @@ public class MainController {
     @GetMapping("/")
     public ResponseEntity<Page<ListResponseDto>> mainList(
             @RequestParam(value = "title",required = false) String title,
-            @RequestBody MainRequest mainRequestDto,
+            @RequestBody(required = false) MainRequest mainRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
         log.info("~~~메인~~");
 
@@ -35,7 +35,6 @@ public class MainController {
         return ResponseEntity.ok(list);
     }
 
-    @CrossOrigin(origins="*")
     @GetMapping("/get")
         public ResponseEntity<GlobalResultDto> gets() {
         log.info("Handling GET request for \"/get\"");
@@ -43,7 +42,7 @@ public class MainController {
 
         return ResponseEntity.ok(new GlobalResultDto("ds", 200));
 
-        }
+    }
 
 
 }
