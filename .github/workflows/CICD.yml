@@ -52,6 +52,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
+            sudo docker-compose down
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/studyProject:latest
             sudo docker-compose up -d
       
