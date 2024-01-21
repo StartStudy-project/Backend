@@ -1,6 +1,6 @@
 version : "3.3"
 services:
-  web: # nginx 컨테이너 이름 (원하는 이름)
+  web:
     image: nginx
     ports:
       - 80:80
