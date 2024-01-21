@@ -54,7 +54,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            cd./Backend
+            cd Backend
             sudo docker-compose down --rmi all
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
             sudo docker-compose up -d
