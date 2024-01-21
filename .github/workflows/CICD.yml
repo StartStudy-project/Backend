@@ -38,9 +38,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Build Docker
-      run: docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/studyProject .
+      run: docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/study_project .
     - name: Push Docker
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/studyProject:latest
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
     
   deploy:
     needs: build
@@ -55,6 +55,6 @@ jobs:
           script_stop: true
           script: |
             sudo docker-compose down --rmi all
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/studyProject:latest
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
             sudo docker-compose up -d
       
