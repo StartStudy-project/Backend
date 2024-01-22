@@ -36,6 +36,7 @@ public class UserInfoResponseDto {
 
 
 
+
     public static UserInfoResponseDto of(Member member) {
         return UserInfoResponseDto.builder()
                 .seq(member.getId().intValue())

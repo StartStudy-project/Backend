@@ -8,7 +8,7 @@ import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.repository.MemberRepository;
-import com.study.studyproject.reply.dto.ReplyInfoDto;
+import com.study.studyproject.reply.dto.ReplyInfoResponseDto;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import com.study.studyproject.reply.dto.UpdateReplyRequest;
@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.study.studyproject.reply.dto.ReplyInfoDto.convertReplyToDto;
+import static com.study.studyproject.reply.dto.ReplyInfoResponseDto.convertReplyToDto;
 import static com.study.studyproject.reply.dto.ReplyResponseDto.ReplyResponsetoDto;
 
 @Service

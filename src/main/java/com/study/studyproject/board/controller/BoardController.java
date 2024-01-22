@@ -59,10 +59,9 @@ public class BoardController {
     //글 조회 1개 -
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
-    public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable Long boardId,
-                                                       @CookieValue(value = "Refresh_Token",required = false) String token
+    public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable Long boardId
     ) {
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(token, boardId);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( boardId);
         return ResponseEntity.ok(boardOneResponseDto);
 
     }

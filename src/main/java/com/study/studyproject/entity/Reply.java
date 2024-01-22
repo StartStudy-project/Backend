@@ -30,8 +30,14 @@ public class Reply extends BaseTimeEntity{
     @JoinColumn(name = "parent_id")
     private Reply parent;
 
+
+    @ColumnDefault("FALSE")
+    @Column(nullable = false)
+    private Boolean isDeleted;
+
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<Reply> children = new ArrayList<>();
+
 
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -10,15 +10,15 @@ public class ReplyResponseDto {
 
 
     int getTotal;
-    List<ReplyInfoDto> replies;
+    List<ReplyInfoResponseDto> replies;
 
     @Builder
-    public ReplyResponseDto(int getTotal, List<ReplyInfoDto> replies) {
+    public ReplyResponseDto(int getTotal, List<ReplyInfoResponseDto> replies) {
         this.getTotal = getTotal;
         this.replies = replies;
     }
 
-    public static ReplyResponseDto ReplyResponsetoDto(int getTotal, List<ReplyInfoDto> replies) {
+    public static ReplyResponseDto ReplyResponsetoDto(int getTotal, List<ReplyInfoResponseDto> replies) {
         return builder()
                 .getTotal(getTotal)
                 .replies(replies)

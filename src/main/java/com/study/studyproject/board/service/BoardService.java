@@ -8,7 +8,7 @@ import com.study.studyproject.entity.Reply;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.repository.MemberRepository;
-import com.study.studyproject.reply.dto.ReplyInfoDto;
+import com.study.studyproject.reply.dto.ReplyInfoResponseDto;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import com.study.studyproject.reply.repository.ReplyRepository;
 import jakarta.transaction.Transactional;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.study.studyproject.reply.dto.ReplyInfoDto.convertReplyToDto;
+import static com.study.studyproject.reply.dto.ReplyInfoResponseDto.convertReplyToDto;
 import static com.study.studyproject.reply.dto.ReplyResponseDto.ReplyResponsetoDto;
 
 @Transactional
@@ -60,27 +60,26 @@ public class BoardService {
 
 
     //글 1개만 가져오기
-    public BoardOneResponseDto boardOne(String token, Long boardId) {
+    public BoardOneResponseDto boardOne( Long boardId) {
         Board board = boardRepository.findById(boardId ).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
         board.updateViewCnt(board.getViewCount());
-        ReplyResponseDto replies = findReplies(token, boardId);
+        ReplyResponseDto replies = findReplies( boardId);
         return BoardOneResponseDto.of(board,replies);
 
     }
 
-    private ReplyResponseDto findReplies(String token, Long boardId) {
-        Long memberId = jwtUtil.getIdFromToken(token);
-        List<Reply> comments = replyRepository.findByBoardReply(boardId);
-        List<ReplyInfoDto> commentResponseDTOList = getReplyInfoDtos(comments, memberId);
+    private ReplyResponseDto findReplies(Long boardId) {
+           List<Reply> comments = replyRepository.findByBoardReply(boardId);
+           List<ReplyInfoResponseDto> commentResponseDTOList = getReplyInfoResponseDtos(comments);
         return ReplyResponsetoDto(commentResponseDTOList.size(), commentResponseDTOList);
     }
 
-    private static List<ReplyInfoDto> getReplyInfoDtos(List<Reply> comments, Long memberId) {
-        List<ReplyInfoDto> commentResponseDTOList = new ArrayList<>();
-        Map<Long, ReplyInfoDto> commentDTOHashMap = new HashMap<>();
+    private static List<ReplyInfoResponseDto> getReplyInfoResponseDtos(List<Reply> comments) {
+        List<ReplyInfoResponseDto> commentResponseDTOList = new ArrayList<>();
+        Map<Long, ReplyInfoResponseDto> commentDTOHashMap = new HashMap<>();
 
         comments.forEach(c -> {
-            ReplyInfoDto commentResponseDTO = convertReplyToDto(c, memberId);
+            ReplyInfoResponseDto commentResponseDTO = convertReplyToDto(c);
             commentDTOHashMap.put(commentResponseDTO.getReplyId(), commentResponseDTO);
             if (c.getParent() != null) commentDTOHashMap.get(c.getParent().getId()).getChildren().add(commentResponseDTO);
             else commentResponseDTOList.add(commentResponseDTO);

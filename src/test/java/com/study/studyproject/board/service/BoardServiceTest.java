@@ -118,7 +118,7 @@ class BoardServiceTest {
         TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", 1L);
 
 
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(allToken.getRefreshToken(), 1L);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( 1L);
 
         assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
         assertThat(boardOneResponseDto.getTitle()).isEqualTo(board.getTitle());
