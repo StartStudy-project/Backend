@@ -11,6 +11,7 @@ import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.dto.ReplyInfoDto;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
+import com.study.studyproject.reply.dto.UpdateReplyRequest;
 import com.study.studyproject.reply.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -58,9 +59,9 @@ public class ReplyServiceImpl implements ReplyService {
 
 
     @Override
-    public void updateReply(Long num, String content) {
-        Reply findReply = replyRepository.findById(num).orElseThrow(() -> new NotFoundException("댓글을 찾을 수 없습니다"));
-        findReply.updateReply(content);
+    public void updateReply(UpdateReplyRequest updateReplyRequest) {
+        Reply findReply = replyRepository.findById(updateReplyRequest.getReplyId()).orElseThrow(() -> new NotFoundException("댓글을 찾을 수 없습니다"));
+        findReply.updateReply(updateReplyRequest.getContent());
     }
 
 

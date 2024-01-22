@@ -2,7 +2,10 @@ package com.study.studyproject.reply.controller;
 
 import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
+import com.study.studyproject.reply.dto.UpdateReplyRequest;
 import com.study.studyproject.reply.service.ReplyServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,19 +20,22 @@ public class ReplyController {
     private final ReplyServiceImpl replyService;
 
     @PostMapping("/insertReply")
-    public void insertReply(@CookieValue(value = "Refresh_Token") String token, ReplyRequestDto replyRequestDto) {
+    @Operation(summary = "댓글 추가", description = "사용자 회원가입")
+    public void insertReply(@CookieValue(value = "Refresh_Token") String token, @RequestBody ReplyRequestDto replyRequestDto) {
         replyService.insert(token, replyRequestDto);
 
     }
 
     @PatchMapping("/updateReply")
-    public void update(Long boardId, String content) {
-        replyService.updateReply(boardId, content);
+    @Operation(summary = "댓글 수정", description = "사용자 회원가입")
+    public void update(UpdateReplyRequest updateReplyRequest) {
+        replyService.updateReply(updateReplyRequest);
     }
 
     @DeleteMapping("/deleteReply")
-    public void delete(Long bno) {
-        replyService.deleteReply(bno);
+    @Operation(summary = "댓글 삭제", description = "사용자 회원가입")
+    public void delete(@Parameter(description = "댓글 번호",example = "1") Long rno) {
+        replyService.deleteReply(rno);
     }
 
 
