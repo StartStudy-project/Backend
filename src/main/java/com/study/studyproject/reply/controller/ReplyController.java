@@ -28,7 +28,7 @@ public class ReplyController {
 
     @PatchMapping("/updateReply")
     @Operation(summary = "댓글 수정", description = "사용자 회원가입")
-    public void update(UpdateReplyRequest updateReplyRequest) {
+    public void update(@RequestBody UpdateReplyRequest updateReplyRequest) {
         replyService.updateReply(updateReplyRequest);
     }
 
