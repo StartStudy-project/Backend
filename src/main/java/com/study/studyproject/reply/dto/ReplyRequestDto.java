@@ -2,10 +2,7 @@ package com.study.studyproject.reply.dto;
 
 import com.study.studyproject.entity.Reply;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,5 +17,10 @@ public class ReplyRequestDto {
     private String content;
 
 
-
+    @Builder
+    public ReplyRequestDto(Long boardId, Long parentId, String content) {
+        this.boardId = boardId;
+        this.parentId = parentId;
+        this.content = content;
+    }
 }

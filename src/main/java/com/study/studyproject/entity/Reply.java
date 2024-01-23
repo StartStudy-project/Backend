@@ -85,7 +85,9 @@ public class Reply extends BaseTimeEntity{
 
     public void UpdateBoard(Board board) {
         this.board = board;
-        board.getReplies().add(this);
+        if (board.getReplies() != null) {
+            board.getReplies().add(this);
+        }
     }
 
     public void ChangeIsDeleted(Boolean deleted) {

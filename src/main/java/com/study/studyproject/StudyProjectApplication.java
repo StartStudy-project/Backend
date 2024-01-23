@@ -8,9 +8,11 @@ import com.study.studyproject.reply.repository.ReplyRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -38,6 +40,7 @@ public class StudyProjectApplication {
 
 //
 //	@PostConstruct
+//	@Profile({"prod","local"}) // 테스트 환경이 아닌 경우에만 실행
 //	void init() {
 //		String encode = passwordEncoder.encode("1234");
 //		Member memberOne = Member.builder()

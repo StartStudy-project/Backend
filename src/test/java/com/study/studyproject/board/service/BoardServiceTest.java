@@ -131,7 +131,7 @@ class BoardServiceTest {
 
 
     @Test
-    @DisplayName("댓글을 가지고 있는 게시글을 조회한다.")
+//    @DisplayName("댓글을 가지고 있는 게시글을 조회한다.")
     void selectBaordOnewithReplies() {
         //given
         Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");

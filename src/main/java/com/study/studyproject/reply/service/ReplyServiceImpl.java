@@ -48,7 +48,7 @@ public class ReplyServiceImpl implements ReplyService {
 
         Reply reply = Reply.toEntity(replyRequestDto, board, member);
 
-        if (replyRequestDto.getParentId() != null) {
+        if (replyRequestDto.getParentId() != null) { // 대댓글인 경우
             Reply replyParent = replyRepository.findById(replyRequestDto.getParentId())
                     .orElseThrow(() -> new NotFoundException("댓글을 찾을 수 없습니다."));
             reply.updateParent(replyParent);

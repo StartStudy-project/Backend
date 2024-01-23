@@ -1,4 +1,10 @@
+spring:
+  profiles:
+    active: test
 
+
+
+---
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/project?serverTimezone=UTC&characterEncoding=UTF-8
