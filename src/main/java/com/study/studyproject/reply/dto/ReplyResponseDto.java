@@ -9,16 +9,16 @@ import java.util.List;
 public class ReplyResponseDto {
 
 
-    int getTotal;
+    long getTotal;
     List<ReplyInfoResponseDto> replies;
 
     @Builder
-    public ReplyResponseDto(int getTotal, List<ReplyInfoResponseDto> replies) {
+    public ReplyResponseDto(long getTotal, List<ReplyInfoResponseDto> replies) {
         this.getTotal = getTotal;
         this.replies = replies;
     }
 
-    public static ReplyResponseDto ReplyResponsetoDto(int getTotal, List<ReplyInfoResponseDto> replies) {
+    public static ReplyResponseDto ReplyResponsetoDto(long getTotal, List<ReplyInfoResponseDto> replies) {
         return builder()
                 .getTotal(getTotal)
                 .replies(replies)

@@ -16,8 +16,6 @@ public interface ReplyService {
     void deleteReply(Long num);
 
 
-    //댓글 갯수 리턴 메소드
-    int getReplyCnt(Long num);
 
 
 

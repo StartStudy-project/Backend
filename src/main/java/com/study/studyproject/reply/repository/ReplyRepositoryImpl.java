@@ -6,6 +6,7 @@ import com.study.studyproject.entity.Reply;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.study.studyproject.entity.QReply.reply;
 
@@ -28,6 +29,40 @@ public class ReplyRepositoryImpl implements ReplyRepositoryCustom{
                         reply.createdDate.asc())
                 .fetch();
         return comments;
+    }
+
+    @Override
+    public List<Reply> findByBoardReplies(Long boardId) {
+        List<Reply> comments = queryFactory.selectFrom(reply)
+                .where(reply.board.id.eq(boardId))
+                .orderBy(reply.parent.id.desc().nullsLast())
+                .fetch();
+        return comments;
+
+
+    }
+
+
+    @Override
+    public Optional<Reply> findCommentByIdWithParent(Long id) {
+
+        Reply selectedComment = queryFactory.select(reply)
+                .from(reply)
+                .leftJoin(reply.parent).fetchJoin()
+                .where(reply.id.eq(id))
+                .fetchOne();
+
+        return Optional.ofNullable(selectedComment);
+    }
+
+    @Override
+    public Long findBoardReplyCnt(Long id) {
+        return  queryFactory.select(reply)
+                .from(reply)
+                .where(
+                        reply.id.eq(id)
+                        , reply.isDeleted.eq(false)
+                ).stream().count();
     }
 
 

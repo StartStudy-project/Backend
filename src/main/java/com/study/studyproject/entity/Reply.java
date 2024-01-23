@@ -48,14 +48,16 @@ public class Reply extends BaseTimeEntity{
     @JoinColumn(name = "board_id")
     private Board board;
 
-
     @Builder
-    public Reply(String content, Reply parent,  Member member, Board board) {
+    public Reply(String content, Reply parent, Member member, Board board) {
         this.content = content;
         this.parent = parent;
+        this.isDeleted = false;
         this.member = member;
         this.board = board;
     }
+
+
 
 
     public static Reply toEntity(ReplyRequestDto replyRequestDto, Board board, Member member) {
@@ -68,6 +70,7 @@ public class Reply extends BaseTimeEntity{
 
     public void updateParent(Reply parent) {
         this.parent = parent;
+        parent.getChildren().add(this);
     }
 
     //수정
@@ -75,5 +78,17 @@ public class Reply extends BaseTimeEntity{
         this.content = content;
     }
 
+    public void updateWriter(Member member) {
+        this.member = member;
+        member.getReplies().add(this);
+    }
 
+    public void UpdateBoard(Board board) {
+        this.board = board;
+        board.getReplies().add(this);
+    }
+
+    public void ChangeIsDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
 }

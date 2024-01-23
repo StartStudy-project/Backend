@@ -1,7 +1,6 @@
 package com.study.studyproject.reply.dto;
 
 import com.study.studyproject.entity.Reply;
-import com.study.studyproject.member.dto.UserInfoResponseDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReplyInfoResponseDto {
     private Long replyId;
-    private MemberReplyRequestDto  memberReqestDto ;
+    private MemberReplyRequestDto memberRequestDto;
     private String content;
     private LocalDateTime updateTime;
     private List<ReplyInfoResponseDto> children = new ArrayList<>();
@@ -23,7 +22,7 @@ public class ReplyInfoResponseDto {
         this.replyId = id;
         this.updateTime = lastModifiedDate;
         this.content = content;
-        this.memberReqestDto = userInfoResponseDto;
+        this.memberRequestDto = userInfoResponseDto;
     }
 
 

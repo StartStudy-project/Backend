@@ -6,6 +6,7 @@ import com.study.studyproject.entity.Category;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.Reply;
 import com.study.studyproject.member.repository.MemberRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,6 +57,37 @@ class ReplyRepositoryImplTest {
 
 
     }
+
+    @Test
+    @DisplayName("자식 먼저")
+    void findByBoardReplies() throws Exception {
+        //given
+        Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
+        memberRepository.save(member1);
+        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
+        boardRepository.save(board);
+
+        Reply one = createReply("댓글1", null, member1, board);
+        Reply two = createReply("대댓글1", one, member1, board);
+        Reply tree = createReply("대댓글2", one, member1, board);
+        Reply four = createReply("대댓글3", one, member1, board);
+        replyRepository.saveAll(List.of(one, two, tree, four));
+
+        //when
+        List<Reply> byBoardReply = replyRepository.findByBoardReplies(board.getId());
+        //then
+
+        for (int i = 0; i < byBoardReply.size(); i++) {
+            System.out.println("byBoardReply = " + byBoardReply.get(i).getBoard());
+            System.out.println("byBoardReply = " + byBoardReply.get(i).getMember());
+            System.out.println("byBoardReply = " + byBoardReply.get(i).getParent());
+            System.out.println("byBoardReply = " + byBoardReply.get(i).getId());
+            System.out.println();
+        }
+
+
+    }
+
 
 
 

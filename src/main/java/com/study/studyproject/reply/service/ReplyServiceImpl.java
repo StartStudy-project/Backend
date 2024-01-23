@@ -54,6 +54,9 @@ public class ReplyServiceImpl implements ReplyService {
             reply.updateParent(replyParent);
         }
 
+        reply.updateWriter(member);
+        reply.UpdateBoard(board);
+
         replyRepository.save(reply);
     }
 
@@ -66,13 +69,26 @@ public class ReplyServiceImpl implements ReplyService {
 
 
     @Override
-    public void deleteReply(Long num) { // 게시글 넘
-        replyRepository.deleteById(num);
+    public void deleteReply(Long num) { //
+        Reply reply = replyRepository.findCommentByIdWithParent(num)
+                .orElseThrow(() -> new NotFoundException("댓글을 찾기 못했습니다."));
+
+        if (reply.getChildren().size() != 0) { //자식이 있는 상태
+            reply.ChangeIsDeleted(true);
+        } else { //삭제 가능한 조상 댓글
+            replyRepository.delete(getDelete(reply));
+            
+
+        }
     }
 
-    @Override
-    public int getReplyCnt(Long num) { // boardNum
-
-        return 0;
+    private Reply getDelete(Reply reply) {
+        Reply parent = reply.getParent();
+        if (parent != null && parent.getChildren().size() == 1 && parent.getIsDeleted()) {
+            return getDelete(parent);
+        }
+        return reply;
     }
+
+
 }

@@ -7,18 +7,14 @@ import lombok.Data;
 @Data
 public class MemberReplyRequestDto {
 
-    @Schema(description = "순서", defaultValue = "1")
-    Long seq;
+    @Schema(description = "사용자 Id", defaultValue = "1")
+    Long memberId;
 
     @Schema(description = "사용자 닉네임", defaultValue = "jac")
     String nickname;
 
-    @Schema(description = "사용자 역할", defaultValue = "ROLE_USER")
-    String role;
-
     public MemberReplyRequestDto(Member member) {
-        this.seq = member.getId();
+        this.memberId = member.getId();
         this.nickname = member.getNickname();
-        this.role = member.getRole().toString();
     }
 }

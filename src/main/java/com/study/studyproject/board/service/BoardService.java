@@ -38,29 +38,24 @@ public class BoardService {
 
     //작성
     public GlobalResultDto boardSave(BoardWriteRequestDto boardWriteRequestDto, String token) {
-        System.out.println("안녕");
         Member member = memberRepository.findById(jwtUtil.getIdFromToken(token))
                 .orElseThrow(() -> new IllegalArgumentException("ID가 없습니다."));
-        System.out.println("member = " + member);
         Board entity = boardWriteRequestDto.toEntity(member);
         boardRepository.save(entity);
-        System.out.println("작성");
         return new GlobalResultDto("글 작성 완료", HttpStatus.OK.value());
 
     }
 
     //수정
     public GlobalResultDto updateWrite(BoardReUpdateRequestDto boardReUpdateRequestDto) {
-        System.out.println("boardReUpdateRequestDto = " + boardReUpdateRequestDto);
         Board board = boardRepository.findById(boardReUpdateRequestDto.getBoardId()).orElseThrow(() -> new IllegalArgumentException("작성된 게시글이 없습니다."));
-        System.out.println("board = " + board);
         board.updateBoard(boardReUpdateRequestDto);
         return new GlobalResultDto("글 작성 완료", HttpStatus.OK.value());
     }
 
 
     //글 1개만 가져오기
-    public BoardOneResponseDto boardOne( Long boardId) {
+    public BoardOneResponseDto boardOne(Long boardId) {
         Board board = boardRepository.findById(boardId ).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
         board.updateViewCnt(board.getViewCount());
         ReplyResponseDto replies = findReplies( boardId);
@@ -71,7 +66,7 @@ public class BoardService {
     private ReplyResponseDto findReplies(Long boardId) {
            List<Reply> comments = replyRepository.findByBoardReply(boardId);
            List<ReplyInfoResponseDto> commentResponseDTOList = getReplyInfoResponseDtos(comments);
-        return ReplyResponsetoDto(commentResponseDTOList.size(), commentResponseDTOList);
+        return ReplyResponsetoDto(replyRepository.findBoardReplyCnt(boardId), commentResponseDTOList);
     }
 
     private static List<ReplyInfoResponseDto> getReplyInfoResponseDtos(List<Reply> comments) {
@@ -84,6 +79,7 @@ public class BoardService {
             if (c.getParent() != null) commentDTOHashMap.get(c.getParent().getId()).getChildren().add(commentResponseDTO);
             else commentResponseDTOList.add(commentResponseDTO);
         });
+
         return commentResponseDTOList;
     }
 
@@ -91,6 +87,8 @@ public class BoardService {
 
     //삭제
     public GlobalResultDto boardDeleteOne(Long boardId) {
+        List<Reply> byBoardReply = replyRepository.findByBoardReplies(boardId);
+        byBoardReply.forEach(replyRepository::delete);
         boardRepository.deleteById(boardId);
         return new GlobalResultDto("게시글 삭제 완료", HttpStatus.OK.value());
     }
