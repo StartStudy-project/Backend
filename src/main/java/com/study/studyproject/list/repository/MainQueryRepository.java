@@ -60,7 +60,7 @@ public class MainQueryRepository  {
                 .leftJoin(reply)
                 .on(board.id.eq(reply.board.id))
                 .where(
-                        getType(condition.getType()), //모집여부
+                        board.recruit.eq(Recruit.모집중),
                         getCategory(condition.getCategory()),
                         getFindContent(findContent)
                 )
@@ -89,18 +89,12 @@ public class MainQueryRepository  {
                 )
                 .from(board)
                 .where(
-                        getType(condition.getType()), //모집여부
+                        board.recruit.eq(Recruit.모집중),
                         getCategory(condition.getCategory()),
                         getFindContent(findContent)
                 );
     }
 
-
-    private BooleanExpression getType(Recruit type) {
-
-
-        return isEmpty(type) ? null : board.recruit.eq(type);
-    }
 
 
     private BooleanExpression getFindContent(String findContent) {

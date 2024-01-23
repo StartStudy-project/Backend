@@ -35,7 +35,6 @@ public class MemberServiceImpl implements MemberService{
     @Transactional(readOnly  = true)
     public UserInfoResponseDto userInfoService(String token) {
         Long idFromToken = jwtUtil.getIdFromToken(token);
-        System.out.println("idFromToken = " + idFromToken);
         Member member = memberRepository.findById(idFromToken).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
 
         return UserInfoResponseDto.of(member);

@@ -13,17 +13,13 @@ import lombok.NoArgsConstructor;
 public class MainRequest {
 
     @Nullable
-    Recruit type;
-    @Nullable
     Category category;
-
 
     @Nullable
     Integer order; // 0 -> 최신순
 
     @Builder
-    public MainRequest(Recruit type, Category category, Integer order) {
-        this.type = type;
+    public MainRequest( Category category, Integer order) {
         this.category = category;
         this.order = order;
     }

@@ -129,8 +129,49 @@ class BoardServiceTest {
         assertThat(boardOneResponseDto.getTitle()).isEqualTo(board.getTitle());
     }
 
+
     @Test
-    @DisplayName("사용자가 원하는 게시글을 삭제한다.")
+    @DisplayName("댓글을 가지고 있는 게시글을 조회한다.")
+    void selectBaordOnewithReplies() {
+        //given
+        Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
+        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
+
+        Reply reply = createReply(null, member1, board);
+        Reply reply1 = createReply(reply, member1, board);
+        Reply reply2 = createReply(reply, member1, board);
+        Reply reply3 = createReply(reply, member1, board);
+
+        Reply replyParent2 = createReply(null, member1, board);
+        Reply replyChild1 = createReply(replyParent2, member1, board);
+        Reply replyChild2 = createReply(replyParent2, member1, board);
+        Reply replyChild3 = createReply(replyParent2, member1, board);
+
+
+        memberRepository.save(member1);
+        boardRepository.save(board);
+        replyRepository.saveAll(List.of(reply,reply1, reply2,reply3,replyParent2,replyChild1,replyChild2,replyChild3));
+
+
+        //when
+        List<Reply> byBoardReply = replyRepository.findByBoardReplies(board.getId());
+        TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", 1L);
+
+        //when
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( 1L);
+        System.out.println("boardOneResponseDto = " + boardOneResponseDto);
+        System.out.println(boardOneResponseDto.getReplyResponseDto());
+        System.out.println(boardOneResponseDto.getReplyResponseDto().getReplies());
+
+        assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(4L);
+        assertThat(boardOneResponseDto.getReplyResponseDto().getReplies().get(0).getChildren()).hasSize(3);
+
+        assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
+        assertThat(boardOneResponseDto.getTitle()).isEqualTo(board.getTitle());
+    }
+
+    @Test
+    @DisplayName("댓글이 있는 게시글을 삭제한다.")
     void deleteBoard() throws Exception {
         //given
         Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");

@@ -109,14 +109,19 @@ class MainQueryRepositoryTest {
     @Test
     @DisplayName("메인페이지에 찾고자 하는 값을 검색하여 정보를 추출한다.")
     void boardListPage() {
-        MainRequest listRequestDto = new MainRequest(Recruit.모집중, CS,1);
+        //given
+        MainRequest listRequestDto = new MainRequest(CS,1);
         PageRequest pageRequest = PageRequest.of(0, 3);
         String contents = "꿈나라";
+
+        //when
         Page<ListResponseDto> listResponseDtos = mainQueryRepository.boardListPage(contents, listRequestDto, pageRequest);
+
         List<ListResponseDto> content = listResponseDtos.getContent();
+
         System.out.println("content = " + content);
 
-
+        //then
         assertThat(content).extracting("content", "title", "nickname", "recurit")
                 .containsExactlyInAnyOrder(
                         tuple(
@@ -129,7 +134,7 @@ class MainQueryRepositoryTest {
     @Test
     @DisplayName("메인페이지에 검색 값을 넣지 않고 정보를 추출한다.")
     void getContent() {
-        MainRequest listRequestDto = new MainRequest(Recruit.모집중, CS,1);
+        MainRequest listRequestDto = new MainRequest(CS,1);
         PageRequest pageRequest = PageRequest.of(0, 3);
         String findParam = null;
         List<ListResponseDto> content = mainQueryRepository.getContent(findParam,listRequestDto, pageRequest);
@@ -141,7 +146,7 @@ class MainQueryRepositoryTest {
     @Test
     @DisplayName("메인 페이지의 전체 개수를 가져온다.")
     void getTotal() {
-        MainRequest listRequestDto = new MainRequest(Recruit.모집중, CS,1);
+        MainRequest listRequestDto = new MainRequest(CS,1);
         String contents = "꿈나라";
         JPAQuery<Board> total = mainQueryRepository.getTotal(contents, listRequestDto);
         List<Board> fetch = total.fetch();
