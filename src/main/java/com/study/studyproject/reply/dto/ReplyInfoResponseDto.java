@@ -37,7 +37,7 @@ public class ReplyInfoResponseDto {
 
         Long replyMemberId = reply.getMember().getId();
         boolean isMyReply = false;
-        if (currentMemberId == replyMemberId) {
+        if (currentMemberId.equals(replyMemberId)) {
             isMyReply = true;
         }
 

@@ -23,6 +23,7 @@ public class MainController {
     private final ListService listService;
 
     @GetMapping("/")
+    @CrossOrigin("*")
     public ResponseEntity<Page<ListResponseDto>> mainList(
             @RequestParam(value = "title",required = false) String title,
             @RequestBody(required = false) MainRequest mainRequestDto,
