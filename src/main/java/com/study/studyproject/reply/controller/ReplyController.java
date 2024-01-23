@@ -21,20 +21,20 @@ public class ReplyController {
     private final ReplyServiceImpl replyService;
 
     @PostMapping("/insertReply")
-    @Operation(summary = "댓글 추가", description = "사용자 회원가입")
+    @Operation(summary = "댓글 추가", description = "댓글 추가")
     public void insertReply(@CookieValue(value = "Refresh_Token") String token, @RequestBody ReplyRequestDto replyRequestDto) {
         replyService.insert(token, replyRequestDto);
 
     }
 
     @PatchMapping("/updateReply")
-    @Operation(summary = "댓글 수정", description = "사용자 회원가입")
+    @Operation(summary = "댓글 수정")
     public void update(@RequestBody UpdateReplyRequest updateReplyRequest) {
         replyService.updateReply(updateReplyRequest);
     }
 
     @DeleteMapping("/deleteReply")
-    @Operation(summary = "댓글 삭제", description = "사용자 회원가입")
+    @Operation(summary = "댓글 삭제")
     public void delete(@Parameter(description = "댓글 번호",example = "1") Long rno) {
         replyService.deleteReply(rno);
     }

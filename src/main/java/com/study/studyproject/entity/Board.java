@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class Board extends BaseTimeEntity{
 
     private String title;                                                     // 포스트 타이틀
 
+
+    @ColumnDefault("0")
     private Long viewCount;
 
     private String content;                                                   // 포스트 내용
