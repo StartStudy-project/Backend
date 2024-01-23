@@ -105,6 +105,7 @@ public class StudyProjectApplication {
 					 .board(board)
 					 .build();
 			 replyRepository.save(reply);
+			 replyRepository.save(replyer);
 		 }
 
 //		Reply replyer = Reply.builder()
