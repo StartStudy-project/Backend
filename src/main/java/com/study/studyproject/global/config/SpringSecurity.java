@@ -48,8 +48,9 @@ public class SpringSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.addFilter(filter)
-                .addFilterBefore(corsConfig.corsFilter(), UsernamePasswordAuthenticationFilter.class)
+        http.
+                cors(httpSecurityCorsConfigurer ->
+                        httpSecurityCorsConfigurer.configurationSource(corsConfig.corsFilter()))
                 .addFilterBefore(new JwtFilter(jwtUtil),CorsFilter.class);
 
         http.csrf(cs -> cs.disable()) //

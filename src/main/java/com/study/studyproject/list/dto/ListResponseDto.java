@@ -23,10 +23,9 @@ public class ListResponseDto {
     LocalDateTime time;
     int hitCnt; // 조회수
     int replyCnt; //
-    int boardCnt;
 
     @QueryProjection
-    public ListResponseDto(String nickname, int boardId, String recurit, String type, String content, String title, LocalDateTime time, int hitCnt, int replyCnt , int boardCnt) {
+    public ListResponseDto(String nickname, int boardId, String recurit, String type, String content, String title, LocalDateTime time, int hitCnt, int replyCnt ) {
         this.nickname = nickname;
         this.boardId = boardId;
         this.recurit = recurit;
@@ -36,6 +35,5 @@ public class ListResponseDto {
         this.time = time;
         this.hitCnt = hitCnt;
         this.replyCnt = replyCnt;
-        this.boardCnt =  boardCnt;
     }
 }

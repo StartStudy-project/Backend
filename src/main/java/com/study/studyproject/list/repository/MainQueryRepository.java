@@ -51,8 +51,7 @@ public class MainQueryRepository  {
                                 board.title,
                                 board.createdDate,
                                 board.viewCount.intValue(),
-                                reply.count().intValue(),
-                                board.count().intValue()
+                                reply.count().intValue()
                         )
 
                 )

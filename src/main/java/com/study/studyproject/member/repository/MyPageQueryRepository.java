@@ -54,8 +54,7 @@ public class MyPageQueryRepository {
                                 board.title,
                                 board.createdDate,
                                 board.viewCount.intValue(),
-                                reply.count().intValue(),
-                                board.count().intValue()
+                                reply.count().intValue()
                         )
 
                 )
