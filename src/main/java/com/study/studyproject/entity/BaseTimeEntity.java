@@ -18,9 +18,11 @@ public class BaseTimeEntity {
 
     @CreatedDate //Entity가 생성되어 저장될 때 시간이 자동 저장됩니다.
     @Column(updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdDate;
 
     @LastModifiedDate //조회한 Entity의 값을 변경할 때 시간이 자동 저장됩니다.
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime lastModifiedDate;
 
 }
