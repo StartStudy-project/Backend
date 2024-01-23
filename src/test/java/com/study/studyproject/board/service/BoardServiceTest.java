@@ -150,7 +150,8 @@ class BoardServiceTest {
 
         memberRepository.save(member1);
         boardRepository.save(board);
-        replyRepository.saveAll(List.of(reply,reply1, reply2,reply3,replyParent2,replyChild1,replyChild2,replyChild3));
+        List<Reply> replies = List.of(reply, reply1, reply2, reply3, replyParent2, replyChild1, replyChild2, replyChild3);
+        replyRepository.saveAll(replies);
 
 
         //when
@@ -159,11 +160,8 @@ class BoardServiceTest {
 
         //when
         BoardOneResponseDto boardOneResponseDto = boardService.boardOne( 1L);
-        System.out.println("boardOneResponseDto = " + boardOneResponseDto);
-        System.out.println(boardOneResponseDto.getReplyResponseDto());
-        System.out.println(boardOneResponseDto.getReplyResponseDto().getReplies());
 
-        assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(4L);
+        assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(replies.size());
         assertThat(boardOneResponseDto.getReplyResponseDto().getReplies().get(0).getChildren()).hasSize(3);
 
         assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
