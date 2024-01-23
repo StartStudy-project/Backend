@@ -122,7 +122,7 @@ class BoardServiceTest {
         TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", 1L);
 
 
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( 1L);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( 1L,allToken.getRefreshToken());
         System.out.println("boardOneResponseDto = " + boardOneResponseDto);
 
         assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
@@ -131,7 +131,7 @@ class BoardServiceTest {
 
 
     @Test
-//    @DisplayName("댓글을 가지고 있는 게시글을 조회한다.")
+    @DisplayName("자기 댓글을 가지고 있는 게시글을 조회한다.")
     void selectBaordOnewithReplies() {
         //given
         Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
@@ -159,7 +159,49 @@ class BoardServiceTest {
         TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", 1L);
 
         //when
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( 1L);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( 1L,allToken.getRefreshToken());
+        System.out.println("boardOneResponseDto = " + boardOneResponseDto);
+
+        assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(replies.size());
+        assertThat(boardOneResponseDto.getReplyResponseDto().getReplies().get(0).getChildren()).hasSize(3);
+
+        assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
+        assertThat(boardOneResponseDto.getTitle()).isEqualTo(board.getTitle());
+    }
+
+
+
+    @Test
+    @DisplayName("자기가 작성한 댓글을 가지고 있지 않은 게시글을 조회한다.")
+    void selectBaordOnewithNoMyReplies() {
+        //given
+        Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
+        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
+
+        Reply reply = createReply(null, member1, board);
+        Reply reply1 = createReply(reply, member1, board);
+        Reply reply2 = createReply(reply, member1, board);
+        Reply reply3 = createReply(reply, member1, board);
+
+        Reply replyParent2 = createReply(null, member1, board);
+        Reply replyChild1 = createReply(replyParent2, member1, board);
+        Reply replyChild2 = createReply(replyParent2, member1, board);
+        Reply replyChild3 = createReply(replyParent2, member1, board);
+
+
+        memberRepository.save(member1);
+        boardRepository.save(board);
+        List<Reply> replies = List.of(reply, reply1, reply2, reply3, replyParent2, replyChild1, replyChild2, replyChild3);
+        replyRepository.saveAll(replies);
+
+
+        //when
+        List<Reply> byBoardReply = replyRepository.findByBoardReplies(board.getId());
+        TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", 1L);
+
+        //when
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( 1L,null);
+        System.out.println("boardOneResponseDto = " + boardOneResponseDto);
 
         assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(replies.size());
         assertThat(boardOneResponseDto.getReplyResponseDto().getReplies().get(0).getChildren()).hasSize(3);

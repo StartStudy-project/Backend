@@ -16,27 +16,36 @@ import java.util.List;
 public class ReplyInfoResponseDto {
     private Long replyId;
     private Long parentId;
+    private boolean isMyReply;
     private MemberReplyRequestDto memberRequestDto;
     private String content;
     private LocalDateTime updateTime;
     private List<ReplyInfoResponseDto> children = new ArrayList<>();
-    private boolean myComment;
 
-
-    public ReplyInfoResponseDto(Reply reply, String content, MemberReplyRequestDto userInfoResponseDto) {
+    public ReplyInfoResponseDto(Reply reply, boolean isMyReply, String content, MemberReplyRequestDto userInfoResponseDto) {
         this.replyId = reply.getId();
         this.updateTime = reply.getLastModifiedDate();
         this.parentId = (reply.getParent() != null) ? reply.getParent().getId() : null;
         this.content = content;
         this.memberRequestDto = userInfoResponseDto;
+        this.isMyReply = isMyReply;
     }
 
 
 
-    public static ReplyInfoResponseDto convertReplyToDto(Reply reply) {
+    public static ReplyInfoResponseDto convertReplyToDto(Reply reply, Long currentMemberId) {
+
+        Long replyMemberId = reply.getMember().getId();
+        boolean isMyReply = false;
+        if (currentMemberId == replyMemberId) {
+            isMyReply = true;
+        }
+
+
+
         return reply.getIsDeleted() ?
-                new ReplyInfoResponseDto(reply, "삭제된 댓글입니다.", null) :
-                new ReplyInfoResponseDto(reply, reply.getContent(), new MemberReplyRequestDto(reply.getMember()));
+                new ReplyInfoResponseDto(reply, isMyReply, "삭제된 댓글입니다.", null) :
+                new ReplyInfoResponseDto(reply, isMyReply,reply.getContent(), new MemberReplyRequestDto(reply.getMember()));
 
     }
 
