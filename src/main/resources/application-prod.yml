@@ -16,7 +16,10 @@ spring:
   mvc:
     cors:
       allowed-origins: "*"
-      allowed-methods: "GET,POST,PUT,DELETE"
+      allowed-methods: "GET,POST,PUT,DELETE,PATCH"
+
 logging:
   level:
-    root: DEBUG
+    org:
+      springframework:
+        web: DEBUG
