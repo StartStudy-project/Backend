@@ -12,8 +12,8 @@
 //        registry.addMapping("/**")
 //                .allowedOriginPatterns("*")
 //                .allowedOrigins("*")
-//                .allowedMethods("*")
-//                .allowedHeaders("*")
+//                .allowedMethods("GET", "POST", "PUT", "PATCH", "OPTIONS")
+//                .allowedHeaders("headers")
 //                .allowCredentials(true);
 //
 //    }
