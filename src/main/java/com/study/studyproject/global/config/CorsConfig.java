@@ -14,9 +14,6 @@ import java.util.Arrays;
 @Configuration
 public class CorsConfig  {
 
-
-
-
     @Bean
     public CorsConfigurationSource corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
