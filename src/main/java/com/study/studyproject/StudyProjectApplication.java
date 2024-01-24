@@ -49,8 +49,8 @@ public class StudyProjectApplication {
 
 
 
-//	@Profile({"prod","local"}) // 테스트 환경이 아닌 경우에만 실행
 	@PostConstruct
+	@Profile("!test")
 	void init() {
 		String encode = passwordEncoder.encode("1234");
 		Member memberOne = Member.builder()
@@ -114,8 +114,9 @@ public class StudyProjectApplication {
 					 .parent(reply)
 					 .board(board)
 					 .build();
+
+			 replyer.updateParent(reply);
 			 replyRepository.save(reply);
-			 replyRepository.save(replyer);
 		 }
 
 //		Reply replyer = Reply.builder()

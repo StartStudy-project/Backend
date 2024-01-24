@@ -53,6 +53,8 @@ public class ReplyRepositoryImpl implements ReplyRepositoryCustom{
                 .where(reply.id.eq(id))
                 .fetchOne();
 
+        System.out.println("selectedComment = " + selectedComment);
+
         return Optional.ofNullable(selectedComment);
     }
 

@@ -59,21 +59,23 @@ public class ReplyServiceImpl implements ReplyService {
 
 
     @Override
-    public void deleteReply(Long num) { //
+    public void deleteReply(Long num) { //댓글 num
         Reply reply = replyRepository.findCommentByIdWithParent(num)
                 .orElseThrow(() -> new NotFoundException("댓글을 찾기 못했습니다."));
 
-        if (reply.getChildren().size() != 0) { //자식이 있는 상태
+        int size = reply.getChildren().size();
+        System.out.println("size = " + size);
+        if (size != 0) { //자식이 있는 상태
             reply.ChangeIsDeleted(true);
         } else { //삭제 가능한 조상 댓글
             replyRepository.delete(getDelete(reply));
-            
-
         }
     }
 
     private Reply getDelete(Reply reply) {
         Reply parent = reply.getParent();
+        System.out.println("parent = " + parent);
+        System.out.println("삭제");
         if (parent != null && parent.getChildren().size() == 1 && parent.getIsDeleted()) {
             return getDelete(parent);
         }
