@@ -6,6 +6,7 @@ import com.study.studyproject.entity.Category;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.Reply;
 import com.study.studyproject.global.exception.ex.NotFoundException;
+import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.member.repository.MemberRepository;
@@ -26,6 +27,7 @@ import java.util.List;
 import static com.study.studyproject.entity.Category.CS;
 import static com.study.studyproject.entity.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
@@ -189,8 +191,45 @@ class ReplyServiceImplTest {
         replyService.deleteReply(two.getId());
 
         //then
-        Reply reply = replyRepository.findById(two.getId()).orElseThrow();
+        Reply reply = replyRepository.findById(two.getId()).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
 
+    }
+
+
+    @Test
+    @DisplayName("대댓글 삭제시 부모댓글 삭제했지만 대댓글이 있는 경우 삭제 안된다.")
+    void deleteParentChildReply() {
+
+        Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
+        memberRepository.save(member1);
+        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
+        boardRepository.save(board);
+
+        Reply one = createReply("댓글1", null, member1, board);
+        Reply two = createReply("대댓글1", one, member1, board);
+        Reply tree = createReply("대댓글2", one, member1, board);
+        Reply four = createReply("대댓글3", one, member1, board);
+
+        two.updateParent(one);
+        tree.updateParent(one);
+        four.updateParent(one);
+
+
+        replyRepository.save(one);
+
+
+        //when
+        replyService.deleteReply(one.getId());
+        replyService.deleteReply(two.getId());
+
+        //then
+
+        List<Reply> all = replyRepository.findAll();
+        assertThat(all).hasSize(4);
+        assertThat(all.get(0).getIsDeleted()).isTrue();
+        assertThat(all.get(1).getIsDeleted()).isTrue();
+        assertThat(all.get(2).getIsDeleted()).isFalse();
+        assertThat(all.get(3).getIsDeleted()).isFalse();
 
     }
 
