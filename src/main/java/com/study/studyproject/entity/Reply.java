@@ -73,6 +73,7 @@ public class Reply extends BaseTimeEntity{
         parent.getChildren().add(this);
     }
 
+
     //수정
     public void updateReply(String content) {
         this.content = content;

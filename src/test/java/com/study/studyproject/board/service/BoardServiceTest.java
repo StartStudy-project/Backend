@@ -18,6 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.net.http.HttpResponse;
@@ -31,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 class BoardServiceTest {
 
     @Autowired
@@ -172,7 +174,7 @@ class BoardServiceTest {
 
 
     @Test
-    @DisplayName("자기가 작성한 댓글을 가지고 있지 않은 게시글을 조회한다.")
+    @DisplayName(" 사용자가 댓글 입력하지 않은 게시글을 조회한다.")
     void selectBaordOnewithNoMyReplies() {
         //given
         Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
