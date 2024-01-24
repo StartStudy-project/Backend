@@ -22,6 +22,7 @@ public class CorsConfig  {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); // 서버가 응답할 때 Json을 js에서 처리할 수 있게 할지 설정
         config.addAllowedOrigin("*"); // 모든 ip에 응답 허용
+        config.setAllowedOriginPatterns(Arrays.asList("*"));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT","OPTIONS","PATCH"));
 
