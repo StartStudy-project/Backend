@@ -13,3 +13,10 @@ spring:
         format_sql: true
         show_sql: true
     defer-datasource-initialization: true
+  mvc:
+    cors:
+      allowed-origins: "*"
+      allowed-methods: "GET,POST,PUT,DELETE"
+logging:
+  level:
+    root: DEBUG
