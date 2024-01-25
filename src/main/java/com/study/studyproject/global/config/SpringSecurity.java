@@ -60,7 +60,7 @@ public class SpringSecurity {
         http.addFilter(filter)
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-        http.csrf(cs -> cs.disable()) //
+        http.csrf(AbstractHttpConfigurer::disable) //
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 생성x
                 .formLogin(f -> f.disable())
                 .httpBasic(h -> h.disable())
