@@ -72,7 +72,7 @@ public class SpringSecurity {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
-                        .requestMatchers(HttpMethod.OPTIONS).permitAll() // OPTIONS 요청을 허용합니다.
+                        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll() // OPTIONS 요청을 허용합니다.
                         .requestMatchers("/board/member/**").authenticated()
                         .requestMatchers("/user/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
