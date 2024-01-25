@@ -71,7 +71,6 @@ public class SpringSecurity {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
-                        .requestMatchers("/error").permitAll() // 특정 경로에 대한 권한 허용 추가
                         .requestMatchers("/board/member/**").authenticated()
                         .requestMatchers("/user/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
