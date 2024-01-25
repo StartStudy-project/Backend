@@ -22,3 +22,7 @@ jwt:
 
 
 
+spring:
+  output:
+    ansi:
+      enabled: always

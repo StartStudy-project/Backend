@@ -42,15 +42,14 @@ public class SpringSecurity {
 //        return web -> web.ignoring().requestMatchers("/h2-console/**"); //제외될 url
 //    }
 
-//    private final CorsFilter filter;
+    private final CorsFilter filter;
 
     private final JwtUtil jwtUtil;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(httpSecurityCorsConfigurer ->
-                httpSecurityCorsConfigurer.configurationSource(corsConfig.corsFilter()));
-        http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilter(filter)
+                .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         http.csrf(cs -> cs.disable()) //
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 생성x
                 .formLogin(f -> f.disable())

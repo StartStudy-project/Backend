@@ -26,15 +26,6 @@ public class StudyProjectApplication {
 		SpringApplication.run(StudyProjectApplication.class, args);
 	}
 
-//	@Bean
-//	public WebMvcConfigurer corsConfigurer() {
-//		return new WebMvcConfigurer() {
-//			@Override
-//			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("/**").allowedOrigins("/**");
-//			}
-//		};
-//	}
 	@Autowired
 	BoardRepository boardRepository;
 
@@ -50,7 +41,6 @@ public class StudyProjectApplication {
 
 
 	@PostConstruct
-	@Profile("!test")
 	void init() {
 		String encode = passwordEncoder.encode("1234");
 		Member memberOne = Member.builder()
