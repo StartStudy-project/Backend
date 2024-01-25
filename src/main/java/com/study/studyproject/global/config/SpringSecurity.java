@@ -53,10 +53,8 @@ public class SpringSecurity {
     private final JwtUtil jwtUtil;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpServletRequest request , HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain( HttpSecurity http) throws Exception {
         log.info("들어옴");
-        log.info("http : {}"+ request.getMethod());
-        log.info("http : {}"+ request.getRequestURL());
         http.addFilter(filter)
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
