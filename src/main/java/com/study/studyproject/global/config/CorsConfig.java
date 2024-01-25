@@ -20,7 +20,7 @@ public class CorsConfig  {
         config.setAllowCredentials(true);
         config.addAllowedOrigin("*");
         config.setAllowedOriginPatterns(Arrays.asList("*"));
-        config.addAllowedHeader("*");
+        config.setAllowedHeaders(Arrays.asList("*"));
         config.addAllowedMethod("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
