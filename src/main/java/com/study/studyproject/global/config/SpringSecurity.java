@@ -43,10 +43,10 @@ public class SpringSecurity {
     private final CorsConfig corsConfig;
 
     //제외될 url
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return web -> web.ignoring().requestMatchers("/h2-console/**"); //제외될 url
-//    }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().requestMatchers("/h2-console/**"); //제외될 url
+    }
 
 //    private final CorsFilter filter;
 
