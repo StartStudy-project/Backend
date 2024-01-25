@@ -57,6 +57,8 @@ jobs:
           script: |
             cd Backend
             git pull
+            sudo docker image prune -f
+            docker images
             sudo docker ps
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
             sudo docker-compose up -d
