@@ -19,16 +19,15 @@ public class CorsConfig  {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
+        CorsConfiguration configuration = new CorsConfiguration();
 
-        config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("*");
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        config.setAllowedHeaders(Arrays.asList("*"));
-        config.setExposedHeaders(Arrays.asList("*"));
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 

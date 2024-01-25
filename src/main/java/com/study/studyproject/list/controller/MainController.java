@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Tag(name = "메인 기능 구현")
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MainController {
 
     private final ListService listService;
