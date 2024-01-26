@@ -27,9 +27,10 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Execute Gradle build
-      run: ./gradlew clean build -x test 
-      
-    - name: Set up Docker Buildx
+      run: ./gradlew clean build -x test
+
+
+    - name: Set up Docker Build
       uses: docker/setup-buildx-action@v2
       
     - name: Login to DockerHub
@@ -57,10 +58,7 @@ jobs:
           script: |
             cd Backend
             git pull
-            sudo docker image prune -f
-            docker images
-            sudo docker ps
+            sudo docker-compose down --rmi all
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
-            sudo docker-compose up -d
-            sudo docker image prune -f
+            docker-compose up --force-recreate --build -d
 

@@ -16,6 +16,7 @@ services:
     container_name: database
     environment:
       MYSQL_DATABASE: project
+      MYSQL_USER : root
       MYSQL_ROOT_PASSWORD: 1234
     volumes:
       - ./db:/var/lib/mysql
