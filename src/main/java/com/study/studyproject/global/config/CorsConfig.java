@@ -1,5 +1,6 @@
 package com.study.studyproject.global.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,17 +16,19 @@ import java.util.List;
 
 //        config.setAllowedMethods(Arrays.asList("HEAD", "POST", "GET", "DELETE", "PUT", "OPTIONS", "PATCH"));
 @Configuration
+@Slf4j
 public class CorsConfig  {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+        log.info("-----------core------------");
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowCredentials(true);
         configuration.addAllowedOrigin("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
-
+        configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
