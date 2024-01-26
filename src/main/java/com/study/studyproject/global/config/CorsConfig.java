@@ -23,8 +23,10 @@ public class CorsConfig  {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
+        config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
+        config.setExposedHeaders(Arrays.asList("Refresh_Token", "Access_Token"));
 
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
