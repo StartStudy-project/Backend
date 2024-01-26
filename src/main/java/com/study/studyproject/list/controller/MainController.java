@@ -2,9 +2,8 @@ package com.study.studyproject.list.controller;
 
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.list.dto.ListResponseDto;
-import com.study.studyproject.board.dto.MainRequest;
+import com.study.studyproject.list.dto.MainRequest;
 import com.study.studyproject.list.service.ListService;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Tag(name = "메인 기능 구현")
 @Slf4j
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MainController {
 
     private final ListService listService;

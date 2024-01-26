@@ -2,7 +2,7 @@
 //
 //import com.fasterxml.jackson.core.JsonProcessingException;
 //import com.study.studyproject.ControllerTestSupport;
-//import com.study.studyproject.board.dto.MainRequest;
+//import com.study.studyproject.list.dto.MainRequest;
 //import com.study.studyproject.board.repository.BoardRepository;
 //import com.study.studyproject.entity.*;
 //import com.study.studyproject.member.repository.MemberRepository;

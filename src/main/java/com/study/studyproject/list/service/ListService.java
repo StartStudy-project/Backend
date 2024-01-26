@@ -1,7 +1,7 @@
 package com.study.studyproject.list.service;
 
 import com.study.studyproject.list.dto.ListResponseDto;
-import com.study.studyproject.board.dto.MainRequest;
+import com.study.studyproject.list.dto.MainRequest;
 import com.study.studyproject.list.repository.MainQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

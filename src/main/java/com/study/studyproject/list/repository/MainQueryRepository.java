@@ -5,7 +5,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.study.studyproject.list.dto.ListResponseDto;
-import com.study.studyproject.board.dto.MainRequest;
+import com.study.studyproject.list.dto.MainRequest;
 import com.study.studyproject.entity.*;
 import com.study.studyproject.list.dto.QListResponseDto;
 import jakarta.persistence.EntityManager;
@@ -56,7 +56,7 @@ public class MainQueryRepository  {
 
                 )
                 .from(board)
-                .leftJoin(reply)
+                .leftJoin(reply).fetchJoin()
                 .on(board.id.eq(reply.board.id))
                 .where(
                         board.recruit.eq(Recruit.모집중),

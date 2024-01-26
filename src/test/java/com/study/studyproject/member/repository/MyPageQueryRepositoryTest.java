@@ -1,17 +1,12 @@
 package com.study.studyproject.member.repository;
 
-import com.study.studyproject.board.dto.MainRequest;
 import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.entity.*;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.list.dto.ListResponseDto;
-import com.study.studyproject.list.repository.MainQueryRepository;
 import com.study.studyproject.member.dto.MemberListRequestDto;
-import com.study.studyproject.member.dto.MemberUpdateResDto;
 import com.study.studyproject.reply.repository.ReplyRepository;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +15,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.study.studyproject.entity.Category.CS;
 import static com.study.studyproject.entity.Category.기타;
 import static com.study.studyproject.entity.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

@@ -1,4 +1,4 @@
-package com.study.studyproject.board.dto;
+package com.study.studyproject.list.dto;
 
 import com.study.studyproject.entity.Category;
 import com.study.studyproject.entity.Recruit;
@@ -12,11 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MainRequest {
 
-    @Nullable
     Category category;
 
-    @Nullable
-    Integer order; // 0 -> 최신순
+    int order; // 0 -> 최신순
 
     @Builder
     public MainRequest( Category category, Integer order) {

@@ -1,15 +1,13 @@
 package com.study.studyproject.list.repository;
 
 import com.querydsl.jpa.impl.JPAQuery;
-import com.study.studyproject.board.dto.MainRequest;
+import com.study.studyproject.list.dto.MainRequest;
 import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.entity.*;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.repository.ReplyRepository;
 import jakarta.transaction.Transactional;
-import net.bytebuddy.utility.dispatcher.JavaDispatcher;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,15 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 import static com.study.studyproject.entity.Category.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
-import static org.assertj.core.api.InstanceOfAssertFactories.list;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
