@@ -53,7 +53,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Docker compose
+      - name: Docker run
         uses: appleboy/ssh-action@master
         with:
           username: ubuntu

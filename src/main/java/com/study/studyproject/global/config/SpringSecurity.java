@@ -23,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
@@ -41,8 +42,6 @@ public class SpringSecurity {
         return new BCryptPasswordEncoder();
     }
 
-    private final CorsConfig corsConfig;
-
     //제외될 url
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -57,7 +56,7 @@ public class SpringSecurity {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("들어옴");
         http.cors((cors) -> cors
-                        .configurationSource(corsConfig.corsConfigurationSource()))
+                        .configurationSource(corsConfigurationSource()))
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         http.csrf(AbstractHttpConfigurer::disable) //
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 생성x
@@ -82,6 +81,22 @@ public class SpringSecurity {
         return http.build();
 
     }
+
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        log.info("-----------core------------");
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
 
 
 }
