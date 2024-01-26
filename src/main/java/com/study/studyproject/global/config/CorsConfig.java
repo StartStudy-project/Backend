@@ -17,6 +17,19 @@ import java.util.List;
 @Configuration
 @Slf4j
 public class CorsConfig  {
+    @Bean
+    public CorsFilter corsConfigurationSource() {
+        log.info("-----------core------------");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOriginPattern("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+
+        source.registerCorsConfiguration("/api/**", config);
+        return new CorsFilter(source);
+    }
 
 
 

@@ -48,15 +48,14 @@ public class SpringSecurity {
         return web -> web.ignoring().requestMatchers("/h2-console/**"); //제외될 url
     }
 
-//    private final CorsFilter filter;
+    private final CorsFilter filter;
 
     private final JwtUtil jwtUtil;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("들어옴");
-        http.cors((cors) -> cors
-                        .configurationSource(corsConfigurationSource()))
+        http.addFilter(filter)
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         http.csrf(AbstractHttpConfigurer::disable) //
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 생성x
@@ -83,19 +82,6 @@ public class SpringSecurity {
     }
 
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        log.info("-----------core------------");
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.setMaxAge(3600L);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
 
 
 
