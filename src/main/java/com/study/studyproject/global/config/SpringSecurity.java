@@ -49,7 +49,7 @@ public class SpringSecurity {
         return web -> web.ignoring().requestMatchers("/h2-console/**"); //제외될 url
     }
 
-    //private final CorsFilter filter;
+    private final CorsFilter filter;
     private final  CorsConfig corsConfig;
 
     private final JwtUtil jwtUtil;
@@ -57,8 +57,8 @@ public class SpringSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("!!!들어옴!!");
-        http.addFilterBefore(corsConfig.corsFilter(), ChannelProcessingFilter.class) // CorsFilter를 가장 먼저 적용
-                .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilter(filter);
+        http.addFilterBefore(new JwtFilter(jwtUtil),CorsFilter.class);
         http.csrf(AbstractHttpConfigurer::disable) //
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 생성x
                 .formLogin(f -> f.disable())
