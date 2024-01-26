@@ -61,7 +61,7 @@ jobs:
             cd Backend
             git pull
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
-            docker run –d –p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
+            sudo docker run –d –p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
             sudo docker image prune -f
 
             
