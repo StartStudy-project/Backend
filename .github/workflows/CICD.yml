@@ -63,7 +63,8 @@ jobs:
           script: |
             cd Backend
             git pull
-
+            docker stop backend
+            docker rm backend
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
             docker run -d --name backend -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
             sudo docker image prune -f
