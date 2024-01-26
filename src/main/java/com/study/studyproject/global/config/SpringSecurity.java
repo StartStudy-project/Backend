@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -48,14 +49,15 @@ public class SpringSecurity {
         return web -> web.ignoring().requestMatchers("/h2-console/**"); //제외될 url
     }
 
-    private final CorsFilter filter;
+    //private final CorsFilter filter;
+    private final  CorsConfig corsConfig;
 
     private final JwtUtil jwtUtil;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        log.info("들어옴");
-        http.addFilter(filter)
+        log.info("!!!들어옴!!");
+        http.addFilterBefore(corsConfig.corsFilter(), ChannelProcessingFilter.class) // CorsFilter를 가장 먼저 적용
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         http.csrf(AbstractHttpConfigurer::disable) //
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 생성x
