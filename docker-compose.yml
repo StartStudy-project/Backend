@@ -31,8 +31,8 @@ services:
     restart: always
     ports:
       - "8080:8080"
-    depends_on:
-      - database
+#    depends_on:
+#      - database
     container_name: app
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://54.180.21.153:3306/project?useSSL=false&serverTimezone=UTC
