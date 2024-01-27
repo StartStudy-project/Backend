@@ -51,7 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
                         jwtUtil.setHeaderAccessToken(response, newAccessToken);
                         setAuthentication(jwtUtil.getEmailFromToken(newAccessToken));
                 } else {
-                    jwtExceptionHandler(response, "RefreshToken Expired", HttpStatus.BAD_REQUEST);
+                    throw new JwtException("RefreshToken Expired");
                 }
 
             }
@@ -72,17 +72,6 @@ public class JwtFilter extends OncePerRequestFilter {
         return null;
     }
 
-    // Jwt 예외처리
-    public void jwtExceptionHandler(HttpServletResponse response, String msg, HttpStatus status) {
-        response.setStatus(status.value());
-        response.setContentType("application/json");
-        try {
-            String json = new ObjectMapper().writeValueAsString(new GlobalResultDto(msg, status.value()));
-            response.getWriter().write(json);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-    }
 
     private void setAuthentication(String email) {
         Authentication authentication = jwtUtil.createAuthentication(email);

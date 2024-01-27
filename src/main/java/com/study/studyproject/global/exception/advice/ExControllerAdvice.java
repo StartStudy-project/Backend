@@ -73,16 +73,9 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(FORBIDDEN)
     @ExceptionHandler(value = { AccessDeniedException.class })
-    @ResponseBody
-    protected ResponseEntity forbidden(RuntimeException ex, WebRequest request) {
-        ExceptionResponse errorResult = new ExceptionResponse(FORBIDDEN.value(),ex.getMessage());
-        HashMap<String, String> stringStringHashMap = new HashMap<>();
-        stringStringHashMap.put("request.getParameterMap() : ", request.getParameterMap().toString());
-        stringStringHashMap.put("request.getContextPath() :  ", request.getContextPath());
-        stringStringHashMap.put("request.getHeaderNames().toString()) : ", request.getHeaderNames().toString());
-        stringStringHashMap.put("ex.toString() : ", ex.toString());
-        stringStringHashMap.put("ex.getMessage() : ", ex.getMessage());
-        return new ResponseEntity<>(stringStringHashMap, HttpStatus.FORBIDDEN);
+    protected ResponseEntity forbidden(AccessDeniedException e) {
+        ExceptionResponse errorResult = new ExceptionResponse(FORBIDDEN.value(),e.getMessage());
+        return new ResponseEntity<>(errorResult, HttpStatus.FORBIDDEN);
 
     }
 
