@@ -56,6 +56,9 @@ public class BoardService {
 
     //글 1개만 가져오기
     public BoardOneResponseDto boardOne(Long boardId,String token) {
+        System.out.println("boardId = " + boardId);
+        System.out.println("token = " + token);
+
         Board board = boardRepository.findById(boardId ).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
         System.out.println("board = " + board);
 
