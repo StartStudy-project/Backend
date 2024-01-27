@@ -30,6 +30,10 @@ public class MainController {
         System.out.println("mainRequestDto.getCategory() = " + mainRequestDto.getCategory());
         System.out.println("mainRequestDto.getOrder() = " + mainRequestDto.getOrder());
 
+        log.info("mainRequestDto.getCategory()  {} = ",mainRequestDto.getCategory());
+        log.info("mainRequestDto.getOrder()  {} = ",mainRequestDto.getOrder());
+        log.info("~~~메인 끝~~");
+
         Page<ListResponseDto> list = listService.list(title, mainRequestDto, pageable);
         return ResponseEntity.ok(list);
     }
