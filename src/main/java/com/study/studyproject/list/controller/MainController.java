@@ -24,7 +24,7 @@ public class MainController {
     @GetMapping("/")
     public ResponseEntity<Page<ListResponseDto>> mainList(
             @RequestParam(value = "title",required = false) String title,
-            @RequestBody(required = false) MainRequest mainRequestDto,
+            @RequestBody MainRequest mainRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
         log.info("~~~메인~~");
         System.out.println("mainRequestDto.getOrder() = " + mainRequestDto.getOrder());
