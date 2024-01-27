@@ -18,9 +18,13 @@ public class MainRequest {
 
     int order; // 0 -> 최신순
 
+    @Nullable
+    String title;
+
     @Builder
-    public MainRequest( Category category, Integer order) {
+    public MainRequest(@Nullable Category category, int order, String title) {
         this.category = category;
         this.order = order;
+        this.title = title;
     }
 }

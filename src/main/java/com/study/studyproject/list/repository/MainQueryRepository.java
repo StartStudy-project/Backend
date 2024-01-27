@@ -30,15 +30,15 @@ public class MainQueryRepository  {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public Page<ListResponseDto> boardListPage(String findContent, MainRequest condition, Pageable pageable) {
+    public Page<ListResponseDto> boardListPage(MainRequest condition, Pageable pageable) {
 
-        List<ListResponseDto> content = getContent(findContent,condition, pageable);
-        JPAQuery<Board> countQuery = getTotal(findContent,condition);
+        List<ListResponseDto> content = getContent(condition, pageable);
+        JPAQuery<Board> countQuery = getTotal(condition);
 
         return PageableExecutionUtils.getPage(content,pageable, countQuery::fetchCount);
     }
 
-    public List<ListResponseDto> getContent(String findContent,MainRequest condition, Pageable pageable) {
+    public List<ListResponseDto> getContent(MainRequest condition, Pageable pageable) {
 
         return queryFactory
                 .select(
@@ -61,7 +61,7 @@ public class MainQueryRepository  {
                 .where(
                         board.recruit.eq(Recruit.모집중),
                         getCategory(condition.getCategory()),
-                        getFindContent(findContent)
+                        getFindContent(condition.getTitle())
                 )
                 .orderBy(
                         getOrder(condition.getOrder()) // 순서
@@ -81,7 +81,7 @@ public class MainQueryRepository  {
         return category.equals(Category.전체) ? null : board.category.eq(category);
     }
 
-    public JPAQuery<Board> getTotal(String findContent,MainRequest condition) {
+    public JPAQuery<Board> getTotal(MainRequest condition) {
         return queryFactory
                 .select(
                         board
@@ -90,7 +90,7 @@ public class MainQueryRepository  {
                 .where(
                         board.recruit.eq(Recruit.모집중),
                         getCategory(condition.getCategory()),
-                        getFindContent(findContent)
+                        getFindContent(condition.getTitle())
                 );
     }
 

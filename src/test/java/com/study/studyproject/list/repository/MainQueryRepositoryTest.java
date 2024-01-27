@@ -105,12 +105,12 @@ class MainQueryRepositoryTest {
     @DisplayName("메인페이지에 찾고자 하는 값을 검색하여 정보를 추출한다.")
     void boardListPage() {
         //given
-        MainRequest listRequestDto = new MainRequest(CS,1);
-        PageRequest pageRequest = PageRequest.of(0, 3);
         String contents = "꿈나라";
+        MainRequest listRequestDto = new MainRequest(CS,1,contents);
+        PageRequest pageRequest = PageRequest.of(0, 3);
 
         //when
-        Page<ListResponseDto> listResponseDtos = mainQueryRepository.boardListPage(contents, listRequestDto, pageRequest);
+        Page<ListResponseDto> listResponseDtos = mainQueryRepository.boardListPage(listRequestDto, pageRequest);
 
         List<ListResponseDto> content = listResponseDtos.getContent();
 
@@ -129,10 +129,10 @@ class MainQueryRepositoryTest {
     @Test
     @DisplayName("메인페이지에 검색 값을 넣지 않고 정보를 추출한다.")
     void getContent() {
-        MainRequest listRequestDto = new MainRequest(CS,1);
-        PageRequest pageRequest = PageRequest.of(0, 3);
         String findParam = null;
-        List<ListResponseDto> content = mainQueryRepository.getContent(findParam,listRequestDto, pageRequest);
+        MainRequest listRequestDto = new MainRequest(CS,1,null);
+        PageRequest pageRequest = PageRequest.of(0, 3);
+        List<ListResponseDto> content = mainQueryRepository.getContent(listRequestDto, pageRequest);
         assertThat(content).hasSize(3);
 
     }
@@ -141,9 +141,9 @@ class MainQueryRepositoryTest {
     @Test
     @DisplayName("메인 페이지의 전체 개수를 가져온다.")
     void getTotal() {
-        MainRequest listRequestDto = new MainRequest(CS,1);
         String contents = "꿈나라";
-        JPAQuery<Board> total = mainQueryRepository.getTotal(contents, listRequestDto);
+        MainRequest listRequestDto = new MainRequest(CS,1,contents);
+        JPAQuery<Board> total = mainQueryRepository.getTotal(listRequestDto);
         List<Board> fetch = total.fetch();
         assertThat(fetch).hasSize(1);
 

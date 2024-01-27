@@ -23,15 +23,14 @@ public class MainController {
 
     @GetMapping("/")
     public ResponseEntity<Page<ListResponseDto>> mainList(
-            @RequestParam(value = "title",required = false) String title,
-            @RequestBody(required = false) MainRequest mainRequestDto,
+            @RequestBody MainRequest mainRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
         log.info("~~~메인~~");
         log.info("categroy : {} ",mainRequestDto.getCategory());
         log.info("getOrder() : {} ",mainRequestDto.getOrder());
 
 
-        Page<ListResponseDto> list = listService.list(title, mainRequestDto, pageable);
+        Page<ListResponseDto> list = listService.list(mainRequestDto, pageable);
 
 
         return ResponseEntity.ok(list);
