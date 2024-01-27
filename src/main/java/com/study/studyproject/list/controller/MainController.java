@@ -27,8 +27,8 @@ public class MainController {
             @RequestBody(required = false) MainRequest mainRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
         log.info("~~~메인~~");
-        System.out.println("mainRequestDto.getCategory() = " + mainRequestDto.getCategory());
         System.out.println("mainRequestDto.getOrder() = " + mainRequestDto.getOrder());
+        System.out.println("mainRequestDto.getCategory() = " + mainRequestDto.getCategory());
 
         log.info("mainRequestDto.getCategory()  {} = ",mainRequestDto.getCategory());
         log.info("mainRequestDto.getOrder()  {} = ",mainRequestDto.getOrder());
