@@ -27,6 +27,8 @@ public class MainController {
             @RequestBody(required = false) MainRequest mainRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
         log.info("~~~메인~~");
+        System.out.println("mainRequestDto.getCategory() = " + mainRequestDto.getCategory());
+        System.out.println("mainRequestDto.getOrder() = " + mainRequestDto.getOrder());
 
         Page<ListResponseDto> list = listService.list(title, mainRequestDto, pageable);
         return ResponseEntity.ok(list);
