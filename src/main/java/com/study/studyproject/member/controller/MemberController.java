@@ -43,7 +43,7 @@ public class MemberController {
     @GetMapping("/list")
     public ResponseEntity<Page<ListResponseDto>> mainList(
             @CookieValue(value = "Refresh_Token") String token,
-            @RequestBody MemberListRequestDto memberListRequestDto,
+             MemberListRequestDto memberListRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.ok(memberService.listMember(token, memberListRequestDto, pageable));
     }
