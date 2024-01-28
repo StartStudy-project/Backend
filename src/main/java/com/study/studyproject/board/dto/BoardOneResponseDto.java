@@ -13,6 +13,10 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardOneResponseDto {
+
+    @Schema(description = "게시글 내용", defaultValue = "내요내용")
+    boolean isMyBoard;
+
     @Schema(description = "제목", defaultValue = "제목제목")
     String title;
 
@@ -25,6 +29,7 @@ public class BoardOneResponseDto {
     @Schema(description = "게시글 내용", defaultValue = "내요내용")
     String content;
 
+
     @Schema(description = "조회수", defaultValue = "3")
     int viewCnt;
 
@@ -32,19 +37,30 @@ public class BoardOneResponseDto {
     ReplyResponseDto replyResponseDto;
 
     @Builder
-    public BoardOneResponseDto(String title, String userId, LocalDateTime updateTime, String content, int viewCnt, ReplyResponseDto replyResponseDto) {
+    public BoardOneResponseDto(String title, String userId, LocalDateTime updateTime, String content, boolean isMyBoard, int viewCnt, ReplyResponseDto replyResponseDto) {
         this.title = title;
         this.userId = userId;
         this.updateTime = updateTime;
         this.content = content;
+        this.isMyBoard = isMyBoard;
         this.viewCnt = viewCnt;
         this.replyResponseDto = replyResponseDto;
     }
 
 
 
-    public static BoardOneResponseDto of(Board board, ReplyResponseDto replies) {
+
+
+
+    public static BoardOneResponseDto of(Board board, ReplyResponseDto replies, Long currentMemberId) {
+
+        boolean myBoard = false;
+        if (board.getMember().getId().equals(currentMemberId)) {
+            myBoard = true;
+        }
+
         return BoardOneResponseDto.builder()
+                .isMyBoard(myBoard)
                 .updateTime(board.getLastModifiedDate())
                 .title(board.getTitle())
                 .content(board.getContent())

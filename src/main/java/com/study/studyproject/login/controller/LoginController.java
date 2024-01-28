@@ -2,6 +2,7 @@ package com.study.studyproject.login.controller;
 
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.login.dto.LoginRequest;
+import com.study.studyproject.login.dto.SignRequest;
 import com.study.studyproject.login.service.LoginService;
 import com.study.studyproject.login.service.LogoutService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +29,7 @@ public class LoginController {
     //회원가입
     @Operation(summary = "회원가입", description = "사용자 회원가입")
     @PostMapping("/sign")
-    public ResponseEntity<GlobalResultDto> sign(@Validated @RequestBody com.study.studyproject.login.dto.SignRequest signRequest) {
+    public ResponseEntity<GlobalResultDto> sign(@Validated @RequestBody SignRequest signRequest) {
         return ResponseEntity.ok(loginService.sign(signRequest));
 
     }
@@ -37,7 +38,6 @@ public class LoginController {
     @Operation(summary = "로그인", description = "사용자 로그인")
     @PostMapping("/login")
     public ResponseEntity<GlobalResultDto> login( @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        System.out.println("loginRequest = " + loginRequest);
         return ResponseEntity.ok(loginService.loginService(loginRequest, response));
 
     }

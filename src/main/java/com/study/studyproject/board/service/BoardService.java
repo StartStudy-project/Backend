@@ -60,7 +60,6 @@ public class BoardService {
         System.out.println("token = " + token);
 
         Board board = boardRepository.findById(boardId ).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
-        System.out.println("board = " + board);
 
         Long currentMemberId = 0L;
         if (token != null) {
@@ -68,10 +67,9 @@ public class BoardService {
         }
 
 
-
         board.updateViewCnt(board.getViewCount());
         ReplyResponseDto replies = findReplies( boardId,currentMemberId);
-        return BoardOneResponseDto.of(board,replies);
+        return BoardOneResponseDto.of(board,replies,currentMemberId);
 
     }
 

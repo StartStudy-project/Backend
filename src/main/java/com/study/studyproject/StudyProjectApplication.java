@@ -91,7 +91,7 @@ public class StudyProjectApplication {
 
 		 Board board = boardRepository.findById(1L).get();
 		Reply reply = null;
-		 for (int i = 0; i < 4; i++) {
+		 for (int i = 0; i < 1; i++) {
 			 reply = Reply.builder()
 					 .board(board)
 					 .member(member)
@@ -105,8 +105,12 @@ public class StudyProjectApplication {
 					 .board(board)
 					 .build();
 
+
+
 			 replyer.updateParent(reply);
 			 replyRepository.save(reply);
+			 replyRepository.save(replyer);
+
 		 }
 
 //		Reply replyer = Reply.builder()

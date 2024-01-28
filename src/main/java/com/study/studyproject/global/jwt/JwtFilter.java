@@ -46,16 +46,17 @@ public class JwtFilter extends OncePerRequestFilter {
             } else if (refreshToken != null) {
                 Boolean isRefreshToken = jwtUtil.refreshTokenValidation(refreshToken);
                 if (isRefreshToken) {
-                        String loginId = jwtUtil.getEmailFromToken(refreshToken);
-                        String newAccessToken = jwtUtil.creatAccessToken(loginId);
-                        jwtUtil.setHeaderAccessToken(response, newAccessToken);
-                        setAuthentication(jwtUtil.getEmailFromToken(newAccessToken));
+                    String loginId = jwtUtil.getEmailFromToken(refreshToken);
+                    String newAccessToken = jwtUtil.creatAccessToken(loginId);
+                    jwtUtil.setHeaderAccessToken(response, newAccessToken);
+                    setAuthentication(jwtUtil.getEmailFromToken(newAccessToken));
                 } else {
+                    log.info("jwt 안됨");
                     throw new JwtException("RefreshToken Expired");
                 }
-
             }
         }
+
 
 
         filterChain.doFilter(request, response);

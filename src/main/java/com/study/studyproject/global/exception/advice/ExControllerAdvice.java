@@ -63,12 +63,12 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
 
 
     //500
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    @ExceptionHandler
-//    public ResponseEntity<ExceptionResponse> exception(Exception e) {
-//        ExceptionResponse errorResult = new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-//        return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
-//    }
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler
+    public ResponseEntity<ExceptionResponse> exception(Exception e) {
+        ExceptionResponse errorResult = new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+        return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
+    }
 
 
     @ResponseStatus(FORBIDDEN)

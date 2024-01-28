@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/board/")
 @Tag(name = "게시판 API", description = "게시판 Document")
+@Slf4j
 public class BoardController {
 
     private final BoardService boardService;
@@ -46,11 +48,10 @@ public class BoardController {
     }
 
 
-
     //삭제
     @DeleteMapping("member/{boardId}")
     @Operation(summary = "게시글 삭제 ", description = "해당 게시글 삭제")
-    public ResponseEntity<GlobalResultDto> deleteBoard(@Parameter(description = "게시판 ID") @PathVariable Long boardId) {
+    public ResponseEntity<GlobalResultDto> deleteBoard(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId) {
         return ResponseEntity.ok(boardService.boardDeleteOne(boardId));
 
     }
@@ -59,13 +60,22 @@ public class BoardController {
     //글 조회 1개 -
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
-    public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable Long boardId
-                                                       ,@CookieValue(value = "Refresh_Token",required = false) String token
-    ) {
+    public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId
+            , @CookieValue(value = "Refresh_Token", required = false) String token) {
+
+        log.info("----게시글 상세 들어옴------");
+        log.info("token :{}", token);
         BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, token);
         return ResponseEntity.ok(boardOneResponseDto);
 
     }
+
+    @GetMapping("/{boardId}/2")
+    @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
+    public void toWot(){
+        log.info("게시글!");
+    }
+
 
 
 
