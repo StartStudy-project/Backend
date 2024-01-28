@@ -6,11 +6,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class MemberListRequestDto  {
 
     @Schema(description = "모집구분", defaultValue = "모집중")
-    Recruit type;   // 모집중
+    Recruit recruit;   // 모집중
 
     @Schema(description = "카테고리", defaultValue = "CS")
     Category category;   // cs
@@ -19,12 +19,11 @@ public class MemberListRequestDto  {
     int order ; // 0 -> 최신순
 
 
-    Long memberId;
-    
+
     
     @Builder
-    public MemberListRequestDto(Recruit type, Category category, int order) {
-        this.type = type;
+    public MemberListRequestDto(Recruit recruit, Category category, int order) {
+        this.recruit = recruit;
         this.category = category;
         this.order = order;
     }

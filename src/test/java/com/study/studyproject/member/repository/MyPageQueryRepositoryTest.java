@@ -63,13 +63,11 @@ class MyPageQueryRepositoryTest {
                 .category(CS)
                 .order(0)
                 .build();
-        listRequestDto.setMemberId(member2.getId());
-
 
         PageRequest pageRequest = PageRequest.of(0, 3);
 
         //when
-        Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(listRequestDto, pageRequest);
+        Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(listRequestDto, pageRequest, member2.getId());
         List<ListResponseDto> content = listResponseDtos.getContent();
 
         //then

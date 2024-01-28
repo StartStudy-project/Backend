@@ -19,7 +19,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.study.studyproject.entity.QBoard.board;
-import static com.study.studyproject.entity.QMember.member;
 import static com.study.studyproject.entity.QReply.reply;
 import static org.springframework.util.StringUtils.isEmpty;
 
@@ -32,16 +31,16 @@ public class MyPageQueryRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public Page<ListResponseDto> MyPageListPage(MemberListRequestDto condition, Pageable pageable) {
+    public Page<ListResponseDto> MyPageListPage(MemberListRequestDto condition, Pageable pageable, Long memeberId) {
 
-        List<ListResponseDto> content = getContent(condition, pageable);
+        List<ListResponseDto> content = getContent(memeberId,condition, pageable);
 
-        JPAQuery<Board> countQuery = getTotal(condition);
+        JPAQuery<Board> countQuery = getTotal(memeberId,condition);
 
         return PageableExecutionUtils.getPage(content,pageable, countQuery::fetchCount);
     }
 
-    public List<ListResponseDto> getContent(MemberListRequestDto condition, Pageable pageable) {
+    public List<ListResponseDto> getContent(Long memeberId, MemberListRequestDto condition, Pageable pageable) {
 
         return queryFactory
                 .select(
@@ -62,8 +61,8 @@ public class MyPageQueryRepository {
                 .leftJoin(reply)
                 .on(board.id.eq(reply.board.id))
                 .where(
-                        getType(condition.getType()), //모집여부
-                        getUser(condition.getMemberId()), //사용자 아이디 유무
+                        getType(condition.getRecruit()), //모집여부
+                        getUser(memeberId), //사용자 아이디 유무
                         getCategory(condition.getCategory())
                 )
                 .orderBy(
@@ -84,15 +83,15 @@ public class MyPageQueryRepository {
         return category.equals(Category.전체) ? null : board.category.eq(category);
     }
 
-    public JPAQuery<Board> getTotal(MemberListRequestDto condition) {
+    public JPAQuery<Board> getTotal(Long memeberId, MemberListRequestDto condition) {
         return queryFactory
                 .select(
                         board
                 )
                 .from(board)
                 .where(
-                        getType(condition.getType()), //모집여부
-                        getUser(condition.getMemberId()), //사용자 이메일
+                        getType(condition.getRecruit()), //모집여부
+                        getUser(memeberId), //사용자 이메일
                         getCategory(condition.getCategory())
                 );
     }

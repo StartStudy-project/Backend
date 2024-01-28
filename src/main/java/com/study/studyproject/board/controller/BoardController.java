@@ -70,13 +70,6 @@ public class BoardController {
 
     }
 
-    @GetMapping("/{boardId}/2")
-    @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
-    public void toWot(){
-        log.info("게시글!");
-    }
-
-
 
 
 }

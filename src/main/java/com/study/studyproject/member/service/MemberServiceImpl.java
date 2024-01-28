@@ -13,6 +13,7 @@ import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.member.repository.MyPageQueryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @Service
 @org.springframework.transaction.annotation.Transactional
+@Slf4j
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
@@ -55,8 +57,8 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public Page<ListResponseDto> listMember(String token, MemberListRequestDto memberListRequestDto, Pageable pageable) {
         Long idFromToken = jwtUtil.getIdFromToken(token);
-        memberListRequestDto.setMemberId(idFromToken);
-        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable);
+        log.info("idFromToken : {} ",idFromToken);
+        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable,idFromToken);
     }
 
 
