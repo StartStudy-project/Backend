@@ -5,14 +5,17 @@ import com.study.studyproject.entity.*;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.repository.ReplyRepository;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 
 @Component
-@PreFilter("local")
+@Profile("local")
 public class InitData {
 
     @Autowired
@@ -29,10 +32,8 @@ public class InitData {
 
 
 
-
     @PostConstruct
     void init() {
-
 
         String encode = passwordEncoder.encode("1234");
         Member memberOne = Member.builder()
