@@ -61,7 +61,7 @@ public class JwtUtil {
     // 토큰 생성
     public TokenDtoResponse createAllToken(String email, Long id) {
         String access = creatAccessToken(email);
-        System.out.println("발급access = " + access);
+        System.out.println("발급 access = " + access);
         String refresh = createRefreshToken(email, id);
         System.out.println("발급 refresh = " + refresh);
 

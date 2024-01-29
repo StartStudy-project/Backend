@@ -1,12 +1,9 @@
 package com.study.studyproject.global.exception.advice;
 
 import com.study.studyproject.global.exception.ExceptionResponse;
-import com.study.studyproject.global.exception.ex.JwtException;
 import com.study.studyproject.global.exception.ex.TokenNotValidatException;
 import com.study.studyproject.global.exception.ex.UserNotFoundException;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,17 +13,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpClientErrorException.Forbidden;
-import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.naming.AuthenticationException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -49,11 +40,6 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<ExceptionResponse> exhandle(JwtException e) {
-        ExceptionResponse errorResult = new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
-    }
 
     @ExceptionHandler
     public ResponseEntity<ExceptionResponse> tokenNotValidatException(TokenNotValidatException e) {

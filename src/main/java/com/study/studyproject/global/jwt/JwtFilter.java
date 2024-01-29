@@ -1,9 +1,7 @@
 package com.study.studyproject.global.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.studyproject.entity.QMember;
 import com.study.studyproject.global.GlobalResultDto;
-import com.study.studyproject.global.exception.ex.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,8 +49,8 @@ public class JwtFilter extends OncePerRequestFilter {
                     jwtUtil.setHeaderAccessToken(response, newAccessToken);
                     setAuthentication(jwtUtil.getEmailFromToken(newAccessToken));
                 } else {
-                    log.info("jwt 안됨");
-                    throw new JwtException("RefreshToken Expired");
+                    jwtExceptionHandler(response, "만료된 JWT 서명입니다. IllegalArgumentException.", HttpStatus.BAD_REQUEST);
+                    return;
                 }
             }
         }
@@ -63,6 +61,18 @@ public class JwtFilter extends OncePerRequestFilter {
 
 
     }
+
+    public void jwtExceptionHandler(HttpServletResponse response, String message, HttpStatus statusCode) {
+        response.setStatus(statusCode.value());
+        response.setContentType("application/json; charset=UTF-8");
+        try {
+            String json = new ObjectMapper().writeValueAsString(new GlobalResultDto(message,statusCode.value()));
+            response.getWriter().write(json);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
+
     private String resolveToken(String token) {
 
         if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
