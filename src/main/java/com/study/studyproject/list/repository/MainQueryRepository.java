@@ -2,6 +2,7 @@ package com.study.studyproject.list.repository;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.study.studyproject.list.dto.ListResponseDto;
@@ -51,13 +52,14 @@ public class MainQueryRepository  {
                                 board.title,
                                 board.createdDate,
                                 board.viewCount.intValue(),
-                                reply.count().intValue()
+                                JPAExpressions
+                                        .select(reply.count())
+                                        .from(reply)
+                                        .where(reply.isDeleted.eq(false)
+                                                .and(reply.board.id.eq(board.id)))
                         )
-
                 )
                 .from(board)
-                .leftJoin(reply).fetchJoin()
-                .on(board.id.eq(reply.board.id))
                 .where(
                         board.recruit.eq(Recruit.모집중),
                         getCategory(condition.getCategory()),

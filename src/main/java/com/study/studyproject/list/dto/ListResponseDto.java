@@ -37,10 +37,10 @@ public class ListResponseDto {
     int hitCnt; // 조회수
 
     @Schema(description = "댓글 수 ", defaultValue = "3")
-    int replyCnt; //
+    Long replyCnt; //
 
     @QueryProjection
-    public ListResponseDto(String nickname, int boardId, String recurit, String type, String content, String title, LocalDateTime time, int hitCnt, int replyCnt ) {
+    public ListResponseDto(String nickname, int boardId, String recurit, String type, String content, String title, LocalDateTime time, int hitCnt, Long replyCnt ) {
         this.nickname = nickname;
         this.boardId = boardId;
         this.recurit = recurit;

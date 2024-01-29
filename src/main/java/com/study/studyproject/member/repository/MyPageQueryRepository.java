@@ -2,6 +2,7 @@ package com.study.studyproject.member.repository;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.study.studyproject.list.dto.ListResponseDto;
@@ -53,13 +54,13 @@ public class MyPageQueryRepository {
                                 board.title,
                                 board.createdDate,
                                 board.viewCount.intValue(),
-                                reply.count().intValue()
-                        )
-
-                )
+                                JPAExpressions
+                                        .select(reply.count())
+                                        .from(reply)
+                                        .where(reply.isDeleted.eq(false)
+                                                .and(reply.board.id.eq(board.id)))
+                        ))
                 .from(board)
-                .leftJoin(reply)
-                .on(board.id.eq(reply.board.id))
                 .where(
                         getType(condition.getRecruit()), //모집여부
                         getUser(memeberId), //사용자 아이디 유무

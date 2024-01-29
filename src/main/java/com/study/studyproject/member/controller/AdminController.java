@@ -33,8 +33,7 @@ public class AdminController {
     @Operation(summary = "관리자 대시보드 ", description = "관리자 정보와 게시글 정보 조회")
     public AdminDashBoardResponseDto adminDashInfo(
             @CookieValue(value = "Refresh_Token") String token,
-            MemberListRequestDto memberListRequestDto,
-                                                                      @PageableDefault(size = 10) Pageable pageable) {
+            MemberListRequestDto memberListRequestDto, @PageableDefault(size = 10) Pageable pageable) {
 
         return adminService.adminDashBoardInfo(token,memberListRequestDto,pageable);
     }
