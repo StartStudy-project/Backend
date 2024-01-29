@@ -26,7 +26,7 @@ public class UserDetailsImpl implements UserDetails {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() { //권한주는
-                return Role.ROLE_USER.toString();
+                return member.getRole().toString();
             }
 
         })
