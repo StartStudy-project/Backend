@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@Profile("local")
 public class InitData {
 
     @Autowired
@@ -82,9 +81,9 @@ public class InitData {
             boardRepository.save(build);
         }
 
-        Board board = boardRepository.findById(1L).get();
+        Board board = boardRepository.findById(30L).get();
         Reply reply = null;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 2; i++) {
             reply = Reply.builder()
                     .board(board)
                     .member(member)
