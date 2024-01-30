@@ -65,7 +65,7 @@ class ReplyServiceImplTest {
         ReplyRequestDto replyOne = new ReplyRequestDto(boardCreate.getId(), null, "댓글 내용");
 
         //when
-        replyService.insert(allToken.getRefreshToken(), replyOne);
+        replyService.insert(member1.getId(), replyOne);
 
         //then
         Reply reply = replyRepository.findById(boardCreate.getId()).get();
@@ -94,7 +94,7 @@ class ReplyServiceImplTest {
         ReplyRequestDto replyOne = new ReplyRequestDto(board.getId(), 1L, "댓글 내용");
 
         //when
-        replyService.insert(allToken.getRefreshToken(), replyOne); //2
+        replyService.insert(member1.getId(), replyOne); //2
 
         //then
         Reply reply = replyRepository.findById(2L).get();

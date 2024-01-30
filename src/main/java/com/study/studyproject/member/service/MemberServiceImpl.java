@@ -35,18 +35,16 @@ public class MemberServiceImpl implements MemberService{
     //사용자 정보조회
     @Override
     @Transactional(readOnly  = true)
-    public UserInfoResponseDto userInfoService(String token) {
-        Long idFromToken = jwtUtil.getIdFromToken(token);
-        Member member = memberRepository.findById(idFromToken).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
+    public UserInfoResponseDto userInfoService(Long token) {
+        Member member = memberRepository.findById(token).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
 
         return UserInfoResponseDto.of(member);
 
     }
 
     @Override
-    public GlobalResultDto userInfoUpdate(String token, MemberUpdateResDto memberUpdateResDto) {
-        Long idFromToken = jwtUtil.getIdFromToken(token);
-        Member member = memberRepository.findById(idFromToken).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
+    public GlobalResultDto userInfoUpdate(Long token, MemberUpdateResDto memberUpdateResDto) {
+        Member member = memberRepository.findById(token).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
         member.updateMemberInfo(memberUpdateResDto);
 
         return new GlobalResultDto("사용자 수정 성공", HttpStatus.OK.value());
@@ -55,10 +53,8 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Page<ListResponseDto> listMember(String token, MemberListRequestDto memberListRequestDto, Pageable pageable) {
-        Long idFromToken = jwtUtil.getIdFromToken(token);
-        log.info("idFromToken : {} ",idFromToken);
-        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable,idFromToken);
+    public Page<ListResponseDto> listMember(Long token, MemberListRequestDto memberListRequestDto, Pageable pageable) {
+        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable,token);
     }
 
 

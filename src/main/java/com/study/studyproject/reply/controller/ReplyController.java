@@ -22,8 +22,9 @@ public class ReplyController {
 
     @PostMapping("/insertReply")
     @Operation(summary = "댓글 추가", description = "댓글 추가")
-    public void insertReply(@CookieValue(value = "Refresh_Token") String token, @RequestBody ReplyRequestDto replyRequestDto) {
-        replyService.insert(token, replyRequestDto);
+    public void insertReply(            @AuthenticationPrincipal UserDetailsImpl userDetails
+            , @RequestBody ReplyRequestDto replyRequestDto) {
+        replyService.insert(userDetails.getMemberId(), replyRequestDto);
 
     }
 

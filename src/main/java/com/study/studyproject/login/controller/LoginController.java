@@ -1,6 +1,7 @@
 package com.study.studyproject.login.controller;
 
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.login.dto.LoginRequest;
 import com.study.studyproject.login.dto.LoginResponseDto;
 import com.study.studyproject.login.dto.SignRequest;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -47,11 +49,11 @@ public class LoginController {
 
     @Operation(summary = "로그아웃", description = "사용자 로그아웃")
     @PostMapping("/logout")
-    public void logout(@CookieValue(value = "Refresh_Token") String token, HttpServletResponse response) {
+    public void logout(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response) {
         log.info("로그아웃");
         log.info("Refresh_Token : {} ",response.getHeader("Refresh_Token"));
 
-        logoutService.logoutService(token,response);
+        logoutService.logoutService(userDetails.getMemberId(),response);
     }
 
 }

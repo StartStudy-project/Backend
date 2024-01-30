@@ -29,10 +29,9 @@ public class ReplyServiceImpl implements ReplyService {
 
 
     @Override
-    public void insert(String token, ReplyRequestDto replyRequestDto) {
-        Long memberId = jwtUtil.getIdFromToken(token);
+    public void insert(Long token, ReplyRequestDto replyRequestDto) {
 
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new UserNotFoundException("사용자가 없습니다"));
+        Member member = memberRepository.findById(token).orElseThrow(() -> new UserNotFoundException("사용자가 없습니다"));
         Board board = boardRepository.findById(replyRequestDto.getBoardId())
                 .orElseThrow(() -> new NotFoundException("게시글이 없습니다."));
 

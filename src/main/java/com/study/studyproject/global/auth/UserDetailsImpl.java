@@ -35,6 +35,12 @@ public class UserDetailsImpl implements UserDetails {
         return collection;
     }
 
+
+    public Member getMember() {
+        return member;
+    }
+
+
     public Long getMemberId() {
         return member.getId();
     }

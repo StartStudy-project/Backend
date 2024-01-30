@@ -12,7 +12,6 @@ import com.study.studyproject.member.repository.MyPageQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,11 +35,10 @@ public class AdminServiceImpl implements AdminService{
 
     }
 
-    public AdminDashBoardResponseDto adminDashBoardInfo(String token, MemberListRequestDto memberListRequestDto, Pageable pageable) {
-        Long idFromToken = jwtUtil.getIdFromToken(token);
-        Member member = memberRepository.findById(idFromToken).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
+    public AdminDashBoardResponseDto adminDashBoardInfo(Member token, MemberListRequestDto memberListRequestDto, Pageable pageable) {
+//        Member member = memberRepository.findById(token).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
         Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable, null);
-        return AdminDashBoardResponseDto.of(member, listResponseDtos);
+        return AdminDashBoardResponseDto.of(token, listResponseDtos);
     }
 }
 

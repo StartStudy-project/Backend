@@ -37,8 +37,8 @@ public class BoardService {
 
 
     //작성
-    public GlobalResultDto boardSave(BoardWriteRequestDto boardWriteRequestDto, String token) {
-        Member member = memberRepository.findById(jwtUtil.getIdFromToken(token))
+    public GlobalResultDto boardSave(BoardWriteRequestDto boardWriteRequestDto, Long token) {
+        Member member = memberRepository.findById(token)
                 .orElseThrow(() -> new IllegalArgumentException("ID가 없습니다."));
         Board entity = boardWriteRequestDto.toEntity(member);
         boardRepository.save(entity);
@@ -55,13 +55,13 @@ public class BoardService {
 
 
     //글 1개만 가져오기
-    public BoardOneResponseDto boardOne(Long boardId,String token) {
+    public BoardOneResponseDto boardOne(Long boardId,Long token) {
 
         Board board = boardRepository.findById(boardId ).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
 
         Long currentMemberId = 0L;
         if (token != null) {
-            currentMemberId = jwtUtil.getIdFromToken(token);
+            currentMemberId = token;
         }
 
 

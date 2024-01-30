@@ -1,5 +1,6 @@
 package com.study.studyproject.member.controller;
 
+import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.member.dto.AdminDashBoardResponseDto;
 import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,9 +34,9 @@ public class AdminController {
     @GetMapping("/dashBoard")
     @Operation(summary = "관리자 대시보드 ", description = "관리자 정보와 게시글 정보 조회")
     public AdminDashBoardResponseDto adminDashInfo(
-            @CookieValue(value = "Refresh_Token") String token,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
             MemberListRequestDto memberListRequestDto, @PageableDefault(size = 10) Pageable pageable) {
 
-        return adminService.adminDashBoardInfo(token,memberListRequestDto,pageable);
+        return adminService.adminDashBoardInfo(userDetails.getMember(),memberListRequestDto,pageable);
     }
 }

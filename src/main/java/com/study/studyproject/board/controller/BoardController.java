@@ -7,15 +7,19 @@ import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
 import com.study.studyproject.board.service.BoardService;
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.auth.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jmx.export.annotation.ManagedOperation;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,9 +42,9 @@ public class BoardController {
 
     @PostMapping("member/writing")
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
-    public ResponseEntity<GlobalResultDto> writing(@CookieValue(value = "Refresh_Token") String token, @RequestBody BoardWriteRequestDto boardWriteRequestDto, HttpServletResponse response) {
-        System.out.println("response.getHeader(\"Refresh_Token\") = " + response.getHeader("Refresh_Token"));
-        return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto, token));
+    public ResponseEntity<GlobalResultDto> writing(@RequestBody BoardWriteRequestDto boardWriteRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails)  {
+        return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto, userDetails.getMemberId()));
+
     }
 
     @Operation(summary = "모집구분 변경", description = "모집구분 변경")
@@ -63,11 +67,10 @@ public class BoardController {
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
     public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId
-            , @CookieValue(value = "Refresh_Token", required = false) String token) {
+            , @AuthenticationPrincipal UserDetailsImpl userDetails ) {
 
         log.info("----게시글 상세 들어옴------");
-        log.info("token :{}", token);
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, token);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, userDetails.getMemberId());
         return ResponseEntity.ok(boardOneResponseDto);
 
     }
