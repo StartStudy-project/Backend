@@ -102,9 +102,6 @@ public class JwtUtil {
         cookie.setHttpOnly(true);
         cookie.setSecure(false);
         cookie.setPath("/");
-
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Allow-Credentials","true");
         response.addCookie(cookie);
 //        response.addHeader("Set-Cookie", cookie.toString());
 
