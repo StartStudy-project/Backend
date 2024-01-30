@@ -20,3 +20,8 @@ logging:
       springframework:
         web: DEBUG
     org.springframework.security: DEBUG
+server:
+  servlet:
+    cookie:
+      same-site: None
+      secure: true

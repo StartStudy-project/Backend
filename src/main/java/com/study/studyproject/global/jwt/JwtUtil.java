@@ -100,7 +100,7 @@ public class JwtUtil {
         cookie.setMaxAge((int) REFRESH_TIME);
         cookie.setSecure(false);
         cookie.setHttpOnly(true);
-        cookie.setDomain("127.0.0.1");
+        cookie.setDomain("localhost");
         cookie.setPath("/");
         response.addCookie(cookie);
 
