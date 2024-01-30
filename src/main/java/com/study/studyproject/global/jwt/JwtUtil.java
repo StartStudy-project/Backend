@@ -111,7 +111,7 @@ public class JwtUtil {
     }
 
     public void removeCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie(REFRESH_TOKEN,null);
+        Cookie cookie = new Cookie("Token_Cookie",null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
