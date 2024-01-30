@@ -26,7 +26,7 @@ public class CorsConfig  {
         config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        config.setExposedHeaders(Arrays.asList("Refresh_Token", "Access_Token","Set-Cookie","Cookie"));
+        config.setExposedHeaders(Arrays.asList("*"));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
