@@ -17,10 +17,9 @@ public class LogoutService {
 
     //로그아웃
     public void logoutService(String token, HttpServletResponse response) {
-        String emailFromToken = jwtUtil.getEmailFromToken(token);
-        refreshRepository.deleteByEmail(emailFromToken);
+        Long idFromToken = jwtUtil.getIdFromToken(token);
+        refreshRepository.deleteById(idFromToken);
         jwtUtil.removeCookie(response);
-
 
     }
 }

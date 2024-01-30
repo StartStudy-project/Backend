@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,7 @@ import java.net.URI;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "로그인/로그아웃/회원가입 기능",description = "사용자의 로그인과 로그아웃 회원가입 기능")
+@Slf4j
 public class LoginController {
 
     private final LoginService loginService;
@@ -46,6 +48,8 @@ public class LoginController {
     @Operation(summary = "로그아웃", description = "사용자 로그아웃")
     @GetMapping("/logout")
     public void logout(@CookieValue(value = "Refresh_Token") String token, HttpServletResponse response) {
+        log.info("로그아웃");
+
         logoutService.logoutService(token,response);
     }
 
