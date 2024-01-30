@@ -25,9 +25,9 @@ public class ReplyController {
 
     @PostMapping("/insertReply")
     @Operation(summary = "댓글 추가", description = "댓글 추가")
-    public void insertReply(   HttpServletRequest request
+    public void insertReply(   @RequestHeader("Refresh_Token") String token
             , @RequestBody ReplyRequestDto replyRequestDto) {
-        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(request.getHeader(jwtUtil.REFRESH_TOKEN)));
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
         replyService.insert(idFromToken, replyRequestDto);
 
     }

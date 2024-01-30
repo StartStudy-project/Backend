@@ -44,8 +44,8 @@ public class BoardController {
 
     @PostMapping("member/writing")
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
-    public ResponseEntity<GlobalResultDto> writing(@RequestBody BoardWriteRequestDto boardWriteRequestDto,HttpServletRequest request)  {
-        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(request.getHeader(jwtUtil.REFRESH_TOKEN)));
+    public ResponseEntity<GlobalResultDto> writing(@RequestBody BoardWriteRequestDto boardWriteRequestDto,@RequestHeader("Refresh_Token") String token)  {
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
         return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto, idFromToken));
 
     }
@@ -70,11 +70,10 @@ public class BoardController {
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
     public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId
-            ,HttpServletRequest request) {
+            ,@RequestHeader("Refresh_Token") String token) {
 
-
-        String token = jwtUtil.resolveToken(request.getHeader(jwtUtil.REFRESH_TOKEN));
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, token);
+        String resolveToken = jwtUtil.resolveToken(token);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, resolveToken);
         return ResponseEntity.ok(boardOneResponseDto);
 
     }

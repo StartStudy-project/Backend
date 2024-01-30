@@ -32,29 +32,28 @@ public class MemberController {
     //사용자 정보 조회
     @Operation(summary = "사용자 정보 조회", description = "자신의 사용자 정보를 조회")
     @GetMapping("/info")
-    public ResponseEntity<UserInfoResponseDto> userInfo(HttpServletRequest request) {
-        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(request.getHeader(jwtUtil.REFRESH_TOKEN)));
+    public ResponseEntity<UserInfoResponseDto> userInfo(@RequestHeader("Refresh_Token") String token) {
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
         return ResponseEntity.ok(memberService.userInfoService(idFromToken));
     }
 
     //수정
     @Operation(summary = "사용자 정보 수정", description = "사용자 정보 수정 기능")
     @PatchMapping("/info/update")
-    public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody MemberUpdateResDto memberUpdateResDto, HttpServletRequest request) {
-        Long token = jwtUtil.getIdFromToken(jwtUtil.resolveToken(request.getHeader(jwtUtil.REFRESH_TOKEN)));
-        return ResponseEntity.ok(memberService.userInfoUpdate(token, memberUpdateResDto));
+    public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody MemberUpdateResDto memberUpdateResDto, @RequestHeader("Refresh_Token") String token) {
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
+        return ResponseEntity.ok(memberService.userInfoUpdate(idFromToken, memberUpdateResDto));
     }
 
 
     @Operation(summary = "사용자 게시글 조회", description = "사용자 스터디 게시글 조회")
     @GetMapping("/list")
     public ResponseEntity<Page<ListResponseDto>> mainList(
-            HttpServletRequest request,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
              MemberListRequestDto memberListRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
 
-        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(request.getHeader(jwtUtil.REFRESH_TOKEN)));
-        return ResponseEntity.ok(memberService.listMember(idFromToken, memberListRequestDto, pageable));
+        return ResponseEntity.ok(memberService.listMember(userDetails.getMemberId(), memberListRequestDto, pageable));
     }
 
 

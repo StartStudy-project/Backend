@@ -47,17 +47,17 @@ public class LoginService {
         TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail(),member.getId());
 
 
-         jwtUtil.setCookie(tokensDto.getRefreshToken(),response);
 
         Optional<RefreshToken> refreshToken = refreshRepository.findByEmail(loginRequest.getEmail());
 
         if (refreshToken.isPresent()) {
             refreshRepository.save(refreshToken.get().updateToken(tokensDto.getRefreshToken()));
         } else {
-            RefreshToken.builder()
+            RefreshToken getRefreshToken = RefreshToken.builder()
                     .token(tokensDto.getRefreshToken())
                     .email(loginRequest.getEmail())
                     .build();
+            refreshRepository.save(getRefreshToken);
         }
 
         setHeader(response, tokensDto);

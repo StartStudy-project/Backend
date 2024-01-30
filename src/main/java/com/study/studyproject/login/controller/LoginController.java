@@ -2,6 +2,7 @@ package com.study.studyproject.login.controller;
 
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
+import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.LoginRequest;
 import com.study.studyproject.login.dto.LoginResponseDto;
 import com.study.studyproject.login.dto.SignRequest;
@@ -30,6 +31,7 @@ public class LoginController {
 
     private final LoginService loginService;
     private final LogoutService logoutService;
+    private final JwtUtil jwtUtil;
 
     //회원가입
     @Operation(summary = "회원가입", description = "사용자 회원가입")
@@ -48,12 +50,10 @@ public class LoginController {
     }
 
     @Operation(summary = "로그아웃", description = "사용자 로그아웃")
-    @PostMapping("/logout")
-    public void logout(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response) {
-        log.info("로그아웃");
-        log.info("Refresh_Token : {} ",response.getHeader("Refresh_Token"));
-
-        logoutService.logoutService(userDetails.getMemberId(),response);
+    @PostMapping("/service_logout")
+    public ResponseEntity<GlobalResultDto> logout(@RequestHeader("Refresh_Token") String token) {
+        String emailFromToken = jwtUtil.getEmailFromToken(jwtUtil.resolveToken(token));
+        return ResponseEntity.ok(logoutService.logoutService(emailFromToken));
     }
 
 }

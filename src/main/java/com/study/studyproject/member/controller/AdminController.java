@@ -36,9 +36,9 @@ public class AdminController {
 
     @GetMapping("/dashBoard")
     @Operation(summary = "관리자 대시보드 ", description = "관리자 정보와 게시글 정보 조회")
-    public AdminDashBoardResponseDto adminDashInfo(HttpServletRequest request,
+    public AdminDashBoardResponseDto adminDashInfo(@RequestHeader("Refresh_Token") String token,
                                                    MemberListRequestDto memberListRequestDto, @PageableDefault(size = 10) Pageable pageable) {
-        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(request.getHeader(jwtUtil.REFRESH_TOKEN)));
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
         return adminService.adminDashBoardInfo(idFromToken,memberListRequestDto,pageable);
     }
 }
