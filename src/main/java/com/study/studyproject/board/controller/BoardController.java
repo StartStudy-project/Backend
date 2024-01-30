@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,8 @@ public class BoardController {
 
     @PostMapping("member/writing")
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
-    public ResponseEntity<GlobalResultDto> writing(@CookieValue(value = "Refresh_Token") String token, @RequestBody BoardWriteRequestDto boardWriteRequestDto) {
+    public ResponseEntity<GlobalResultDto> writing(@CookieValue(value = "Refresh_Token") String token, @RequestBody BoardWriteRequestDto boardWriteRequestDto, HttpServletResponse response) {
+        System.out.println("response.getHeader(\"Refresh_Token\") = " + response.getHeader("Refresh_Token"));
         return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto, token));
     }
 
