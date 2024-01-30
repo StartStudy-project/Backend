@@ -12,8 +12,10 @@ import com.study.studyproject.member.dto.MemberUpdateResDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.member.repository.MyPageQueryRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.atn.LexerPopModeAction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -30,20 +32,18 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
     private final MyPageQueryRepository myPageQueryRepository;
-    private final JwtUtil jwtUtil;
 
     //사용자 정보조회
     @Override
     @Transactional(readOnly  = true)
-    public UserInfoResponseDto userInfoService(Long token) {
-        Member member = memberRepository.findById(token).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
-
+    public UserInfoResponseDto userInfoService(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
         return UserInfoResponseDto.of(member);
 
     }
 
     @Override
-    public GlobalResultDto userInfoUpdate(Long token, MemberUpdateResDto memberUpdateResDto) {
+    public GlobalResultDto userInfoUpdate(Long token , MemberUpdateResDto memberUpdateResDto) {
         Member member = memberRepository.findById(token).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
         member.updateMemberInfo(memberUpdateResDto);
 

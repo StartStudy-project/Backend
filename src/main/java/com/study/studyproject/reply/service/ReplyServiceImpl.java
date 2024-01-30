@@ -11,7 +11,9 @@ import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
 import com.study.studyproject.reply.dto.UpdateReplyRequest;
 import com.study.studyproject.reply.repository.ReplyRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,19 +31,21 @@ public class ReplyServiceImpl implements ReplyService {
 
 
     @Override
-    public void insert(Long token, ReplyRequestDto replyRequestDto) {
+    public void insert(Long idFromToken, ReplyRequestDto replyRequestDto) {
+        Member member = memberRepository.findById(idFromToken).orElseThrow(() -> new NotFoundException("사용자 없음"));
 
-        Member member = memberRepository.findById(token).orElseThrow(() -> new UserNotFoundException("사용자가 없습니다"));
         Board board = boardRepository.findById(replyRequestDto.getBoardId())
                 .orElseThrow(() -> new NotFoundException("게시글이 없습니다."));
 
+        ;
         Reply reply = Reply.toEntity(replyRequestDto, board, member);
 
         if (replyRequestDto.getParentId() != null) { // 대댓글인 경우
             Reply replyParent = replyRepository.findById(replyRequestDto.getParentId())
-                    .orElseThrow(() -> new NotFoundException("댓글을 찾을 수 없습니다."));
+                    .orElseThrow(() -> new NotFoundException(("댓글을 찾을 수 없습니다.")));
             reply.updateParent(replyParent);
         }
+
 
         reply.updateWriter(member);
         reply.UpdateBoard(board);

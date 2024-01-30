@@ -6,11 +6,14 @@ import com.study.studyproject.entity.Board;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.Reply;
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.dto.ReplyInfoResponseDto;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import com.study.studyproject.reply.repository.ReplyRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,11 +38,10 @@ public class BoardService {
     private final JwtUtil jwtUtil;
 
 
-
     //작성
-    public GlobalResultDto boardSave(BoardWriteRequestDto boardWriteRequestDto, Long token) {
-        Member member = memberRepository.findById(token)
-                .orElseThrow(() -> new IllegalArgumentException("ID가 없습니다."));
+    public GlobalResultDto boardSave(BoardWriteRequestDto boardWriteRequestDto, Long idFromToken) {
+        Member member = memberRepository.findById(idFromToken).orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다."));
+
         Board entity = boardWriteRequestDto.toEntity(member);
         boardRepository.save(entity);
         return new GlobalResultDto("글 작성 완료", HttpStatus.OK.value());
@@ -55,13 +57,13 @@ public class BoardService {
 
 
     //글 1개만 가져오기
-    public BoardOneResponseDto boardOne(Long boardId,Long token) {
+    public BoardOneResponseDto boardOne(Long boardId, String token) {
 
         Board board = boardRepository.findById(boardId ).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
 
         Long currentMemberId = 0L;
         if (token != null) {
-            currentMemberId = token;
+            currentMemberId = jwtUtil.getIdFromToken(token);
         }
 
 

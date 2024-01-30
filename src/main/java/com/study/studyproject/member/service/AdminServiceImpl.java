@@ -9,6 +9,7 @@ import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.member.repository.MyPageQueryRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,6 @@ public class AdminServiceImpl implements AdminService{
 
     private final MemberRepository memberRepository;
     private final MyPageQueryRepository myPageQueryRepository;
-    private final JwtUtil jwtUtil;
 
     @Override
     public Page<UserInfoResponseDto> userInfoAll(String username, Pageable pageable) {
@@ -35,10 +35,10 @@ public class AdminServiceImpl implements AdminService{
 
     }
 
-    public AdminDashBoardResponseDto adminDashBoardInfo(Member token, MemberListRequestDto memberListRequestDto, Pageable pageable) {
-//        Member member = memberRepository.findById(token).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
+    public AdminDashBoardResponseDto adminDashBoardInfo(Long id, MemberListRequestDto memberListRequestDto, Pageable pageable) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
         Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable, null);
-        return AdminDashBoardResponseDto.of(token, listResponseDtos);
+        return AdminDashBoardResponseDto.of(member, listResponseDtos);
     }
 }
 

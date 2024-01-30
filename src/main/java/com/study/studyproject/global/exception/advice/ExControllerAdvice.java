@@ -69,7 +69,7 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler
-    public ResponseEntity<ExceptionResponse> exhandle(NotFoundException e) {
+    public ResponseEntity<ExceptionResponse> exhandler(NotFoundException e) {
         ExceptionResponse errorResult = new ExceptionResponse(HttpStatus.NOT_FOUND.value(),e.getMessage());
         return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
     }

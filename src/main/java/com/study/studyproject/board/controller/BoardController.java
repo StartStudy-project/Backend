@@ -8,6 +8,7 @@ import com.study.studyproject.board.dto.BoardWriteRequestDto;
 import com.study.studyproject.board.service.BoardService;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
+import com.study.studyproject.global.jwt.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 public class BoardController {
 
     private final BoardService boardService;
+    private final JwtUtil jwtUtil;
 
     //글쓰기 수정
     @PatchMapping("member/updateWrite")
@@ -42,8 +44,9 @@ public class BoardController {
 
     @PostMapping("member/writing")
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
-    public ResponseEntity<GlobalResultDto> writing(@RequestBody BoardWriteRequestDto boardWriteRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails)  {
-        return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto, userDetails.getMemberId()));
+    public ResponseEntity<GlobalResultDto> writing(@RequestBody BoardWriteRequestDto boardWriteRequestDto,HttpServletRequest request)  {
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(request.getHeader(jwtUtil.REFRESH_TOKEN)));
+        return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto, idFromToken));
 
     }
 
@@ -67,10 +70,11 @@ public class BoardController {
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
     public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId
-            , @AuthenticationPrincipal UserDetailsImpl userDetails ) {
+            ,HttpServletRequest request) {
 
-        log.info("----게시글 상세 들어옴------");
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, userDetails.getMemberId());
+
+        String token = jwtUtil.resolveToken(request.getHeader(jwtUtil.REFRESH_TOKEN));
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, token);
         return ResponseEntity.ok(boardOneResponseDto);
 
     }

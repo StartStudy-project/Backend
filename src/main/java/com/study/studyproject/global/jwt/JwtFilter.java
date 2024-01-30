@@ -73,7 +73,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
     }
 
-    private String resolveToken(String token) {
+    private  String resolveToken(String token) {
 
         if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
             String[] split = token.split(" ");

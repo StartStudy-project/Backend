@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Base64;
@@ -175,4 +176,16 @@ public class JwtUtil {
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
         response.setHeader(REFRESH_TOKEN,BEARER+refreshToken);
     }
+
+
+    public  String resolveToken(String token) {
+
+        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            String[] split = token.split(" ");
+            return split[1];
+        }
+
+        return null;
+    }
+
 }

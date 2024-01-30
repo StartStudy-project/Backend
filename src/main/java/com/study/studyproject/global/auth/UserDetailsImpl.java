@@ -36,10 +36,6 @@ public class UserDetailsImpl implements UserDetails {
     }
 
 
-    public Member getMember() {
-        return member;
-    }
-
 
     public Long getMemberId() {
         return member.getId();

@@ -18,7 +18,6 @@ public class LogoutService {
     //로그아웃
     public void logoutService(Long tokenId, HttpServletResponse response) {
         refreshRepository.deleteById(tokenId);
-        jwtUtil.removeCookie(response);
 
     }
 }
