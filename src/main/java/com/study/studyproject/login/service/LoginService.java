@@ -7,6 +7,7 @@ import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.LoginRequest;
+import com.study.studyproject.login.dto.LoginResponseDto;
 import com.study.studyproject.login.dto.SignRequest;
 import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.login.repository.RefreshRepository;
@@ -35,7 +36,7 @@ public class LoginService {
 
 
 
-    public GlobalResultDto loginService(LoginRequest loginRequest, HttpServletResponse response) {
+    public LoginResponseDto loginService(LoginRequest loginRequest, HttpServletResponse response) {
 
         Member member = memberRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
 
@@ -61,7 +62,7 @@ public class LoginService {
 
         setHeader(response, tokensDto);
 
-        return new GlobalResultDto("로그인 되었습니다.", HttpStatus.OK.value());
+        return new LoginResponseDto("로그인 되었습니다.", HttpStatus.OK.value(),member.getNickname());
 
     }
     private void setHeader(HttpServletResponse response, TokenDtoResponse tokensDto) {
