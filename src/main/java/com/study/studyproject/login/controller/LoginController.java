@@ -46,9 +46,10 @@ public class LoginController {
     }
 
     @Operation(summary = "로그아웃", description = "사용자 로그아웃")
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public void logout(@CookieValue(value = "Refresh_Token") String token, HttpServletResponse response) {
         log.info("로그아웃");
+        log.info("Refresh_Token : {} ",response.getHeader("Refresh_Token"));
 
         logoutService.logoutService(token,response);
     }

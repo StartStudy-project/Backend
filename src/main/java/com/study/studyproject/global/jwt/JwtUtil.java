@@ -98,7 +98,8 @@ public class JwtUtil {
     public void setCookie(String refreshToken,HttpServletResponse response) {
         Cookie cookie = new Cookie(REFRESH_TOKEN,refreshToken);
         cookie.setMaxAge((int) REFRESH_TIME);
-        cookie.setSecure(true);
+        cookie.setSecure(false);
+        cookie.setDomain("localhost:5173");
         cookie.setPath("/");
         response.addCookie(cookie);
     }
