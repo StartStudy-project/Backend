@@ -70,7 +70,7 @@ public class BoardController {
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
     public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId
-            ,@RequestHeader("Refresh_Token") String token) {
+            ,@RequestHeader(value = "Refresh_Token",required = false) String token) {
 
         String resolveToken = jwtUtil.resolveToken(token);
         BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, resolveToken);
