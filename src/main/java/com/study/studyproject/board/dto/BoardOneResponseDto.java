@@ -1,6 +1,7 @@
 package com.study.studyproject.board.dto;
 
 import com.study.studyproject.entity.Board;
+import com.study.studyproject.entity.Category;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -29,7 +30,7 @@ public class BoardOneResponseDto {
     @Schema(description = "게시글 내용", defaultValue = "내요내용")
     String content;
 
-
+    Category category;
     @Schema(description = "조회수", defaultValue = "3")
     int viewCnt;
 
@@ -37,11 +38,12 @@ public class BoardOneResponseDto {
     ReplyResponseDto replyResponseDto;
 
     @Builder
-    public BoardOneResponseDto(String title, String userId, LocalDateTime updateTime, String content, boolean isMyBoard, int viewCnt, ReplyResponseDto replyResponseDto) {
+    public BoardOneResponseDto(Category category,String title, String userId, LocalDateTime updateTime, String content, boolean isMyBoard, int viewCnt, ReplyResponseDto replyResponseDto) {
         this.title = title;
         this.userId = userId;
         this.updateTime = updateTime;
         this.content = content;
+        this.category = category;
         this.isMyBoard = isMyBoard;
         this.viewCnt = viewCnt;
         this.replyResponseDto = replyResponseDto;
@@ -66,6 +68,7 @@ public class BoardOneResponseDto {
                 .content(board.getContent())
                 .viewCnt(Math.toIntExact(board.getViewCount()))
                 .userId(board.getNickname())
+                .category(board.getCategory())
                 .replyResponseDto(replies)
                 .build();
     }
