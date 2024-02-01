@@ -32,14 +32,5 @@ public class MainController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/get")
-        public ResponseEntity<GlobalResultDto> gets() {
-        log.info("Handling GET request for \"/get\"");
-        System.out.println("들어오");
-
-        return ResponseEntity.ok(new GlobalResultDto("ds", 200));
-
-    }
-
 
 }
