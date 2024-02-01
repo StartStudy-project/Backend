@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-@ToString(of = {"id","content"})
+@ToString(of = {"id","content","isDeleted"})
 public class Reply extends BaseTimeEntity{
 
     @Id
@@ -70,7 +70,7 @@ public class Reply extends BaseTimeEntity{
 
     public void updateParent(Reply parent) {
         this.parent = parent;
-        parent.getChildren().add(this);
+         parent.getChildren().add(this);
     }
 
 
@@ -94,4 +94,9 @@ public class Reply extends BaseTimeEntity{
     public void ChangeIsDeleted(Boolean deleted) {
         isDeleted = deleted;
     }
+
+
+
+
+
 }

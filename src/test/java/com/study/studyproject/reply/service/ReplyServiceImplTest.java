@@ -13,6 +13,7 @@ import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
 import com.study.studyproject.reply.dto.UpdateReplyRequest;
 import com.study.studyproject.reply.repository.ReplyRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -47,6 +48,8 @@ class ReplyServiceImplTest {
     ReplyServiceImpl replyService;
     @Autowired
     JwtUtil jwtUtil;
+    @Autowired
+    private EntityManager entityManager;
 
 
     @Test
@@ -185,19 +188,25 @@ class ReplyServiceImplTest {
 
 
         replyRepository.save(one);
+        replyRepository.save(two);
+        replyRepository.save(tree);
+        replyRepository.save(four);
 
 
         //when
         replyService.deleteReply(two.getId());
 
         //then
-        Reply reply = replyRepository.findById(two.getId()).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
+        List<Reply> all = replyRepository.findAll();
+        assertThatThrownBy(() -> replyRepository.findById(two.getId()).orElseThrow(() -> new UserNotFoundException("댓글을 찾을 수 없습니다.")))
+                .isInstanceOf(UserNotFoundException.class)
+                .hasMessage("댓글을 찾을 수 없습니다.");
 
     }
 
 
     @Test
-    @DisplayName("대댓글 삭제시 부모댓글 삭제했지만 대댓글이 있는 경우 삭제 안된다.")
+    @DisplayName("댓글과 여러개의 대댓글가 있는 댓글일 경우, 대댓글을 모두 삭제하면 댓글도 삭제된다.")
     void deleteParentChildReply() {
 
         Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
@@ -210,26 +219,32 @@ class ReplyServiceImplTest {
         Reply tree = createReply("대댓글2", one, member1, board);
         Reply four = createReply("대댓글3", one, member1, board);
 
+
         two.updateParent(one);
         tree.updateParent(one);
         four.updateParent(one);
 
-
         replyRepository.save(one);
+        replyRepository.save(two);
+        replyRepository.save(tree);
+
+
+        replyRepository.save(four);
 
 
         //when
         replyService.deleteReply(one.getId());
         replyService.deleteReply(two.getId());
+        replyService.deleteReply(tree.getId());
+
+        entityManager.flush();
+        entityManager.clear();
+
+        replyService.deleteReply(four.getId());
 
         //then
-
         List<Reply> all = replyRepository.findAll();
-        assertThat(all).hasSize(4);
-        assertThat(all.get(0).getIsDeleted()).isTrue();
-        assertThat(all.get(1).getIsDeleted()).isTrue();
-        assertThat(all.get(2).getIsDeleted()).isFalse();
-        assertThat(all.get(3).getIsDeleted()).isFalse();
+        Assertions.assertThat(all).hasSize(0);
 
     }
 

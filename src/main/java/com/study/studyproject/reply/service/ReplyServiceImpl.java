@@ -5,15 +5,12 @@ import com.study.studyproject.entity.Board;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.Reply;
 import com.study.studyproject.global.exception.ex.NotFoundException;
-import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
 import com.study.studyproject.reply.dto.UpdateReplyRequest;
 import com.study.studyproject.reply.repository.ReplyRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,20 +62,17 @@ public class ReplyServiceImpl implements ReplyService {
     public void deleteReply(Long num) { //댓글 num
         Reply reply = replyRepository.findCommentByIdWithParent(num)
                 .orElseThrow(() -> new NotFoundException("댓글을 찾기 못했습니다."));
-
         int size = reply.getChildren().size();
-        System.out.println("size = " + size);
         if (size != 0) { //자식이 있는 상태
             reply.ChangeIsDeleted(true);
         } else { //삭제 가능한 조상 댓글
             replyRepository.delete(getDelete(reply));
         }
+
     }
 
     private Reply getDelete(Reply reply) {
         Reply parent = reply.getParent();
-        System.out.println("parent = " + parent);
-        System.out.println("삭제");
         if (parent != null && parent.getChildren().size() == 1 && parent.getIsDeleted()) {
             return getDelete(parent);
         }

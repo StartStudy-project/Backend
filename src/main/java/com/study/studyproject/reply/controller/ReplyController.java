@@ -40,7 +40,7 @@ public class ReplyController {
 
     @DeleteMapping("/deleteReply")
     @Operation(summary = "댓글 삭제")
-    public void delete(@Parameter(description = "댓글 번호",example = "1") Long rno) {
+    public void delete(@Parameter(description = "댓글 번호",example = "1") @RequestParam("rno") Long rno) {
         replyService.deleteReply(rno);
     }
 
