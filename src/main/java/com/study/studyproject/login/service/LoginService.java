@@ -14,6 +14,7 @@ import com.study.studyproject.login.repository.RefreshRepository;
 import com.study.studyproject.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +37,7 @@ public class LoginService {
 
 
 
-    public LoginResponseDto loginService(LoginRequest loginRequest, HttpServletResponse response) {
+    public LoginResponseDto loginService(@Valid LoginRequest loginRequest, HttpServletResponse response) {
 
         Member member = memberRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
 
@@ -45,8 +46,6 @@ public class LoginService {
         }
 
         TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail(),member.getId());
-
-
 
         Optional<RefreshToken> refreshToken = refreshRepository.findByEmail(loginRequest.getEmail());
 
@@ -73,7 +72,7 @@ public class LoginService {
 
 
     //회원가입
-    public GlobalResultDto sign(SignRequest signRequest) {
+    public GlobalResultDto sign(@Valid SignRequest signRequest) {
         if (!signRequest.getPwd().equals(signRequest.getCheckPwd())) {
             throw new IllegalArgumentException("비밀번호가 틀립니다.");
         }

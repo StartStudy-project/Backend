@@ -13,5 +13,8 @@ public class LoginRequest {
     @NotEmpty(message = "비밀번호를 입력해주세요")
     private String pwd;
 
-
+    public LoginRequest(String email, String pwd) {
+        this.email = email;
+        this.pwd = pwd;
+    }
 }
