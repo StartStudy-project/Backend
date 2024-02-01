@@ -1,5 +1,6 @@
 package com.study.studyproject.board.service;
 
+import com.study.studyproject.board.dto.BoardChangeRecruitRequestDto;
 import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
@@ -59,7 +60,6 @@ class BoardServiceTest {
         memberRepository.save(member1);
 
         BoardWriteRequestDto writeBoard= writeBoard(Category.CS, "닉네임");
-        TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", 1L);
 
         //when
         GlobalResultDto resultDto = boardService.boardSave(writeBoard, member1.getId());
@@ -86,14 +86,13 @@ class BoardServiceTest {
 
         Board boardCreate = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
         boardRepository.save(boardCreate);
-        TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
 
-        BoardReUpdateRequestDto boardReUpdateRequestDto = upddateBoard(member1.getId(), "수정된 내용", Category.코테, "수정된 타이틀");
+        BoardReUpdateRequestDto boardReUpdateRequestDto = upddateBoard(boardCreate.getId(), "수정된 내용", Category.코테, "수정된 타이틀");
 
         //when
         boardService.updateWrite(boardReUpdateRequestDto);
 
-        Board board = boardRepository.findById(1L).get();
+        Board board = boardRepository.findById(boardCreate.getId()).get();
 
         //then
         assertThat(board.getTitle()).isEqualTo(boardReUpdateRequestDto.getTitle());
@@ -120,10 +119,10 @@ class BoardServiceTest {
         List<Board> boards = boardRepository.saveAll(products);
         System.out.println("boards = " + boards);
 
-        TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", 1L);
+        TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
 
 
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( 1L,allToken.getRefreshToken());
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(),allToken.getRefreshToken());
         System.out.println("boardOneResponseDto = " + boardOneResponseDto);
 
         assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
@@ -157,10 +156,10 @@ class BoardServiceTest {
 
         //when
         List<Reply> byBoardReply = replyRepository.findByBoardReplies(board.getId());
-        TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", 1L);
+        TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
 
         //when
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( 1L,allToken.getRefreshToken());
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( board.getId(),allToken.getRefreshToken());
         System.out.println("boardOneResponseDto = " + boardOneResponseDto);
 
         assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(replies.size());
@@ -198,10 +197,9 @@ class BoardServiceTest {
 
         //when
         List<Reply> byBoardReply = replyRepository.findByBoardReplies(board.getId());
-        TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", 1L);
 
         //when
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( 1L,null);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( board.getId(),null);
         System.out.println("boardOneResponseDto = " + boardOneResponseDto);
 
         assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(replies.size());
@@ -238,6 +236,27 @@ class BoardServiceTest {
         Assertions.assertThat(allBoard).hasSize(0);
 
     }
+
+
+    @Test
+    @DisplayName("모집완료 버튼을 누르면 모집중에서 모집완료로 모집구분이 수정된다.")
+    void changeRecruitTest() throws Exception {
+        //given
+        Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
+        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
+        memberRepository.save(member1);
+        boardRepository.save(board);
+
+        BoardChangeRecruitRequestDto boardChangeRecruitRequestDto = new BoardChangeRecruitRequestDto(board.getId(), Recruit.모집완료);
+        //when
+        boardService.changeRecruit(boardChangeRecruitRequestDto);
+
+        //then
+        Board board1 = boardRepository.findById(board.getId()).get();
+        Assertions.assertThat(board1.getRecruit()).isEqualTo(Recruit.모집완료);
+
+    }
+
 
 
 
