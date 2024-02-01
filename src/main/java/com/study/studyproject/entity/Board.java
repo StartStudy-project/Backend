@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
+@ToString(of = {"id", "title", "nickname","viewCount","content","category","recruit"})
 public class Board extends BaseTimeEntity{
 
     @Id @GeneratedValue
