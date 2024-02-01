@@ -4,6 +4,7 @@ import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.RefreshToken;
 import com.study.studyproject.entity.Role;
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.LoginRequest;
@@ -42,7 +43,7 @@ public class LoginService {
         Member member = memberRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
 
         if (!passwordEncoder.matches(loginRequest.getPwd(), member.getPassword())) {
-            throw new UserNotFoundException("비밀번호가 일치하지 않습니다.");
+            throw new NotFoundException("비밀번호가 일치하지 않습니다.");
         }
 
         TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail(),member.getId());
@@ -74,7 +75,7 @@ public class LoginService {
     //회원가입
     public GlobalResultDto sign(@Valid SignRequest signRequest) {
         if (!signRequest.getPwd().equals(signRequest.getCheckPwd())) {
-            throw new IllegalArgumentException("비밀번호가 틀립니다.");
+            throw new NotFoundException("비밀번호가 틀립니다.");
         }
 
 
@@ -85,7 +86,6 @@ public class LoginService {
 
 
         String[] splitEmail = signRequest.getEmail().split("@");
-        System.out.println("Arrays.toString(splitEmail) = " + Arrays.toString(splitEmail));
 
         String encodePwd = passwordEncoder.encode(signRequest.getPwd());
         Member member = Member.builder().role(Role.ROLE_USER)
