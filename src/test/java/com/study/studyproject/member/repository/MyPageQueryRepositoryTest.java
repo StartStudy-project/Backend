@@ -45,11 +45,11 @@ class MyPageQueryRepositoryTest {
     @DisplayName("마이페이지의 내가 작성한 글 조회한다. ")
     void myPageListPage() {
         //given
-        Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
+        Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임1");
         memberRepository.save(member1);
 
 
-        Member member2 = createMember("jacom1@naver.com", "1234", "사용자명1", "닉네임1");
+        Member member2 = createMember("jacom1@naver.com", "!kimkimkim", "사용자명1", "닉네임1");
         memberRepository.save(member2);
 
         Board board = createBoard(member2, "제목1", "내용1", "닉네임1", CS);
@@ -68,9 +68,10 @@ class MyPageQueryRepositoryTest {
 
         //when
         Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(listRequestDto, pageRequest, member2.getId());
-        List<ListResponseDto> content = listResponseDtos.getContent();
+
 
         //then
+        List<ListResponseDto> content = listResponseDtos.getContent();
         assertThat(content).
                 hasSize(2);
 
