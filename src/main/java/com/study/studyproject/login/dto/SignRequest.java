@@ -9,16 +9,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SignRequest {
 
-    @NotEmpty
+    @NotEmpty(message = "이름을 입력해주세요")
     private String name;
 
-    @NotEmpty
+    @NotEmpty(message = "이메일을 입력해주세요")
     private String email;
 
-    @NotEmpty
+    @NotEmpty(message = "비밀번호를 입력해주세요")
     private String pwd;
 
-    @NotEmpty
+    @NotEmpty(message = "비밀번호 확인을 입력해주세요")
     private String checkPwd;
 
 }
