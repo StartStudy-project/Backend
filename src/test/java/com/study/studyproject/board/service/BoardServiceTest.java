@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoardServiceTest {
 
     @Autowired
-  BoardRepository boardRepository;
+     BoardRepository boardRepository;
 
     @Autowired
      MemberRepository memberRepository;
@@ -115,16 +115,14 @@ class BoardServiceTest {
 
 
         List<Board> products = List.of(board, board1, board2);
-        System.out.println("products = " + products);
         List<Board> boards = boardRepository.saveAll(products);
-        System.out.println("boards = " + boards);
 
         TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
 
-
+        //when
         BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(),allToken.getRefreshToken());
-        System.out.println("boardOneResponseDto = " + boardOneResponseDto);
 
+        //then
         assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
         assertThat(boardOneResponseDto.getTitle()).isEqualTo(board.getTitle());
     }

@@ -2,6 +2,7 @@ package com.study.studyproject.login.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +22,10 @@ public class SignRequest {
     @NotEmpty(message = "비밀번호 확인을 입력해주세요")
     private String checkPwd;
 
+    public SignRequest(String name, String email, String pwd, String checkPwd) {
+        this.name = name;
+        this.email = email;
+        this.pwd = pwd;
+        this.checkPwd = checkPwd;
+    }
 }
