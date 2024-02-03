@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -27,6 +29,12 @@ public class PostLikeService {
     public GlobalResultDto postLikeSave(Long boardId ,Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(()->new UserNotFoundException("사용자를 찾지 못했습니다."));
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
+        Optional<PostLike> postLike = postLikeRepository.findByBoardAndMember(board, member);
+        if (postLike.isPresent()) {
+            return new GlobalResultDto("관심글이 이미 추가하였습니다.", HttpStatus.FORBIDDEN.value());
+        }
+        
+
         postLikeRepository.save(PostLike.create(member, board));
         return new GlobalResultDto("관심글이 추가되었습니다.", HttpStatus.OK.value());
     }

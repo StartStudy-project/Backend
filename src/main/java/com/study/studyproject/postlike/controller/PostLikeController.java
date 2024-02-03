@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/postLike/")
 public class PostLikeController {
 
     private final JwtUtil jwtUtil;
     private final PostLikeService postLikeService;
 
     @Operation(summary = "관심글 등록", description = "사용자의 관심글 등록합니다.")
-    @PostMapping("/savePostLike/{boardId}")
+    @PostMapping("/save/{boardId}")
     public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable Long boardId, @RequestHeader("Access_Token") String token) {
         Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
         System.out.println("idFromToken = " + idFromToken);
@@ -29,7 +30,7 @@ public class PostLikeController {
 
 
     @Operation(summary = "관심글 삭제", description = "사용자의 관심글 삭제합니다.")
-    @DeleteMapping("/deletePostLike/{postLikeId}")
+    @DeleteMapping("/delete/{postLikeId}")
     public ResponseEntity<GlobalResultDto> postLikeDelete(@PathVariable Long postLikeId) {
         return ResponseEntity.ok(postLikeService.postLikeDelete(postLikeId));
     }
