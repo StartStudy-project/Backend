@@ -1,6 +1,7 @@
 package com.study.studyproject.postlike.controller;
 
 
+import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.postlike.service.PostLikeService;
@@ -8,9 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -21,14 +20,18 @@ public class PostLikeController {
     private final PostLikeService postLikeService;
 
     @Operation(summary = "관심글 등록", description = "사용자의 관심글 등록합니다.")
-    @GetMapping("/info")
-    public ResponseEntity<UserInfoResponseDto> postLikeSave(@RequestHeader("Access_Token") String token) {
+    @PostMapping("/savePostLike/{bno}")
+    public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable Long boardId, @RequestHeader("Access_Token") String token) {
         Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
-        return ResponseEntity.ok(postLikeService.postLikeSave(idFromToken));
+        return ResponseEntity.ok(postLikeService.postLikeSave(boardId,idFromToken));
     }
 
 
-
+    @Operation(summary = "관심글 삭제", description = "사용자의 관심글 삭제합니다.")
+    @DeleteMapping("/deletePostLike/{postLikeId}")
+    public ResponseEntity<GlobalResultDto> postLikeDelete(@PathVariable Long postLikeId) {
+        return ResponseEntity.ok(postLikeService.postLikeDelete(postLikeId));
+    }
 
 
 

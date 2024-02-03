@@ -33,4 +33,14 @@ public class PostLike extends BaseTimeEntity{
         this.member = member;
         this.board = board;
     }
+
+    public static PostLike create(Member member, Board board) {
+        return PostLike.builder()
+                .member(member)
+                .board(board)
+                .build();
+    }
+
+
+
 }
