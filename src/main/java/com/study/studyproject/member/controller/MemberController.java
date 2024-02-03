@@ -46,7 +46,7 @@ public class MemberController {
     }
 
 
-    @Operation(summary = "사용자 게시글 조회", description = "사용자 스터디 게시글 조회")
+    @Operation(summary = "내각 작성한 게시글 조회", description = "사용자 스터디 게시글 조회")
     @GetMapping("/list")
     public ResponseEntity<Page<ListResponseDto>> mainList(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -55,6 +55,19 @@ public class MemberController {
 
         return ResponseEntity.ok(memberService.listMember(userDetails.getMemberId(), memberListRequestDto, pageable));
     }
+
+
+
+    @Operation(summary = "관심 게시글 조회", description = "사용자 관심 게시글 조회")
+    @GetMapping("/userPostLike")
+    public ResponseEntity<Page<ListResponseDto>> userPostLike(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            MemberListRequestDto memberListRequestDto,
+            @PageableDefault(size = 10) Pageable pageable) {
+
+        return ResponseEntity.ok(memberService.postLikeBoard(userDetails.getMemberId(), memberListRequestDto, pageable));
+    }
+
 
 
 

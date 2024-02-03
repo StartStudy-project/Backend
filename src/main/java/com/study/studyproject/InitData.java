@@ -3,6 +3,7 @@ package com.study.studyproject;
 import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.entity.*;
 import com.study.studyproject.member.repository.MemberRepository;
+import com.study.studyproject.postlike.repository.PostLikeRepository;
 import com.study.studyproject.reply.repository.ReplyRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,10 @@ public class InitData {
 
     @Autowired
     ReplyRepository replyRepository;
+
+
+    @Autowired
+    PostLikeRepository postLikeRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -103,6 +108,19 @@ public class InitData {
             replyRepository.save(replyer);
 
         }
+
+        for (int i = 0; i < 3; i++) {
+            Board getBoard = boardRepository.findById((long) (30)).get();
+            PostLike postLike = PostLike.create(member, getBoard);
+            postLikeRepository.save(postLike);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            Board getBoard = boardRepository.findById((long) (1)).get();
+            PostLike postLike = PostLike.create(membertree, getBoard);
+            postLikeRepository.save(postLike);
+        }
+
 
 
 

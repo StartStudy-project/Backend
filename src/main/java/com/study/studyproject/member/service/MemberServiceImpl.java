@@ -11,6 +11,7 @@ import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.MemberUpdateResDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.member.repository.MemberRepository;
+import com.study.studyproject.member.repository.MyPagePostLikeQueryRepository;
 import com.study.studyproject.member.repository.MyPageQueryRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
     private final MyPageQueryRepository myPageQueryRepository;
+    private final MyPagePostLikeQueryRepository myPagePostLikeQueryRepository;
 
     //사용자 정보조회
     @Override
@@ -43,8 +45,8 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public GlobalResultDto userInfoUpdate(Long token , MemberUpdateResDto memberUpdateResDto) {
-        Member member = memberRepository.findById(token).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
+    public GlobalResultDto userInfoUpdate(Long memberId , MemberUpdateResDto memberUpdateResDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
         member.updateMemberInfo(memberUpdateResDto);
 
         return new GlobalResultDto("사용자 수정 성공", HttpStatus.OK.value());
@@ -58,6 +60,9 @@ public class MemberServiceImpl implements MemberService{
     }
 
 
+    public Page<ListResponseDto> postLikeBoard(Long memberId, MemberListRequestDto memberListRequestDto, Pageable pageable) {
+        return myPagePostLikeQueryRepository.MyPageListPage(memberListRequestDto, pageable,memberId);
+    }
 }
 
 

@@ -4,11 +4,13 @@ import com.study.studyproject.board.dto.*;
 import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.entity.Board;
 import com.study.studyproject.entity.Member;
+import com.study.studyproject.entity.PostLike;
 import com.study.studyproject.entity.Reply;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.repository.MemberRepository;
+import com.study.studyproject.postlike.repository.PostLikeRepository;
 import com.study.studyproject.reply.dto.ReplyInfoResponseDto;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import com.study.studyproject.reply.repository.ReplyRepository;
@@ -35,6 +37,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final ReplyRepository replyRepository;
     private final MemberRepository memberRepository;
+    private final PostLikeRepository postLikeRepository;
     private final JwtUtil jwtUtil;
 
 
@@ -97,8 +100,18 @@ public class BoardService {
 
     //삭제
     public GlobalResultDto boardDeleteOne(Long boardId) {
-        List<Reply> byBoardReply = replyRepository.findByBoardReplies(boardId);
-        byBoardReply.forEach(replyRepository::delete);
+        //댓글
+        List<Reply> replies = replyRepository.findByBoardReplies(boardId);
+
+        //postLike
+        List<PostLike> postLikes = postLikeRepository.findByBoardId(boardId);
+
+        if (replies.size() != 0 || postLikes.size() != 0) {
+            return new GlobalResultDto("게시글을 삭제 할 수 없습니다.", HttpStatus.FORBIDDEN.value());
+        }
+
+
+
         boardRepository.deleteById(boardId);
         return new GlobalResultDto("게시글 삭제 완료", HttpStatus.OK.value());
     }

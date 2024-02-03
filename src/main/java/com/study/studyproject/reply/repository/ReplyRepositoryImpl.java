@@ -36,7 +36,6 @@ public class ReplyRepositoryImpl implements ReplyRepositoryCustom{
     public List<Reply> findByBoardReplies(Long boardId) {
         List<Reply> comments = queryFactory.selectFrom(reply)
                 .where(reply.board.id.eq(boardId))
-                .orderBy(reply.parent.id.desc().nullsLast())
                 .fetch();
         return comments;
 

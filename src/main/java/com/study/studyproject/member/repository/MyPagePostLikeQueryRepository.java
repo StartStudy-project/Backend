@@ -12,6 +12,7 @@ import com.study.studyproject.entity.Recruit;
 import com.study.studyproject.list.dto.QListResponseDto;
 import com.study.studyproject.member.dto.MemberListRequestDto;
 import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -24,11 +25,11 @@ import static com.study.studyproject.entity.QReply.reply;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Repository
-public class MyPageQueryRepository {
+public class  MyPagePostLikeQueryRepository{
 
     private final JPAQueryFactory queryFactory;
 
-    public MyPageQueryRepository(EntityManager em) {
+    public MyPagePostLikeQueryRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
@@ -61,6 +62,7 @@ public class MyPageQueryRepository {
                                                 .and(reply.board.id.eq(board.id)))
                         ))
                 .from(board)
+                .innerJoin(board.postLikes)
                 .where(
                         getType(condition.getRecruit()), //모집여부
                         getUser(memeberId), //사용자 아이디 유무
@@ -118,7 +120,7 @@ public class MyPageQueryRepository {
             return board.createdDate.desc();
         } else {
             System.out.println("1");
-             return board.viewCount.desc();
+            return board.viewCount.desc();
         }
     }
 
