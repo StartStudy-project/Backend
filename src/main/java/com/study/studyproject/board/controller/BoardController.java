@@ -44,8 +44,9 @@ public class BoardController {
 
     @PostMapping("member/writing")
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
-    public ResponseEntity<GlobalResultDto> writing(@RequestBody BoardWriteRequestDto boardWriteRequestDto,@RequestHeader("Refresh_Token") String token)  {
+    public ResponseEntity<GlobalResultDto> writing(@RequestBody BoardWriteRequestDto boardWriteRequestDto,@RequestHeader("Access_Token") String token)  {
         Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
+        System.out.println("idFromToken = " + idFromToken);
         return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto, idFromToken));
 
     }
@@ -70,7 +71,7 @@ public class BoardController {
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
     public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId
-            ,@RequestHeader(value = "Refresh_Token",required = false) String token) {
+            ,@RequestHeader(value = "Access_Token",required = false) String token) {
 
         String resolveToken = jwtUtil.resolveToken(token);
         BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, resolveToken);

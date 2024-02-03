@@ -67,7 +67,6 @@ public class BoardService {
         }
 
 
-        board.updateViewCnt(board.getViewCount());
         ReplyResponseDto replies = findReplies( boardId,currentMemberId);
         return BoardOneResponseDto.of(board,replies,currentMemberId);
 

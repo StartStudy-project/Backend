@@ -120,7 +120,7 @@ class BoardServiceTest {
         TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
 
         //when
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(),allToken.getRefreshToken());
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(),allToken.getAccessToken());
 
         //then
         assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
@@ -154,10 +154,10 @@ class BoardServiceTest {
 
         //when
         List<Reply> byBoardReply = replyRepository.findByBoardReplies(board.getId());
-        TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
 
         //when
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( board.getId(),allToken.getRefreshToken());
+        TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( board.getId(),allToken.getAccessToken());
         System.out.println("boardOneResponseDto = " + boardOneResponseDto);
 
         assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(replies.size());

@@ -39,13 +39,14 @@ public class JwtFilter extends OncePerRequestFilter {
         if (accessToken != null) {
             if (jwtUtil.tokenValidation(accessToken)) {
                 String emailFromToken = jwtUtil.getEmailFromToken(accessToken);
-                System.out.println("emailFromToken = " + emailFromToken);
                 setAuthentication(emailFromToken);
             } else if (refreshToken != null) {
                 Boolean isRefreshToken = jwtUtil.refreshTokenValidation(refreshToken);
                 if (isRefreshToken) {
-                    String loginId = jwtUtil.getEmailFromToken(refreshToken);
-                    String newAccessToken = jwtUtil.creatAccessToken(loginId);
+                    String emailFromToken = jwtUtil.getEmailFromToken(refreshToken);
+                    Long idFromToken = jwtUtil.getIdFromToken(refreshToken);
+
+                    String newAccessToken = jwtUtil.createToken(emailFromToken,idFromToken,"Access");
                     jwtUtil.setHeaderAccessToken(response, newAccessToken);
                     setAuthentication(jwtUtil.getEmailFromToken(newAccessToken));
                 } else {

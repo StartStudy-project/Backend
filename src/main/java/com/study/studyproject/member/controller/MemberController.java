@@ -32,7 +32,7 @@ public class MemberController {
     //사용자 정보 조회
     @Operation(summary = "사용자 정보 조회", description = "자신의 사용자 정보를 조회")
     @GetMapping("/info")
-    public ResponseEntity<UserInfoResponseDto> userInfo(@RequestHeader("Refresh_Token") String token) {
+    public ResponseEntity<UserInfoResponseDto> userInfo(@RequestHeader("Access_Token") String token) {
         Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
         return ResponseEntity.ok(memberService.userInfoService(idFromToken));
     }
@@ -40,7 +40,7 @@ public class MemberController {
     //수정
     @Operation(summary = "사용자 정보 수정", description = "사용자 정보 수정 기능")
     @PatchMapping("/info/update")
-    public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody MemberUpdateResDto memberUpdateResDto, @RequestHeader("Refresh_Token") String token) {
+    public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody MemberUpdateResDto memberUpdateResDto, @RequestHeader("Access_Token") String token) {
         Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
         return ResponseEntity.ok(memberService.userInfoUpdate(idFromToken, memberUpdateResDto));
     }

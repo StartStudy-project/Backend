@@ -59,16 +59,33 @@ public class JwtUtil {
         return type.equals(ACCESS_TOKEN) ? request.getHeader(ACCESS_TOKEN) : request.getHeader(REFRESH_TOKEN);
     }
 
+
     // 토큰 생성
     public TokenDtoResponse createAllToken(String email, Long id) {
-        String access = creatAccessToken(email);
+        String access = createToken(email, id, "Access");
         System.out.println("발급 access = " + access);
-        String refresh = createRefreshToken(email, id);
-        System.out.println("발급 refresh = " + refresh);
 
-        return new TokenDtoResponse(access,refresh
-        );
+        String refresh = createToken(email, id, "Refresh");
+        System.out.println("발급 refresh = " + refresh);
+        return new TokenDtoResponse(access, refresh);
     }
+
+    public String createToken(String email,Long id, String type) {
+
+        Date date = new Date();
+
+        long time = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
+
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("id", id)
+                .setExpiration(new Date(date.getTime() + time))
+                .setIssuedAt(date)
+                .signWith(key, signatureAlgorithm)
+                .compact();
+    }
+
+
 
     public String creatAccessToken(String email) {
         Date date = new Date();
@@ -95,28 +112,6 @@ public class JwtUtil {
                 .compact();
 
     }
-
-    public void setCookie(String refreshToken,HttpServletResponse response) {
-        Cookie cookie = new Cookie("Token_Cookie",refreshToken);
-        cookie.setMaxAge((int) REFRESH_TIME);
-        cookie.setDomain("127.0.0.1");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-//        response.addHeader("Set-Cookie", cookie.toString());
-
-    }
-
-    public void removeCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie("Token_Cookie",null);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-
-
-    }
-
 
 
     // 토큰 검증
