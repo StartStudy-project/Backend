@@ -29,7 +29,7 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public Page<UserInfoResponseDto> userInfoAll(String username, Pageable pageable) {
-        List<UserInfoResponseDto> contents = memberRepository.getContent(username,pageable).stream().map(i -> UserInfoResponseDto.of(i)).collect(Collectors.toList());
+        List<UserInfoResponseDto> contents = memberRepository.getContent(username,pageable).stream().map(UserInfoResponseDto::of).collect(Collectors.toList());
         return memberRepository.adminUserBoardList(username,contents, pageable);
 
 
