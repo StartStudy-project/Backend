@@ -87,7 +87,6 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("status", status.value());
-        body.put("message", "값을 제대로 입력해주세요");
 
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {

@@ -44,7 +44,7 @@ public class LoginController {
 
     @Operation(summary = "로그인", description = "사용자 로그인")
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+    public ResponseEntity<LoginResponseDto> login(@Validated @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         return ResponseEntity.ok(loginService.loginService(loginRequest, response));
 
     }
