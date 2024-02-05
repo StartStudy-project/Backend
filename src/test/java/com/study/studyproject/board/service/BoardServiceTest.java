@@ -40,7 +40,7 @@ class BoardServiceTest {
      BoardRepository boardRepository;
 
     @Autowired
-     MemberRepository memberRepository;
+    MemberRepository memberRepository;
 
     @Autowired
     ReplyRepository replyRepository;

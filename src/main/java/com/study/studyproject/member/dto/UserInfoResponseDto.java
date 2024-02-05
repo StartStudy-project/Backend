@@ -11,7 +11,7 @@ public class UserInfoResponseDto {
 
 
     @Schema(description = "순서", defaultValue = "1")
-    int seq;
+    Long seq;
 
     @Schema(description = "사용자 이름", defaultValue = "김미")
     String username;
@@ -26,7 +26,7 @@ public class UserInfoResponseDto {
     String role;
 
     @Builder
-    public UserInfoResponseDto(int seq, String username, String nickname, String email, String role) {
+    public UserInfoResponseDto(Long seq, String username, String nickname, String email, String role) {
         this.seq = seq;
         this.username = username;
         this.nickname = nickname;
@@ -39,7 +39,7 @@ public class UserInfoResponseDto {
 
     public static UserInfoResponseDto of(Member member) {
         return UserInfoResponseDto.builder()
-                .seq(member.getId().intValue())
+                .seq(member.getId())
                 .username(member.getUsername())
                 .nickname(member.getNickname())
                 .email(member.getEmail())

@@ -1,6 +1,5 @@
 package com.study.studyproject.login.service;
 
-import com.nimbusds.oauth2.sdk.http.HTTPRequest;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.RefreshToken;
 import com.study.studyproject.global.GlobalResultDto;
