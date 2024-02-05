@@ -24,8 +24,11 @@ public class BoardOneResponseDto {
     @Schema(description = "아이디", defaultValue = "jacom!!!")
     String userId;
 
-    @Schema(description = "작성시간", defaultValue = "2023-10-05T12:34:56")
+    @Schema(description = "수정 시간", defaultValue = "2023-10-05T12:34:56")
     LocalDateTime updateTime;
+
+    @Schema(description = "작성 시간", defaultValue = "2023-10-05T12:34:56")
+    LocalDateTime createTime;
 
     @Schema(description = "게시글 내용", defaultValue = "내요내용")
     String content;
@@ -38,7 +41,7 @@ public class BoardOneResponseDto {
     ReplyResponseDto replyResponseDto;
 
     @Builder
-    public BoardOneResponseDto(Category category,String title, String userId, LocalDateTime updateTime, String content, boolean isMyBoard, int viewCnt, ReplyResponseDto replyResponseDto) {
+    public BoardOneResponseDto(Category category,String title, String userId, LocalDateTime updateTime, String content, boolean isMyBoard, int viewCnt, ReplyResponseDto replyResponseDto,LocalDateTime createTime) {
         this.title = title;
         this.userId = userId;
         this.updateTime = updateTime;
@@ -47,6 +50,7 @@ public class BoardOneResponseDto {
         this.isMyBoard = isMyBoard;
         this.viewCnt = viewCnt;
         this.replyResponseDto = replyResponseDto;
+        this.createTime = createTime;
     }
 
 
@@ -64,6 +68,7 @@ public class BoardOneResponseDto {
         return BoardOneResponseDto.builder()
                 .isMyBoard(myBoard)
                 .updateTime(board.getLastModifiedDate())
+                .createTime(board.getCreatedDate())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .viewCnt(Math.toIntExact(board.getViewCount()))
