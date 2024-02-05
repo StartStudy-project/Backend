@@ -62,10 +62,10 @@ public class JwtUtil {
 
     // 토큰 생성
     public TokenDtoResponse createAllToken(String email, Long id) {
-        String access = createToken(email, id, "Access");
+        String access = createToken(email, id, ACCESS_TOKEN);
         System.out.println("발급 access = " + access);
 
-        String refresh = createToken(email, id, "Refresh");
+        String refresh = createToken(email, id, REFRESH_TOKEN);
         System.out.println("발급 refresh = " + refresh);
         return new TokenDtoResponse(access, refresh);
     }
@@ -74,7 +74,7 @@ public class JwtUtil {
 
         Date date = new Date();
 
-        long time = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
+        long time = type.equals(ACCESS_TOKEN) ? ACCESS_TIME : REFRESH_TIME;
 
         return Jwts.builder()
                 .setSubject(email)

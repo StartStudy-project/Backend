@@ -93,10 +93,12 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            body.put(fieldName, errorMessage);
         });
-        //
-        log.info("Errors", errors);
+
+
+
+        log.info("Errors  {} :  ", errors);
         return new ResponseEntity<>(body, headers, status);
     }
 

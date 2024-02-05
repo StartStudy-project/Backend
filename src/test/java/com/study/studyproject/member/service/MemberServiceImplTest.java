@@ -143,7 +143,7 @@ class MemberServiceImplTest {
 
 
     @Test
-    @DisplayName("관심글 게시글 전체 조회한다.")
+    @DisplayName("모든 관심글 게시글을 최신순으로 조회한다.")
     void postLikeBoard() throws Exception {
         //given
         Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");

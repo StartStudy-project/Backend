@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class GlobalResultDto {
-    @Schema(description = "메시지", defaultValue = "~~ 완료")
     private String message;
     @Schema(description = "상태코드", defaultValue = "200")
     private int statusCode;

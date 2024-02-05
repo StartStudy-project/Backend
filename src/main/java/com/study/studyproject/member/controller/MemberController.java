@@ -48,14 +48,15 @@ public class MemberController {
     }
 
 
-    @Operation(summary = "내각 작성한 게시글 조회", description = "사용자 스터디 게시글 조회")
+    @Operation(summary = "내가 작성한 게시글 조회", description = "사용자 스터디 게시글 조회")
     @GetMapping("/list")
     public ResponseEntity<Page<ListResponseDto>> mainList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestHeader("Access_Token") String token,
              MemberListRequestDto memberListRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
 
-        return ResponseEntity.ok(memberService.listMember(userDetails.getMemberId(), memberListRequestDto, pageable));
+        return ResponseEntity.ok(memberService.listMember(idFromToken, memberListRequestDto, pageable));
     }
 
 
@@ -63,11 +64,12 @@ public class MemberController {
     @Operation(summary = "관심 게시글 조회", description = "사용자 관심 게시글 조회")
     @GetMapping("/userPostLike")
     public ResponseEntity<Page<ListResponseDto>> userPostLike(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestHeader("Access_Token") String token,
             MemberListRequestDto memberListRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
 
-        return ResponseEntity.ok(memberService.postLikeBoard(userDetails.getMemberId(), memberListRequestDto, pageable));
+        return ResponseEntity.ok(memberService.postLikeBoard(idFromToken, memberListRequestDto, pageable));
     }
 
 
