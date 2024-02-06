@@ -84,7 +84,6 @@ class ReplyControllerTest {
                 .andExpect(status().isOk());
     }
 
-
     @Test
     @DisplayName("게시글에 댓글 작성할 때, 게시글 번호와 댓글 내용은 필수값입니다.")
     void insertParentReplyWithoutBoardId() throws Exception {

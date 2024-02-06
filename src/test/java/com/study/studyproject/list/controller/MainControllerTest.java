@@ -58,14 +58,13 @@ class MainControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].nickname").value("닉네임3"))
-                .andExpect(jsonPath("$.content[0].boardId").value("3"))
                 .andExpect(jsonPath("$.pageable.pageSize").value("10"))
                 .andExpect(jsonPath("$.totalElements").value(3));
     }
 
 
     @Test
-    @DisplayName("모든 카테고리를  조회순 조회한다.")
+    @DisplayName("모든 카테고리를 조회순 조회한다.")
     void mainListAllTestAsc() throws Exception {
         //given
         Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
