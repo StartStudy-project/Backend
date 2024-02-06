@@ -6,6 +6,7 @@ import com.study.studyproject.entity.Category;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.Reply;
 import com.study.studyproject.member.repository.MemberRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static com.study.studyproject.entity.Category.CS;
 import static com.study.studyproject.entity.Role.ROLE_USER;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -33,6 +35,7 @@ class ReplyRepositoryImplTest {
 
 
     @Test
+    @DisplayName("해당 게시글의 댓글과 부모 댓글와 작성자를 함께 조회한다.")
     void findByBoardReply() {
         Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
         memberRepository.save(member1);
@@ -43,23 +46,27 @@ class ReplyRepositoryImplTest {
         Reply two = createReply("대댓글1", one, member1, board);
         Reply tree = createReply("대댓글2", one, member1, board);
         Reply four = createReply("대댓글3", one, member1, board);
-        replyRepository.saveAll(List.of(one, two, tree, four));
+
+        Reply one2 = createReply("댓글2", null, member1, board);
+        Reply two2 = createReply("대댓글2-1", one, member1, board);
+        Reply tree2 = createReply("대댓글2-2", one, member1, board);
+        Reply four2 = createReply("대댓글2-3", one, member1, board);
+        replyRepository.saveAll(List.of(one, two, tree, four,one2,two2,tree2,four2));
 
 
         List<Reply> byBoardReply = replyRepository.findByBoardReply(board.getId());
-        for (int i = 0; i < byBoardReply.size(); i++) {
-            System.out.println("byBoardReply = " + byBoardReply.get(i).getBoard());
-            System.out.println("byBoardReply = " + byBoardReply.get(i).getMember());
-            System.out.println("byBoardReply = " + byBoardReply.get(i).getParent());
-            System.out.println("byBoardReply = " + byBoardReply.get(i).getId());
-            System.out.println();
-        }
+
+
+        assertThat(byBoardReply.get(0)).isEqualTo(one);
+        assertThat(byBoardReply.get(1)).isEqualTo(one2);
+        assertThat(byBoardReply.get(2)).isEqualTo(two);
+        assertThat(byBoardReply.get(3)).isEqualTo(tree);
 
 
     }
 
     @Test
-    @DisplayName("자식 먼저")
+    @DisplayName("게시글의 댓글들을 조회한다.")
     void findByBoardReplies() throws Exception {
         //given
         Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
@@ -77,15 +84,10 @@ class ReplyRepositoryImplTest {
         List<Reply> byBoardReply = replyRepository.findByBoardReplies(board.getId());
         //then
 
-        for (int i = 0; i < byBoardReply.size(); i++) {
-            System.out.println("byBoardReply = " + byBoardReply.get(i).getBoard());
-            System.out.println("byBoardReply = " + byBoardReply.get(i).getMember());
-            System.out.println("byBoardReply = " + byBoardReply.get(i).getParent());
-            System.out.println("byBoardReply = " + byBoardReply.get(i).getId());
-            System.out.println();
-        }
-
-
+        assertThat(byBoardReply.get(0)).isEqualTo(one);
+        assertThat(byBoardReply.get(1)).isEqualTo(two);
+        assertThat(byBoardReply.get(2)).isEqualTo(tree);
+        assertThat(byBoardReply.get(3)).isEqualTo(four);
     }
 
 
