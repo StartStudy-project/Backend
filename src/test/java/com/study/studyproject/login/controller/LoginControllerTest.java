@@ -168,13 +168,14 @@ class LoginControllerTest {
     @Test
     @DisplayName("로그아웃을 한다.")
     void logout() throws Exception {
+        //given
         Member member = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
         memberRepository.save(member);
         LoginRequest loginRequest = LoginRequest.builder()
                 .build();
 
         TokenDtoResponse allToken = jwtUtil.createAllToken(member.getEmail(), member.getId());
-        //when then
+
         //when & then
         mockMvc.perform(post("/service_logout")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
