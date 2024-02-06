@@ -46,8 +46,7 @@ class ReplyServiceImplTest {
 
     @Autowired
     ReplyServiceImpl replyService;
-    @Autowired
-    JwtUtil jwtUtil;
+
     @Autowired
     private EntityManager entityManager;
 
@@ -59,10 +58,6 @@ class ReplyServiceImplTest {
         Board boardCreate = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
         memberRepository.save(member1);
         boardRepository.save(boardCreate);
-
-
-        TokenDtoResponse allToken = jwtUtil.createAllToken(member1.getEmail(), 1L);
-        System.out.println("allToken = " + allToken);
 
 
         ReplyRequestDto replyOne = new ReplyRequestDto(boardCreate.getId(), null, "댓글 내용");
@@ -93,7 +88,6 @@ class ReplyServiceImplTest {
 
 
 
-        TokenDtoResponse allToken = jwtUtil.createAllToken(member1.getEmail(), 1L);
         ReplyRequestDto replyOne = new ReplyRequestDto(board.getId(), 1L, "댓글 내용");
 
         //when
@@ -154,8 +148,9 @@ class ReplyServiceImplTest {
         tree.updateParent(one);
         four.updateParent(one);
 
+        replyRepository.saveAll(List.of(one, two, tree, four));
 
-        replyRepository.save(one);
+
 
 
         //when
@@ -182,15 +177,11 @@ class ReplyServiceImplTest {
         Reply tree = createReply("대댓글2", one, member1, board);
         Reply four = createReply("대댓글3", one, member1, board);
 
+
         two.updateParent(one);
         tree.updateParent(one);
         four.updateParent(one);
-
-
-        replyRepository.save(one);
-        replyRepository.save(two);
-        replyRepository.save(tree);
-        replyRepository.save(four);
+        replyRepository.saveAll(List.of(one, two, tree, four));
 
 
         //when

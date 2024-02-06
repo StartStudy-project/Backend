@@ -16,68 +16,76 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @RestControllerAdvice
 public class ExControllerAdvice extends ResponseEntityExceptionHandler {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST) //400
+    @ResponseStatus(BAD_REQUEST) //400
     @ExceptionHandler(IllegalArgumentException.class)
     public ExceptionResponse illegalExHandler(IllegalArgumentException e) {
-        return new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return new ExceptionResponse(BAD_REQUEST.value(), e.getMessage());
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ExceptionResponse> userExHandler(UserNotFoundException e) {
-        ExceptionResponse errorResult = new ExceptionResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
+        ExceptionResponse errorResult = new ExceptionResponse(NOT_FOUND.value(), e.getMessage());
+        return new ResponseEntity<>(errorResult, NOT_FOUND);
     }
 
 
     @ExceptionHandler
     public ResponseEntity<ExceptionResponse> tokenNotValidatException(TokenNotValidatException e) {
-        ExceptionResponse errorResult = new ExceptionResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
+        ExceptionResponse errorResult = new ExceptionResponse(NOT_FOUND.value(), e.getMessage());
+        return new ResponseEntity<>(errorResult, NOT_FOUND);
     }
 
 
     //500
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ExceptionHandler
     public ResponseEntity<ExceptionResponse> exception(Exception e) {
-        ExceptionResponse errorResult = new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-        return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
+        System.out.println("e.getStackTrace() = " + e.getStackTrace());
+        System.out.println("e = " + e);
+        ExceptionResponse errorResult = new ExceptionResponse(INTERNAL_SERVER_ERROR.value(), INTERNAL_SERVER_ERROR.getReasonPhrase());
+        return new ResponseEntity<>(errorResult, INTERNAL_SERVER_ERROR);
     }
+
 
 
     @ResponseStatus(FORBIDDEN)
     @ExceptionHandler(value = { AccessDeniedException.class })
     protected ResponseEntity forbidden(AccessDeniedException e) {
         ExceptionResponse errorResult = new ExceptionResponse(FORBIDDEN.value(),e.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(errorResult, FORBIDDEN);
 
     }
-
-
 
 
     @ExceptionHandler
-    public ResponseEntity<ExceptionResponse> exhandler(NotFoundException e) {
-        ExceptionResponse errorResult = new ExceptionResponse(HttpStatus.NOT_FOUND.value(),e.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
+    @ResponseStatus(NOT_FOUND)
+    public ResponseEntity<ExceptionResponse> notFoundEx(NotFoundException e) {
+        ExceptionResponse errorResult = new ExceptionResponse(NOT_FOUND.value(), NOT_FOUND.getReasonPhrase());
+        System.out.println("errorResult = " + errorResult);
+        return new ResponseEntity<>(errorResult, NOT_FOUND);
     }
+
+
 
     @ExceptionHandler
     public ResponseEntity<ExceptionResponse> exhandle(IllegalStateException e) {
-        ExceptionResponse errorResult = new ExceptionResponse(HttpStatus.BAD_REQUEST.value(),e.getMessage());
-        return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
+        ExceptionResponse errorResult = new ExceptionResponse(BAD_REQUEST.value(),e.getMessage());
+        return new ResponseEntity<>(errorResult, BAD_REQUEST);
     }
 
 
