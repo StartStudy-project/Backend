@@ -64,12 +64,8 @@ class BoardServiceTest {
         //when
         GlobalResultDto resultDto = boardService.boardSave(writeBoard, member1.getId());
 
-        Board board = boardRepository.findById(1L).get();
-        System.out.println("board = " + board.getTitle());
-
-
         //then
-        assertThat(board.getNickname()).isEqualTo(writeBoard.getNickname());
+        assertThat(resultDto.getMessage()).isEqualTo("글 작성 완료");
 
 
 
@@ -219,19 +215,20 @@ class BoardServiceTest {
 
 
         Reply reply = createReply(null, member1, board);
-        replyRepository.save(reply);
 
         Reply reply1 = createReply(reply, member1, board);
         Reply reply2 = createReply(reply, member1, board);
+        replyRepository.save(reply);
         replyRepository.saveAll(List.of(reply1, reply2));
 
 
         //when
-        boardService.boardDeleteOne(board.getId());
-        List<Board> allBoard = boardRepository.findAll();
+        GlobalResultDto globalResultDto = boardService.boardDeleteOne(board.getId());
 
         //then
-        Assertions.assertThat(allBoard).hasSize(0);
+        List<Board> allBoard = boardRepository.findAll();
+        assertThat(allBoard).hasSize(1);
+        assertThat(globalResultDto.getMessage()).isEqualTo("게시글을 삭제 할 수 없습니다.");
 
     }
 
@@ -251,7 +248,7 @@ class BoardServiceTest {
 
         //then
         Board board1 = boardRepository.findById(board.getId()).get();
-        Assertions.assertThat(board1.getRecruit()).isEqualTo(Recruit.모집완료);
+        assertThat(board1.getRecruit()).isEqualTo(Recruit.모집완료);
 
     }
 
