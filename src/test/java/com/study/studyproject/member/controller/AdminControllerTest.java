@@ -40,6 +40,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -83,7 +84,7 @@ class AdminControllerTest {
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .params(query_param)
                 )
-                .andDo(MockMvcResultHandlers.print())
+                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -114,7 +115,7 @@ class AdminControllerTest {
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .params(query_param)
                 )
-                .andDo(MockMvcResultHandlers.print())
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content",hasSize(4)));
@@ -148,7 +149,7 @@ class AdminControllerTest {
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .params(query_param)
                 )
-                .andDo(MockMvcResultHandlers.print())
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("김관리"))
                 .andExpect(jsonPath("$.nickname").value("admin"))
