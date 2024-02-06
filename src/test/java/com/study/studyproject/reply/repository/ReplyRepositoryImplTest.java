@@ -90,6 +90,54 @@ class ReplyRepositoryImplTest {
         assertThat(byBoardReply.get(3)).isEqualTo(four);
     }
 
+    @Test
+    @DisplayName("부모댓글과 대댓글을 함께 조회할 경우, 부모댓글이 없다면 null이 반환된다.")
+    void getParentFindCommentByIdWithParent() throws Exception {
+        //given
+        Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
+        memberRepository.save(member1);
+        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
+        boardRepository.save(board);
+
+        Reply one = createReply("댓글1", null, member1, board);
+        Reply two = createReply("대댓글1", one, member1, board);
+        Reply tree = createReply("대댓글2", one, member1, board);
+        Reply four = createReply("대댓글3", one, member1, board);
+        replyRepository.saveAll(List.of(one, two, tree, four));
+
+        //when
+        Reply reply = replyRepository.findCommentByIdWithParent(one.getId()).get();
+
+        //then
+        assertThat(reply).isEqualTo(one);
+        assertThat(reply.getParent()).isNull();
+    }
+
+
+    @Test
+    @DisplayName("댓글과 해당 댓글의 부모 댓글도 함께 조회한다.")
+    void findCommentByIdWithParent2() throws Exception {
+        //given
+        Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
+        memberRepository.save(member1);
+        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
+        boardRepository.save(board);
+
+        Reply one = createReply("댓글1", null, member1, board);
+        Reply two = createReply("대댓글1", one, member1, board);
+        Reply tree = createReply("대댓글2", one, member1, board);
+        Reply four = createReply("대댓글3", one, member1, board);
+        replyRepository.saveAll(List.of(one, two, tree, four));
+
+        //when
+        Reply reply = replyRepository.findCommentByIdWithParent(two.getId()).get();
+
+        //then
+        assertThat(reply).isEqualTo(two);
+        assertThat(reply.getParent()).isEqualTo(one);
+    }
+
+
 
 
 

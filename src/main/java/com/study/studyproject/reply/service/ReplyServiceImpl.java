@@ -62,8 +62,7 @@ public class ReplyServiceImpl implements ReplyService {
     public void deleteReply(Long num) { //댓글 num
         Reply reply = replyRepository.findCommentByIdWithParent(num)
                 .orElseThrow(() -> new NotFoundException("댓글을 찾기 못했습니다."));
-        int size = reply.getChildren().size();
-        if (size != 0) { //자식이 있는 상태
+        if (reply.getChildren().size() != 0) { //자식이 있는 상태
             reply.ChangeIsDeleted(true);
         } else { //삭제 가능한 조상 댓글
             replyRepository.delete(getDelete(reply));
