@@ -21,6 +21,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,7 +37,7 @@ public class BoardController {
     //글쓰기 수정
     @PatchMapping("member/updateWrite")
     @Operation(summary = "글쓰기 수정", description = "글쓰기 수정 기능")
-    public ResponseEntity<GlobalResultDto> updateWriting(@RequestBody BoardReUpdateRequestDto boardReUpdateRequestDto) {
+    public ResponseEntity<GlobalResultDto> updateWriting(@RequestBody @Validated  BoardReUpdateRequestDto boardReUpdateRequestDto) {
         System.out.println("boardReUpdateRequestDto = " + boardReUpdateRequestDto);
         return ResponseEntity.ok(boardService.updateWrite(boardReUpdateRequestDto));
 
@@ -44,7 +45,7 @@ public class BoardController {
 
     @PostMapping("member/writing")
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
-    public ResponseEntity<GlobalResultDto> writing(@RequestBody BoardWriteRequestDto boardWriteRequestDto,@RequestHeader("Access_Token") String token)  {
+    public ResponseEntity<GlobalResultDto> writing(@RequestBody @Validated  BoardWriteRequestDto boardWriteRequestDto,@RequestHeader("Access_Token") String token)  {
         Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
         System.out.println("idFromToken = " + idFromToken);
         return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto, idFromToken));
@@ -53,7 +54,7 @@ public class BoardController {
 
     @Operation(summary = "모집구분 변경", description = "모집구분 변경")
     @PatchMapping("/member/changeRecruit")
-    public ResponseEntity<GlobalResultDto> changeRecruit(@RequestBody BoardChangeRecruitRequestDto boardChangeRecruitRequestDto) {
+    public ResponseEntity<GlobalResultDto> changeRecruit(@RequestBody @Validated BoardChangeRecruitRequestDto boardChangeRecruitRequestDto) {
         return ResponseEntity.ok(boardService.changeRecruit(boardChangeRecruitRequestDto));
     }
 
@@ -70,7 +71,7 @@ public class BoardController {
     //글 조회 1개 -
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
-    public ResponseEntity<BoardOneResponseDto> writing(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId
+    public ResponseEntity<BoardOneResponseDto> getBoard(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId
             ,@RequestHeader(value = "Access_Token",required = false) String token) {
 
         String resolveToken = jwtUtil.resolveToken(token);

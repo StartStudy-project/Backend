@@ -17,6 +17,7 @@ public class MainRequest {
 
     int order; // 0 -> 최신순
 
+    @Builder
     public MainRequest( Category category, Integer order) {
         this.category = category;
         this.order = order;
