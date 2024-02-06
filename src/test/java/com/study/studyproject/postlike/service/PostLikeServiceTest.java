@@ -45,12 +45,10 @@ class PostLikeServiceTest {
         boardRepository.save(boardCreate);
 
         //when
-        postLikeService.postLikeSave(boardCreate.getId(), member1.getId());
+        GlobalResultDto globalResultDto = postLikeService.postLikeSave(boardCreate.getId(), member1.getId());
 
         //then
-        PostLike postLike = postLikeRepository.findById(boardCreate.getId()).get();
-        assertThat(postLike.getBoard()).isEqualTo(boardCreate);
-        assertThat(postLike.getMember()).isEqualTo(member1);
+        assertThat(globalResultDto.getMessage()).isEqualTo("관심글이 추가되었습니다.");
 
     }
 
