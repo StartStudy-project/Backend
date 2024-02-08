@@ -1,6 +1,7 @@
 package com.study.studyproject.member.repository;
 
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -32,16 +33,16 @@ public class MyPageQueryRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public Page<ListResponseDto> MyPageListPage(MemberListRequestDto condition, Pageable pageable, Long memeberId) {
+    public Page<ListResponseDto> MyPageListPage(MemberListRequestDto condition, Pageable pageable, Long memeberId, String getRole) {
 
-        List<ListResponseDto> content = getContent(memeberId,condition, pageable);
+        List<ListResponseDto> content = getContent(memeberId,condition, pageable,getRole);
 
-        JPAQuery<Board> countQuery = getTotal(memeberId,condition);
+        JPAQuery<Board> countQuery = getTotal(memeberId,condition,getRole);
 
         return PageableExecutionUtils.getPage(content,pageable, countQuery::fetchCount);
     }
 
-    public List<ListResponseDto> getContent(Long memeberId, MemberListRequestDto condition, Pageable pageable) {
+    public List<ListResponseDto> getContent(Long memeberId, MemberListRequestDto condition, Pageable pageable, String getRole) {
 
         return queryFactory
                 .select(
@@ -64,7 +65,8 @@ public class MyPageQueryRepository {
                 .where(
                         getType(condition.getRecruit()), //모집여부
                         getUser(memeberId), //사용자 아이디 유무
-                        getCategory(condition.getCategory())
+                        getCategory(condition.getCategory()),
+                        getAdminPage(getRole)
 
                 )
                 .orderBy(
@@ -76,6 +78,10 @@ public class MyPageQueryRepository {
                 .fetch();
     }
 
+    private Predicate getAdminPage(String getRole) {
+        return getRole.equals("admin") ? board.isDeleted.eq(false) : null;
+    }
+
     //cs
     private BooleanExpression getCategory(Category category) {
         if(isEmpty(category)){
@@ -85,7 +91,7 @@ public class MyPageQueryRepository {
         return category.equals(Category.전체) ? null : board.category.eq(category);
     }
 
-    public JPAQuery<Board> getTotal(Long memeberId, MemberListRequestDto condition) {
+    public JPAQuery<Board> getTotal(Long memeberId, MemberListRequestDto condition, String getRole) {
         return queryFactory
                 .select(
                         board
@@ -94,7 +100,9 @@ public class MyPageQueryRepository {
                 .where(
                         getType(condition.getRecruit()), //모집여부
                         getUser(memeberId), //사용자 이메일
-                        getCategory(condition.getCategory())
+                        getCategory(condition.getCategory()),
+                        getAdminPage(getRole)
+
                 );
     }
 

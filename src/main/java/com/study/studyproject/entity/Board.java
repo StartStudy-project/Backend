@@ -32,15 +32,18 @@ public class Board extends BaseTimeEntity{
     @ColumnDefault("0")
     private Long viewCount;
 
-    private String content;                                                   // 포스트 내용
-
-    private String nickname;                                                  // 작성자 닉네임
+    private String content;
+    private String nickname;
 
     @Enumerated(EnumType.STRING)
-    private Category category;                                                  // 카테고리
+    private Category category;
 
     @Enumerated(EnumType.STRING)
     private Recruit recruit;
+
+    @ColumnDefault("FALSE")
+    @Column(nullable = false)
+    private Boolean isDeleted;
 
 
     @OneToMany(mappedBy = "board") //지연로딩
@@ -50,8 +53,15 @@ public class Board extends BaseTimeEntity{
     @OneToMany(mappedBy = "board") //지연로딩
     private List<Reply> replies;
 
+    public void ChangeBoardIsDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
 
+    public void deleteBoardContent(String title,String content) {
+        this.title = title;
+        this.content = content;
 
+    }
 
 
     @Builder
@@ -63,6 +73,8 @@ public class Board extends BaseTimeEntity{
         this.nickname = nickname;
         this.category = category;
         this.recruit = Recruit.모집중;
+        this.isDeleted = false;
+
     }
 
     public Board updateBoard(BoardReUpdateRequestDto boardReUpdateRequestDto){

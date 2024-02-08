@@ -2,10 +2,7 @@ package com.study.studyproject.board.service;
 
 import com.study.studyproject.board.dto.*;
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.entity.Board;
-import com.study.studyproject.entity.Member;
-import com.study.studyproject.entity.PostLike;
-import com.study.studyproject.entity.Reply;
+import com.study.studyproject.entity.*;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
@@ -14,8 +11,6 @@ import com.study.studyproject.postlike.repository.PostLikeRepository;
 import com.study.studyproject.reply.dto.ReplyInfoResponseDto;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import com.study.studyproject.reply.repository.ReplyRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -99,18 +94,23 @@ public class BoardService {
 
 
     //삭제
-    public GlobalResultDto boardDeleteOne(Long boardId) {
+    public GlobalResultDto boardDeleteOne(Long boardId, Role role) {
+
+        if (role.equals(Role.ROLE_ADMIN)) {
+            Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
+            board.ChangeBoardIsDeleted(true);
+            board.deleteBoardContent("관리자로 의해 게시글 삭제","관리자로 의해 게시글 삭제되었습니다.");
+            return new GlobalResultDto("관리자 권한으로 게시글 삭제 완료", HttpStatus.OK.value());
+        }
+
         //댓글
         List<Reply> replies = replyRepository.findByBoardReplies(boardId);
-
         //postLike
         List<PostLike> postLikes = postLikeRepository.findByBoardId(boardId);
 
         if (replies.size() != 0 || postLikes.size() != 0) {
             return new GlobalResultDto("게시글을 삭제 할 수 없습니다.", HttpStatus.FORBIDDEN.value());
         }
-
-
 
         boardRepository.deleteById(boardId);
         return new GlobalResultDto("게시글 삭제 완료", HttpStatus.OK.value());
