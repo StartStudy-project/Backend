@@ -1,29 +1,22 @@
 package com.study.studyproject.member.service;
 
 import com.study.studyproject.list.dto.ListResponseDto;
-import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.UserNotFoundException;
-import com.study.studyproject.global.jwt.JwtUtil;
-import com.study.studyproject.login.repository.RefreshRepository;
 import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.MemberUpdateResDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.member.repository.MyPagePostLikeQueryRepository;
 import com.study.studyproject.member.repository.MyPageQueryRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.antlr.v4.runtime.atn.LexerPopModeAction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Service
@@ -56,7 +49,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public Page<ListResponseDto> listMember(Long token, MemberListRequestDto memberListRequestDto, Pageable pageable) {
-        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable,token);
+        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable,token, "member");
     }
 
 

@@ -37,7 +37,7 @@ public class AdminServiceImpl implements AdminService{
 
     public AdminDashBoardResponseDto adminDashBoardInfo(Long id, MemberListRequestDto memberListRequestDto, Pageable pageable) {
         Member member = memberRepository.findById(id).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
-        Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable, null);
+        Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable, null,"Admin");
         return AdminDashBoardResponseDto.of(member, listResponseDtos);
     }
 }

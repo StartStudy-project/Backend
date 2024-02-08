@@ -250,6 +250,31 @@ class BoardControllerTest  {
 
     }
 
+
+    @Test
+    @DisplayName("관리자 게시글을 삭제합니다.")
+    @WithMockUser
+    void deleteBoardTestWithAdmin() throws Exception {
+        //given
+        Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
+        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
+        memberRepository.save(member1);
+        boardRepository.save(board);
+        TokenDtoResponse allToken = jwtUtil.createAllToken(member1.getEmail(), member1.getId());
+
+        //when then
+        mockMvc.perform(delete("/board/member/delete")
+                        .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
+                        .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
+                        .param("boardId", String.valueOf(board.getId()))
+                        .param("role", "ROLE_ADMIN")
+                )
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.message").value("관리자 권한으로 게시글 삭제 완료"));
+
+    }
+
     @Test
     @DisplayName("게시글을 상세페이지를 조회한다.")
     @WithMockUser
@@ -287,7 +312,6 @@ class BoardControllerTest  {
 
 
     }
-
     private Board createBoard(
             Member member, String title, String content, String nickname, Category category
     ) {

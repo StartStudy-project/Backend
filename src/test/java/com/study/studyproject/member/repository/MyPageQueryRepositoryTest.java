@@ -67,7 +67,7 @@ class MyPageQueryRepositoryTest {
         PageRequest pageRequest = PageRequest.of(0, 3);
 
         //when
-        Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(listRequestDto, pageRequest, member2.getId());
+        Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(listRequestDto, pageRequest, member2.getId(), "Admin");
 
 
         //then

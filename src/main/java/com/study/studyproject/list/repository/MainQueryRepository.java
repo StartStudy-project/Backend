@@ -63,7 +63,8 @@ public class MainQueryRepository  {
                 .where(
                         board.recruit.eq(Recruit.모집중),
                         getCategory(condition.getCategory()),
-                        getFindContent(findContent)
+                        getFindContent(findContent),
+                        board.isDeleted.eq(false)
                 )
                 .orderBy(
                         getOrder(condition.getOrder()) // 순서
@@ -92,7 +93,8 @@ public class MainQueryRepository  {
                 .where(
                         board.recruit.eq(Recruit.모집중),
                         getCategory(condition.getCategory()),
-                        getFindContent(findContent)
+                        getFindContent(findContent),
+                        board.isDeleted.eq(false)
                 );
     }
 

@@ -12,24 +12,19 @@ import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.repository.ReplyRepository;
 import jakarta.transaction.Transactional;
-import net.bytebuddy.utility.dispatcher.JavaDispatcher;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 
 import static com.study.studyproject.entity.Category.CS;
 import static com.study.studyproject.entity.Category.기타;
+import static com.study.studyproject.entity.Role.ROLE_ADMIN;
 import static com.study.studyproject.entity.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -169,7 +164,7 @@ class BoardServiceTest {
     @DisplayName(" 사용자가 댓글 입력하지 않은 게시글을 조회한다.")
     void selectBaordOnewithNoMyReplies() {
         //given
-        Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
+        Member member1 = createAdmin();
         Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
 
         Reply reply = createReply(null, member1, board);
@@ -204,7 +199,7 @@ class BoardServiceTest {
     }
 
     @Test
-    @DisplayName("댓글이 있는 게시글을 삭제한다.")
+    @DisplayName("사용자 권한으로 댓글이 있는 게시글을 삭제한다.")
     void deleteBoard() throws Exception {
         //given
         Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
@@ -221,14 +216,48 @@ class BoardServiceTest {
         replyRepository.save(reply);
         replyRepository.saveAll(List.of(reply1, reply2));
 
+        Role role = ROLE_USER;
 
         //when
-        GlobalResultDto globalResultDto = boardService.boardDeleteOne(board.getId());
+        GlobalResultDto globalResultDto = boardService.boardDeleteOne(board.getId(), role);
 
         //then
         List<Board> allBoard = boardRepository.findAll();
         assertThat(allBoard).hasSize(1);
         assertThat(globalResultDto.getMessage()).isEqualTo("게시글을 삭제 할 수 없습니다.");
+
+    }
+
+
+    @Test
+    @DisplayName("관리자 권한으로 댓글이 있는 게시글을 삭제한다.")
+    void deleteBoardWithAdmin() throws Exception {
+        //given
+        Member member1 = createAdmin();
+        memberRepository.save(member1);
+
+        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
+        boardRepository.save(board);
+
+
+        Reply reply = createReply(null, member1, board);
+
+        Reply reply1 = createReply(reply, member1, board);
+        Reply reply2 = createReply(reply, member1, board);
+        replyRepository.save(reply);
+        replyRepository.saveAll(List.of(reply1, reply2));
+
+        Role role = ROLE_ADMIN;
+
+        //when
+        GlobalResultDto globalResultDto = boardService.boardDeleteOne(board.getId(), role);
+
+        //then
+        List<Board> allBoard = boardRepository.findAll();
+        Board board1 = allBoard.get(0);
+        assertThat(board1.getTitle()).isEqualTo("관리자로 의해 게시글 삭제");
+        assertThat(board1.getContent()).isEqualTo("관리자로 의해 게시글 삭제되었습니다.");
+        assertThat(globalResultDto.getMessage()).isEqualTo("관리자권한으로 게시글 삭제 완료");
 
     }
 
@@ -278,6 +307,16 @@ class BoardServiceTest {
                     .role(ROLE_USER).build();
         }
 
+    }
+
+    private static Member createAdmin() {
+        return Member.builder()
+                .role(Role.ROLE_ADMIN)
+                .username("김관리")
+                .email("admin@naver.com")
+                .nickname("admin")
+                .password("1234")
+                .build();
     }
 
 

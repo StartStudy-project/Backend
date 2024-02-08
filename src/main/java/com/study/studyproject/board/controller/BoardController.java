@@ -6,6 +6,7 @@ import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
 import com.study.studyproject.board.service.BoardService;
+import com.study.studyproject.entity.Role;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.jwt.JwtUtil;
@@ -20,9 +21,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jmx.export.annotation.ManagedOperation;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @RestController
 @RequiredArgsConstructor
@@ -62,9 +66,8 @@ public class BoardController {
     //삭제
     @DeleteMapping("member/delete")
     @Operation(summary = "게시글 삭제 ", description = "해당 게시글 삭제")
-    public ResponseEntity<GlobalResultDto> deleteBoard(@Parameter(description = "게시판 ID") @RequestParam(name = "boardId") Long boardId) {
-        return ResponseEntity.ok(boardService.boardDeleteOne(boardId));
-
+    public ResponseEntity<GlobalResultDto> deleteBoard(@Parameter(description = "게시판 ID") @RequestParam(name = "boardId") Long boardId, @RequestParam(required = false, defaultValue =  "ROLE_USER") Role role) {
+        return ResponseEntity.ok(boardService.boardDeleteOne(boardId,role));
     }
 
 

@@ -43,7 +43,6 @@ public class  MyPagePostLikeQueryRepository{
     }
 
     public List<ListResponseDto> getContent(Long memeberId, MemberListRequestDto condition, Pageable pageable) {
-
         return queryFactory
                 .select(
                         new QListResponseDto(
@@ -66,8 +65,8 @@ public class  MyPagePostLikeQueryRepository{
                 .where(
                         getType(condition.getRecruit()), //모집여부
                         getUser(memeberId), //사용자 아이디 유무
-                        getCategory(condition.getCategory())
-
+                        getCategory(condition.getCategory()),
+                        board.isDeleted.eq(false)
                 )
                 .orderBy(
                         getOrder(condition.getOrder()) // 순서
@@ -96,7 +95,8 @@ public class  MyPagePostLikeQueryRepository{
                 .where(
                         getType(condition.getRecruit()), //모집여부
                         getUser(memeberId), //사용자 이메일
-                        getCategory(condition.getCategory())
+                        getCategory(condition.getCategory()),
+                        board.isDeleted.eq(false)
                 );
     }
 
