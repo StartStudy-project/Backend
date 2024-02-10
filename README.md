@@ -36,3 +36,11 @@
 ### CI/CD
 ![image](https://github.com/Study-Blog-Project/Backend/assets/70208747/339ad38b-8d54-4dcd-960c-e542c751169b)
 
+## ERD설계
+![image](https://github.com/Study-Blog-Project/Backend/assets/70208747/92d9da1b-9163-4eab-a6d5-12fd09a5bacf)
+
+## Member
+
+|           Backend                    |                        Frontend                    |
+| :------------------------------------------: | :------------------------------------------------: |
+|  [전유진](https://github.com/jacomyou1026)  |  [원종대](https://github.com/gudonghee2000)  |  
