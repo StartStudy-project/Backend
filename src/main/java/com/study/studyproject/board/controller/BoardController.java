@@ -64,9 +64,9 @@ public class BoardController {
 
 
     //삭제
-    @DeleteMapping("member/delete")
+    @DeleteMapping("member/{boardId}")
     @Operation(summary = "게시글 삭제 ", description = "해당 게시글 삭제")
-    public ResponseEntity<GlobalResultDto> deleteBoard(@Parameter(description = "게시판 ID") @RequestParam(name = "boardId") Long boardId, @RequestParam(required = false, defaultValue =  "ROLE_USER") Role role) {
+    public ResponseEntity<GlobalResultDto> deleteBoard(@PathVariable(name = "boardId") Long boardId, @RequestParam(required = false, defaultValue =  "ROLE_USER") Role role) {
         return ResponseEntity.ok(boardService.boardDeleteOne(boardId,role));
     }
 

@@ -30,8 +30,8 @@ public class PostLikeController {
 
 
     @Operation(summary = "관심글 삭제", description = "사용자의 관심글 삭제합니다.")
-    @DeleteMapping("/delete/{postLikeId}")
-    public ResponseEntity<GlobalResultDto> postLikeDelete(@PathVariable Long postLikeId) {
+    @DeleteMapping("/{postLikeId}")
+    public ResponseEntity<GlobalResultDto> postLikeDelete(@PathVariable(name = "postLikeId") Long postLikeId) {
         return ResponseEntity.ok(postLikeService.postLikeDelete(postLikeId));
     }
 

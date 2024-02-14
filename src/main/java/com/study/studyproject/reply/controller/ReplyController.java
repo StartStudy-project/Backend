@@ -39,9 +39,9 @@ public class ReplyController {
         replyService.updateReply(updateReplyRequest);
     }
 
-    @DeleteMapping("/deleteReply")
+    @DeleteMapping("/{rno}")
     @Operation(summary = "댓글 삭제")
-    public void delete(@Parameter(description = "댓글 번호",example = "1") @RequestParam("rno") Long rno) {
+    public void delete(@PathVariable("rno") Long rno) {
         replyService.deleteReply(rno);
     }
 

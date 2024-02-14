@@ -75,6 +75,7 @@ public class SpringSecurity {
                         .requestMatchers("/board/member/**").authenticated()
                         .requestMatchers("/user/**").authenticated()
                         .requestMatchers("/reply/**").authenticated()
+                        .requestMatchers("/postLike/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
         );
