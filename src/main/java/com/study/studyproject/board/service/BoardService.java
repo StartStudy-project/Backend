@@ -11,11 +11,17 @@ import com.study.studyproject.postlike.repository.PostLikeRepository;
 import com.study.studyproject.reply.dto.ReplyInfoResponseDto;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import com.study.studyproject.reply.repository.ReplyRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +41,7 @@ public class BoardService {
     private final PostLikeRepository postLikeRepository;
     private final JwtUtil jwtUtil;
 
+    private final static String VIEWCOOKIENAME = "alreadyViewCookie";
 
     //작성
     public GlobalResultDto boardSave(BoardWriteRequestDto boardWriteRequestDto, Long idFromToken) {
@@ -52,13 +59,44 @@ public class BoardService {
         board.updateBoard(boardReUpdateRequestDto);
         return new GlobalResultDto("글 작성 완료", HttpStatus.OK.value());
     }
+    private Cookie createCookieForForNotOverlap(Long postId) {
+        Cookie cookie = new Cookie(VIEWCOOKIENAME + postId, String.valueOf(postId));
+        cookie.setMaxAge(getRemainSecondForTommorow());
+        cookie.setHttpOnly(true);
+        return cookie;
+    }
+
+    // 다음 날 정각까지 남은 시간(초)
+    private int getRemainSecondForTommorow() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tommorow = LocalDateTime.now().plusDays(1L).truncatedTo(ChronoUnit.DAYS);
+        return (int) now.until(tommorow, ChronoUnit.SECONDS);
+    }
 
 
     //글 1개만 가져오기
-    public BoardOneResponseDto boardOne(Long boardId, String token) {
+    public BoardOneResponseDto boardOne(Long boardId, String token, HttpServletRequest request, HttpServletResponse response) {
 
-        Board board = boardRepository.findById(boardId ).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
-        board.updateViewCnt(board.getViewCount());
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
+        Cookie[] cookies = request.getCookies();
+        boolean checkCookie = false;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                // 이미 조회를 한 경우 체크
+                if (cookie.getName().equals(VIEWCOOKIENAME + boardId)) checkCookie = true;
+
+            }
+            if (!checkCookie) {
+                Cookie newCookie = createCookieForForNotOverlap(boardId);
+                response.addCookie(newCookie);
+                board.updateViewCnt(board.getViewCount());
+            }
+        } else {
+            Cookie newCookie = createCookieForForNotOverlap(boardId);
+            response.addCookie(newCookie);
+            board.updateViewCnt(board.getViewCount());
+        }
+
 
 
         Long currentMemberId = 0L;

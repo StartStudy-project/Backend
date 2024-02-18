@@ -11,6 +11,8 @@ import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.repository.ReplyRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,6 +47,12 @@ class BoardServiceTest {
 
     @Autowired
     JwtUtil jwtUtil;
+
+    @Autowired
+    HttpServletResponse response;
+
+    @Autowired
+    HttpServletRequest request;
 
 
     @Test
@@ -111,7 +119,7 @@ class BoardServiceTest {
         TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
 
         //when
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(),allToken.getAccessToken());
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(),allToken.getAccessToken(),request, response);
 
         //then
         assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
@@ -148,7 +156,7 @@ class BoardServiceTest {
 
         //when
         TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( board.getId(),allToken.getAccessToken());
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(), allToken.getAccessToken(), request, response);
         System.out.println("boardOneResponseDto = " + boardOneResponseDto);
 
         assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(replies.size());
@@ -188,7 +196,7 @@ class BoardServiceTest {
         List<Reply> byBoardReply = replyRepository.findByBoardReplies(board.getId());
 
         //when
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( board.getId(),null);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( board.getId(),null,request, response);
         System.out.println("boardOneResponseDto = " + boardOneResponseDto);
 
         assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(replies.size());
