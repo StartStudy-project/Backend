@@ -2,6 +2,7 @@ package com.study.studyproject.board.dto;
 
 import com.study.studyproject.entity.Board;
 import com.study.studyproject.entity.Category;
+import com.study.studyproject.entity.Recruit;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -17,6 +18,8 @@ public class BoardOneResponseDto {
 
     @Schema(description = "게시글 내용", defaultValue = "내요내용")
     boolean isMyBoard;
+
+    Recruit recruit;
 
     @Schema(description = "제목", defaultValue = "제목제목")
     String title;
@@ -41,7 +44,8 @@ public class BoardOneResponseDto {
     ReplyResponseDto replyResponseDto;
 
     @Builder
-    public BoardOneResponseDto(Category category,String title, String userId, LocalDateTime updateTime, String content, boolean isMyBoard, int viewCnt, ReplyResponseDto replyResponseDto,LocalDateTime createTime) {
+    public BoardOneResponseDto(Category category,String title, String userId, LocalDateTime updateTime, String content, boolean isMyBoard, int viewCnt, ReplyResponseDto replyResponseDto,LocalDateTime createTime,Recruit recruit) {
+        this.recruit = recruit;
         this.title = title;
         this.userId = userId;
         this.updateTime = updateTime;
@@ -70,6 +74,7 @@ public class BoardOneResponseDto {
                 .updateTime(board.getLastModifiedDate())
                 .createTime(board.getCreatedDate())
                 .title(board.getTitle())
+                .recruit(board.getRecruit())
                 .content(board.getContent())
                 .viewCnt(Math.toIntExact(board.getViewCount()))
                 .userId(board.getNickname())
