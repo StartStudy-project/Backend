@@ -58,6 +58,8 @@ public class BoardService {
     public BoardOneResponseDto boardOne(Long boardId, String token) {
 
         Board board = boardRepository.findById(boardId ).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
+        board.updateViewCnt(board.getViewCount());
+
 
         Long currentMemberId = 0L;
         if (token != null) {
