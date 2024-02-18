@@ -78,6 +78,21 @@ public class BoardService {
     public BoardOneResponseDto boardOne(Long boardId, String token, HttpServletRequest request, HttpServletResponse response) {
 
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
+        checkDuplicate(boardId, request, response, board);
+
+
+        Long currentMemberId = 0L;
+        if (token != null) {
+            currentMemberId = jwtUtil.getIdFromToken(token);
+        }
+
+
+        ReplyResponseDto replies = findReplies( boardId,currentMemberId);
+        return BoardOneResponseDto.of(board,replies,currentMemberId);
+
+    }
+
+    private void checkDuplicate(Long boardId, HttpServletRequest request, HttpServletResponse response, Board board) {
         Cookie[] cookies = request.getCookies();
         boolean checkCookie = false;
         if (cookies != null) {
@@ -96,18 +111,6 @@ public class BoardService {
             response.addCookie(newCookie);
             board.updateViewCnt(board.getViewCount());
         }
-
-
-
-        Long currentMemberId = 0L;
-        if (token != null) {
-            currentMemberId = jwtUtil.getIdFromToken(token);
-        }
-
-
-        ReplyResponseDto replies = findReplies( boardId,currentMemberId);
-        return BoardOneResponseDto.of(board,replies,currentMemberId);
-
     }
 
     private ReplyResponseDto findReplies(Long boardId, Long currentMemberId) {
