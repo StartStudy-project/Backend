@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-//@Profile({"local","prod"})
+@Profile({"local","prod"})
 public class InitData {
 
     @Autowired
