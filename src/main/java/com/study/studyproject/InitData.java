@@ -75,13 +75,29 @@ public class InitData {
                 Category.CS,Category.기타,Category.코테
         };
 
-        for (int i = 1; i <= 30; i++) {
+
+
+        for (int i = 1; i <= 15; i++) {
             int val = (int) (Math.random() * 3);
             Board build = Board.builder()
-                    .content("내용" + i)
+                    .content("같이 " + arr[val] + " 같이해요")
                     .nickname(member.getNickname())
                     .category(arr[val])
-                    .title("제목" + i)
+                    .title("같이 하실" + arr[val]+" 하실 분?")
+                    .member(member)
+                    .build();
+            boardRepository.save(build);
+        }
+
+        String[] regin = {"서울,인천,경기"};
+
+        for (int i = 1; i <= 15; i++) {
+            int val = (int) (Math.random() * 3);
+            Board build = Board.builder()
+                    .content(regin[val]+"에서 " + arr[val] + "같이해요")
+                    .nickname(member.getNickname())
+                    .category(arr[val])
+                    .title(regin[val]+"에서 같이 " + arr[val]+"하실 분? ")
                     .member(member)
                     .build();
             boardRepository.save(build);
