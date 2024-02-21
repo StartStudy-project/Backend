@@ -45,6 +45,5 @@ public class ReplyController {
         replyService.deleteReply(rno);
     }
 
-
 }
 

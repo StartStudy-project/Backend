@@ -2,6 +2,7 @@ package com.study.studyproject.reply.dto;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -17,7 +18,7 @@ public class UpdateReplyRequest {
     Long replyId;
 
     @Schema(description = "댓글 내용", defaultValue = "수정한 내용")
-    @NotEmpty(message = "댓글 내용을 입렬해주새요")
+    @NotBlank(message = "댓글 내용을 입렬해주새요")
     String content;
 
     @Builder
