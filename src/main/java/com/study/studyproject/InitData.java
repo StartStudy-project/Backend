@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@Profile({"local"})
+//@Profile({"local"})
 public class InitData {
 
     @Autowired
@@ -133,7 +133,7 @@ public class InitData {
         }
 
         for (int i = 0; i < 3; i++) {
-            Board getBoard = boardRepository.findById((long) (i)).get();
+            Board getBoard = boardRepository.findById((long) (i+1)).get();
             PostLike postLike = PostLike.create(membertree, getBoard);
             postLikeRepository.save(postLike);
         }
