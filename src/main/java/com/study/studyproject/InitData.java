@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@Profile({"local","prod"})
+//@Profile({"local","prod"})
 public class InitData {
 
     @Autowired
@@ -88,10 +88,12 @@ public class InitData {
             boardRepository.save(build);
         }
 
-        String[] regin = {"서울,인천,경기"};
+        String[] regin = {"서울","인천","경기"};
 
         for (int i = 1; i <= 15; i++) {
             int val = (int) (Math.random() * 3);
+            System.out.println("val = " + val);
+            System.out.println("regin[val] = " + regin[val]);
             Board build = Board.builder()
                     .content(regin[val]+"에서 " + arr[val] + "같이해요")
                     .nickname(member.getNickname())
