@@ -36,7 +36,6 @@ public class InitData {
     PasswordEncoder passwordEncoder;
 
 
-
     @PostConstruct
     void init() {
 
