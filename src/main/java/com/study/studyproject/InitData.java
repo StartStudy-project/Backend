@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@Profile({"local"})
+@Profile({"local","prod"})
 public class InitData {
 
     @Autowired
@@ -82,7 +82,7 @@ public class InitData {
                     .content("같이 " + arr[val] + " 같이해요")
                     .nickname(member.getNickname())
                     .category(arr[val])
-                    .title("같이 하실" + arr[val]+" 하실 분?")
+                    .title("같이 하실 " + arr[val]+" 하실 분?")
                     .member(member)
                     .build();
             boardRepository.save(build);
@@ -102,7 +102,7 @@ public class InitData {
             boardRepository.save(build);
         }
 
-        Board board = boardRepository.findById(30L).get();
+        Board board = boardRepository.findById(25L).get();
         Reply reply = null;
         for (int i = 0; i < 2; i++) {
             reply = Reply.builder()
@@ -125,13 +125,13 @@ public class InitData {
         }
 
         for (int i = 0; i < 3; i++) {
-            Board getBoard = boardRepository.findById((long) (30)).get();
+            Board getBoard = boardRepository.findById((long) (i+4)).get();
             PostLike postLike = PostLike.create(member, getBoard);
             postLikeRepository.save(postLike);
         }
 
         for (int i = 0; i < 3; i++) {
-            Board getBoard = boardRepository.findById((long) (1)).get();
+            Board getBoard = boardRepository.findById((long) (i)).get();
             PostLike postLike = PostLike.create(membertree, getBoard);
             postLikeRepository.save(postLike);
         }
