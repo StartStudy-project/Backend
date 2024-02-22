@@ -18,7 +18,6 @@ public class PostLike extends BaseTimeEntity{
     @Column(name = "postLike_id")
     private Long id;
 
-
     @ManyToOne(fetch = LAZY) //지연로딩
     @JoinColumn(name = "member_id")
     private Member member;

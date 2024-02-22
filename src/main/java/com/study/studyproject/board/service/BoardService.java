@@ -5,6 +5,7 @@ import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.entity.*;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.NotFoundException;
+import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
@@ -22,10 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.study.studyproject.reply.dto.ReplyInfoResponseDto.convertReplyToDto;
 import static com.study.studyproject.reply.dto.ReplyResponseDto.ReplyResponsetoDto;
@@ -82,13 +80,22 @@ public class BoardService {
 
 
         Long currentMemberId = 0L;
+        String postLike = "관심중";
+        Long PostLikeId =0L;
         if (token != null) {
             currentMemberId = jwtUtil.getIdFromToken(token);
+            Member member = memberRepository.findById(currentMemberId).orElseThrow(() -> new UserNotFoundException("사용자 없음"));
+            Optional<PostLike> postLikeOne = postLikeRepository.findByBoardAndMember(board, member);
+            if (postLikeOne.isPresent()) {
+                postLike = "관심 완료";
+                PostLikeId = postLikeOne.get().getId();
+            }
+
+
         }
 
-
-        ReplyResponseDto replies = findReplies( boardId,currentMemberId);
-        return BoardOneResponseDto.of(board,replies,currentMemberId);
+        ReplyResponseDto replies = findReplies(boardId,currentMemberId);
+        return BoardOneResponseDto.of(PostLikeId,postLike,board,replies,currentMemberId);
 
     }
 

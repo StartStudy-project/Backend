@@ -5,14 +5,11 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.study.studyproject.entity.*;
 import com.study.studyproject.list.dto.ListResponseDto;
-import com.study.studyproject.entity.Board;
-import com.study.studyproject.entity.Category;
-import com.study.studyproject.entity.Recruit;
 import com.study.studyproject.list.dto.QListResponseDto;
 import com.study.studyproject.member.dto.MemberListRequestDto;
 import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -21,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.study.studyproject.entity.QBoard.board;
+import static com.study.studyproject.entity.QPostLike.postLike;
 import static com.study.studyproject.entity.QReply.reply;
 import static org.springframework.util.StringUtils.isEmpty;
 
@@ -60,11 +58,12 @@ public class  MyPagePostLikeQueryRepository{
                                         .where(reply.isDeleted.eq(false)
                                                 .and(reply.board.id.eq(board.id)))
                         ))
-                .from(board)
-                .innerJoin(board.postLikes)
+                .from(postLike)
+                .innerJoin(board).fetchJoin()
+                .on(postLike.board.id.eq(board.id))
                 .where(
                         getType(condition.getRecruit()), //모집여부
-                        getUser(memeberId), //사용자 아이디 유무
+                        getPostLikeMember(memeberId), //사용자 아이디 유무
                         getCategory(condition.getCategory()),
                         board.isDeleted.eq(false)
                 )
@@ -94,7 +93,7 @@ public class  MyPagePostLikeQueryRepository{
                 .from(board)
                 .where(
                         getType(condition.getRecruit()), //모집여부
-                        getUser(memeberId), //사용자 이메일
+                        getPostLikeMember(memeberId), //사용자 이메일
                         getCategory(condition.getCategory()),
                         board.isDeleted.eq(false)
                 );
@@ -103,23 +102,19 @@ public class  MyPagePostLikeQueryRepository{
 
     private BooleanExpression getType(Recruit type) {
 
-
         return isEmpty(type) ? null : board.recruit.eq(type);
     }
 
 
 
-    private BooleanExpression getUser(Long userId) {
-
-        return isEmpty(userId) ? null : board.member.id.eq(userId);
+    private BooleanExpression getPostLikeMember(Long userId) {
+        return isEmpty(userId) ? null : postLike.member.id.eq(userId);
     }
 
     private OrderSpecifier<?> getOrder(int num) {
         if (num == 0) {
-            System.out.println("0");
             return board.createdDate.desc();
         } else {
-            System.out.println("1");
             return board.viewCount.desc();
         }
     }

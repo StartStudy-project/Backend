@@ -1,5 +1,6 @@
 package com.study.studyproject.board.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.study.studyproject.entity.Board;
 import com.study.studyproject.entity.Category;
 import com.study.studyproject.entity.Recruit;
@@ -37,19 +38,29 @@ public class BoardOneResponseDto {
     String content;
 
     Category category;
+    
     @Schema(description = "조회수", defaultValue = "3")
     int viewCnt;
+
+    @Schema(description = "관심글", defaultValue = "관심중")
+    String postLike;
+
+    @Schema(description = "관심글ID", defaultValue = "2")
+    Long postLikeId;
+
 
     @Schema(description = "댓글")
     ReplyResponseDto replyResponseDto;
 
     @Builder
-    public BoardOneResponseDto(Category category,String title, String userId, LocalDateTime updateTime, String content, boolean isMyBoard, int viewCnt, ReplyResponseDto replyResponseDto,LocalDateTime createTime,Recruit recruit) {
+    public BoardOneResponseDto(Long PostLikeId,String postLike, Category category,String title, String userId, LocalDateTime updateTime, String content, boolean isMyBoard, int viewCnt, ReplyResponseDto replyResponseDto,LocalDateTime createTime,Recruit recruit) {
         this.recruit = recruit;
         this.title = title;
         this.userId = userId;
         this.updateTime = updateTime;
         this.content = content;
+        this.postLikeId = PostLikeId;
+        this.postLike = postLike;
         this.category = category;
         this.isMyBoard = isMyBoard;
         this.viewCnt = viewCnt;
@@ -62,7 +73,7 @@ public class BoardOneResponseDto {
 
 
 
-    public static BoardOneResponseDto of(Board board, ReplyResponseDto replies, Long currentMemberId) {
+    public static BoardOneResponseDto of(Long postLikeId, String postLike, Board board, ReplyResponseDto replies, Long currentMemberId) {
 
         boolean myBoard = false;
         if (board.getMember().getId().equals(currentMemberId)) {
@@ -76,6 +87,8 @@ public class BoardOneResponseDto {
                 .title(board.getTitle())
                 .recruit(board.getRecruit())
                 .content(board.getContent())
+                .PostLikeId(postLikeId)
+                .postLike(postLike)
                 .viewCnt(Math.toIntExact(board.getViewCount()))
                 .userId(board.getNickname())
                 .category(board.getCategory())
@@ -84,3 +97,4 @@ public class BoardOneResponseDto {
     }
 
 }
+
