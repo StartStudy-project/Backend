@@ -46,6 +46,7 @@ public class BoardOneResponseDto {
     String postLike;
 
     @Schema(description = "관심글ID", defaultValue = "2")
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     Long postLikeId;
 
 
@@ -79,6 +80,7 @@ public class BoardOneResponseDto {
         if (board.getMember().getId().equals(currentMemberId)) {
             myBoard = true;
         }
+
 
         return BoardOneResponseDto.builder()
                 .isMyBoard(myBoard)

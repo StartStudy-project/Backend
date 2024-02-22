@@ -90,8 +90,6 @@ public class BoardService {
                 postLike = "관심 완료";
                 PostLikeId = postLikeOne.get().getId();
             }
-
-
         }
 
         ReplyResponseDto replies = findReplies(boardId,currentMemberId);
