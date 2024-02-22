@@ -80,14 +80,14 @@ public class BoardService {
 
 
         Long currentMemberId = 0L;
-        String postLike = "관심중";
+        String postLike = "관심";
         Long PostLikeId =0L;
         if (token != null) {
             currentMemberId = jwtUtil.getIdFromToken(token);
             Member member = memberRepository.findById(currentMemberId).orElseThrow(() -> new UserNotFoundException("사용자 없음"));
             Optional<PostLike> postLikeOne = postLikeRepository.findByBoardAndMember(board, member);
             if (postLikeOne.isPresent()) {
-                postLike = "관심 완료";
+                postLike = "관심완료";
                 PostLikeId = postLikeOne.get().getId();
             }
         }
