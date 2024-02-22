@@ -17,6 +17,11 @@
 - 코딩테스트와 프로젝트, cs, 기타 카테고리를 나눔으로써 사용자가 필요한 스터디를 찾기 쉽도록 구성.
 - 관심 게시글을 등록하면 마이페이지에 저장.
 
+<p align="center">
+  <img src="https://github.com/Study-Blog-Project/Backend/assets/70208747/2205e870-3459-420f-93a5-20d03ac1bd67">
+</p>
+
+
 ## 설계 및 협업 
 ### [Notion](https://rounded-raclette-de8.notion.site/6b818717ac554fef86a01748349fac7c?pvs=74)
   -  [figma](https://www.figma.com/file/PjRozZCGgmik4tW8T0ksiE/%EC%8A%A4%ED%84%B0%EB%94%94-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?type=design&node-id=0-1&mode=design&t=OR6coK5AHWePgQ1n-0)
