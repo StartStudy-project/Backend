@@ -33,8 +33,8 @@ public class JwtUtil {
     private final UserDetailsServiceImpl userDetailsService;
     private final RefreshRepository refreshTokenRepository;
 
-    private static final long ACCESS_TIME = 8 * 60 * 60 * 1000L;
-    private static final long REFRESH_TIME =  8 * 80 * 60 * 1000L;
+    private static final long ACCESS_TIME = 30 * 60 * 1000L;
+    private static final long REFRESH_TIME =  24 * 60 * 60 * 1000L;
     public static final String ACCESS_TOKEN = "Access_Token";
     public static final String REFRESH_TOKEN = "Refresh_Token";
     public static final String BEARER = "Bearer ";
@@ -63,10 +63,7 @@ public class JwtUtil {
     // 토큰 생성
     public TokenDtoResponse createAllToken(String email, Long id) {
         String access = createToken(email, id, ACCESS_TOKEN);
-        System.out.println("발급 access = " + access);
-
         String refresh = createToken(email, id, REFRESH_TOKEN);
-        System.out.println("발급 refresh = " + refresh);
         return new TokenDtoResponse(access, refresh);
     }
 
@@ -116,7 +113,6 @@ public class JwtUtil {
 
     // 토큰 검증
     public Boolean tokenValidation(String token) throws ExpiredJwtException, TokenNotValidatException {
-        System.out.println("token = " + token);
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
@@ -145,7 +141,6 @@ public class JwtUtil {
 
     // 인증 객체 생성
     public Authentication createAuthentication(String email) {
-        System.out.println("email = " + email);
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
