@@ -18,7 +18,7 @@ public class ListService {
 
     //조회
     public Page<ListResponseDto> list(String title, MainRequest boardListPage, Pageable pageable) {
-        Page<ListResponseDto> listResponseDtos = mainQueryRepository.boardListPage(title,boardListPage, pageable);
+        Page<ListResponseDto> listResponseDtos = mainQueryRepository.getBoardListPage(title,boardListPage, pageable);
         return listResponseDtos;
     }
 

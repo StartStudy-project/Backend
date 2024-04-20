@@ -31,7 +31,7 @@ public class MainQueryRepository  {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public Page<ListResponseDto> boardListPage(String findContent, MainRequest condition, Pageable pageable) {
+    public Page<ListResponseDto> getBoardListPage(String findContent, MainRequest condition, Pageable pageable) {
 
         List<ListResponseDto> content = getContent(findContent,condition, pageable);
         JPAQuery<Board> countQuery = getTotal(findContent,condition);
