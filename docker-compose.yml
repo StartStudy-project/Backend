@@ -1,29 +1,5 @@
 version : "3.3"
 services:
-#  web:
-#    image: nginx
-#    ports:
-#      - 80:80
-#    volumes:
-#      - /etc/nginx/:/etc/nginx/
-#    depends_on:
-#      - app
-#    networks:
-#      - springboot-mysql-net
-#  database:
-#    image: mysql:8.0.30
-#    restart: always
-#    container_name: database
-#    environment:
-#      MYSQL_DATABASE: project
-#      MYSQL_USER : root
-#      MYSQL_ROOT_PASSWORD: 1234
-#    volumes:
-#      - ./db:/var/lib/mysql
-#    ports:
-#      - "3306:3306"
-#    networks:
-#      - springboot-mysql-net
   app:
     build:
       context: .
@@ -31,8 +7,6 @@ services:
     restart: always
     ports:
       - "8080:8080"
-#    depends_on:
-#      - database
     container_name: app
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://54.180.21.153:3306/project?useSSL=false&serverTimezone=UTC
