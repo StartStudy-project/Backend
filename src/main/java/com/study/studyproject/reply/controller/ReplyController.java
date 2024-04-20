@@ -24,7 +24,7 @@ public class ReplyController {
     private final ReplyServiceImpl replyService;
     private final JwtUtil jwtUtil;
 
-    @PostMapping("/insertReply")
+    @PostMapping("/")
     @Operation(summary = "댓글 추가", description = "댓글 추가")
     public void insertReply(   @RequestHeader("Access_Token") String token
             , @RequestBody @Validated ReplyRequestDto replyRequestDto) {
@@ -33,7 +33,7 @@ public class ReplyController {
 
     }
 
-    @PatchMapping("/updateReply")
+    @PatchMapping("/")
     @Operation(summary = "댓글 수정")
     public void update( @RequestBody @Validated UpdateReplyRequest updateReplyRequest) {
         replyService.updateReply(updateReplyRequest);
