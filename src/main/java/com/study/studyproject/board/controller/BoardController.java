@@ -51,7 +51,6 @@ public class BoardController {
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
     public ResponseEntity<GlobalResultDto> writing(@RequestBody @Validated  BoardWriteRequestDto boardWriteRequestDto,@RequestHeader("Access_Token") String token)  {
         Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
-        System.out.println("idFromToken = " + idFromToken);
         return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto, idFromToken));
 
     }
