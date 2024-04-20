@@ -41,7 +41,7 @@ public class MemberController {
 
     //수정
     @Operation(summary = "사용자 정보 수정", description = "사용자 정보 수정 기능")
-    @PatchMapping("/info/update")
+    @PatchMapping("/info")
     public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody @Validated MemberUpdateResDto memberUpdateResDto, @RequestHeader("Access_Token") String token) {
         Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
         return ResponseEntity.ok(memberService.userInfoUpdate(idFromToken, memberUpdateResDto));
@@ -62,7 +62,7 @@ public class MemberController {
 
 
     @Operation(summary = "관심 게시글 조회", description = "사용자 관심 게시글 조회")
-    @GetMapping("/userPostLike")
+    @GetMapping("/user-postLike")
     public ResponseEntity<Page<ListResponseDto>> userPostLike(
             @RequestHeader("Access_Token") String token,
             MemberListRequestDto memberListRequestDto,

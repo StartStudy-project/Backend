@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/postLike/")
+@RequestMapping("/post-like/")
 public class PostLikeController {
 
     private final JwtUtil jwtUtil;
     private final PostLikeService postLikeService;
 
     @Operation(summary = "관심글 등록", description = "사용자의 관심글 등록합니다.")
-    @PostMapping("/save/{boardId}")
+    @PostMapping("/{boardId}")
     public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable Long boardId, @RequestHeader("Access_Token") String token) {
         Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
         return ResponseEntity.ok(postLikeService.postLikeSave(boardId,idFromToken));
