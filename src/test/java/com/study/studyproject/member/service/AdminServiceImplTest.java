@@ -116,7 +116,6 @@ class AdminServiceImplTest {
 
         //then
         List<ListResponseDto> content = adminDashBoardResponseDto.getListResponseDto().getContent();
-        System.out.println("content = " + content);
         assertThat(adminDashBoardResponseDto.getNickname()).isEqualTo(adminOne.getNickname());
         assertThat(adminDashBoardResponseDto.getRole()).isEqualTo(adminOne.getRole());
         assertThat(content.size()).isEqualTo(3);

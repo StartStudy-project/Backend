@@ -55,8 +55,6 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ExceptionHandler
     public ResponseEntity<ExceptionResponse> exception(Exception e) {
-        System.out.println("e.getStackTrace() = " + e.getStackTrace());
-        System.out.println("e = " + e);
         ExceptionResponse errorResult = new ExceptionResponse(INTERNAL_SERVER_ERROR.value(), INTERNAL_SERVER_ERROR.getReasonPhrase());
         return new ResponseEntity<>(errorResult, INTERNAL_SERVER_ERROR);
     }
@@ -76,7 +74,6 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
     @ResponseStatus(NOT_FOUND)
     public ResponseEntity<ExceptionResponse> notFoundEx(NotFoundException e) {
         ExceptionResponse errorResult = new ExceptionResponse(NOT_FOUND.value(), NOT_FOUND.getReasonPhrase());
-        System.out.println("errorResult = " + errorResult);
         return new ResponseEntity<>(errorResult, NOT_FOUND);
     }
 
@@ -105,7 +102,6 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
 
 
 
-        log.info("Errors  {} :  ", errors);
         return new ResponseEntity<>(body, headers, status);
     }
 

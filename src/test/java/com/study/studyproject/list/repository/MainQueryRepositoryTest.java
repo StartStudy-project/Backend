@@ -61,7 +61,6 @@ class MainQueryRepositoryTest {
 
         List<ListResponseDto> content = listResponseDtos.getContent();
 
-        System.out.println("content = " + content);
 
 
         //then

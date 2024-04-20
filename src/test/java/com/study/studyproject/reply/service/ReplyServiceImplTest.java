@@ -95,7 +95,6 @@ class ReplyServiceImplTest {
 
         //then
         Reply reply = replyRepository.findById(2L).get();
-        System.out.println("reply = " + reply);
 
         assertThat(reply.getBoard()).isEqualTo(board);
         assertThat(reply.getContent()).isEqualTo(replyOne.getContent());

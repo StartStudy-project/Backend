@@ -92,8 +92,6 @@ public class InitData {
 
         for (int i = 1; i <= 15; i++) {
             int val = (int) (Math.random() * 3);
-            System.out.println("val = " + val);
-            System.out.println("regin[val] = " + regin[val]);
             Board build = Board.builder()
                     .content(regin[val]+"에서 " + arr[val] + "같이해요")
                     .nickname(member.getNickname())

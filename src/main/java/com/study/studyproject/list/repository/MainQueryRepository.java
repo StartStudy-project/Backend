@@ -108,10 +108,8 @@ public class MainQueryRepository  {
 
     private OrderSpecifier<?> getOrder(int num) {
         if (num == 0) {
-            System.out.println("0");
             return board.createdDate.desc();
         } else {
-            System.out.println("1");
              return board.viewCount.desc();
         }
     }

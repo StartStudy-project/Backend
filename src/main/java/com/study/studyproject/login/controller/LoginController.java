@@ -53,8 +53,6 @@ public class LoginController {
     @PostMapping("/service_logout")
     public ResponseEntity<GlobalResultDto> logout(@RequestHeader("Access_Token") String token) {
         String emailFromToken = jwtUtil.getEmailFromToken(jwtUtil.resolveToken(token));
-        System.out.println("emailFromToken = " + emailFromToken);
-
         return ResponseEntity.ok(logoutService.logoutService(emailFromToken));
     }
 

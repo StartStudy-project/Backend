@@ -24,7 +24,6 @@ public class PostLikeController {
     @PostMapping("/save/{boardId}")
     public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable Long boardId, @RequestHeader("Access_Token") String token) {
         Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
-        System.out.println("idFromToken = " + idFromToken);
         return ResponseEntity.ok(postLikeService.postLikeSave(boardId,idFromToken));
     }
 

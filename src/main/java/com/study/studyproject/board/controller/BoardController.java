@@ -42,7 +42,6 @@ public class BoardController {
     @PatchMapping("member/updateWrite")
     @Operation(summary = "글쓰기 수정", description = "글쓰기 수정 기능")
     public ResponseEntity<GlobalResultDto> updateWriting(@RequestBody @Validated  BoardReUpdateRequestDto boardReUpdateRequestDto) {
-        System.out.println("boardReUpdateRequestDto = " + boardReUpdateRequestDto);
         return ResponseEntity.ok(boardService.updateWrite(boardReUpdateRequestDto));
 
     }
