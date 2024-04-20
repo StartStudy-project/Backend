@@ -167,7 +167,7 @@ public class BoardService {
     //모집 구분 변경
     public GlobalResultDto changeRecruit(BoardChangeRecruitRequestDto boardChangeRecruitRequestDto) {
         Board board = boardRepository.findById(boardChangeRecruitRequestDto.getBoardId() ).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
-        board.ChangeRecuritBoard(boardChangeRecruitRequestDto);
+        board.changeRecuritBoard(boardChangeRecruitRequestDto);
         return new GlobalResultDto("모집 구분 변경 완료", HttpStatus.OK.value());
     }
 }

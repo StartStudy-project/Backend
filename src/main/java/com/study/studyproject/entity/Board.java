@@ -20,13 +20,13 @@ public class Board extends BaseTimeEntity{
 
     @Id @GeneratedValue
     @Column(name = "board_id")
-    private Long id;                                                          // 고유 ID
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member member;                                                    // Member 와 연관 관계 설정
+    private Member member;
 
-    private String title;                                                     // 포스트 타이틀
+    private String title;
 
 
     @ColumnDefault("0")
@@ -84,7 +84,7 @@ public class Board extends BaseTimeEntity{
         return this;
     }
 
-    public Board ChangeRecuritBoard(BoardChangeRecruitRequestDto boardChangeRecruitRequestDto){
+    public Board changeRecuritBoard(BoardChangeRecruitRequestDto boardChangeRecruitRequestDto){
         this.recruit = boardChangeRecruitRequestDto.getRecruit();
         return this;
     }

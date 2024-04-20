@@ -19,7 +19,6 @@ import java.util.List;
 public class CorsConfig  {
     @Bean
     public CorsFilter corsFilter() {
-        log.info("-----------core------------");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);

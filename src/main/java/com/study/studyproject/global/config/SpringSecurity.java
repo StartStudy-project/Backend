@@ -56,7 +56,6 @@ public class SpringSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        log.info("!!!들어옴!!");
         http.addFilter(filter);
         http.addFilterBefore(new JwtFilter(jwtUtil),CorsFilter.class);
         http.csrf(AbstractHttpConfigurer::disable) //
