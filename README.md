@@ -75,6 +75,44 @@
 ## ERD설계
 ![image](https://github.com/Study-Blog-Project/Backend/assets/70208747/92d9da1b-9163-4eab-a6d5-12fd09a5bacf)
 
+## 주요 기능
+
+<table align="center"><!-- 팀원 표 -->
+  <tr>
+   <th>
+    공통
+   </th>
+   <th>
+    사용자
+   </th>
+   <th >
+    관리자
+   </th>
+   </tr>
+  <tr>
+   <td align="left" width="350px" class="공통">
+    - 회원가입, 로그인
+    <br/>
+    - 메인페이지 및 글 상세 페이지 조회
+         <br/>
+    - 글 상세 페이지 조회
+   </td>
+   <td align="left" width="350px" class="사용자 및 관리자">
+    - 사용자 마이페이지
+    <br/>
+    - 글쓰기 등록 및 수정 및 삭제
+    <br/>
+    - 댓글쓰기
+   </td>
+   <td align="left" width="350px" class="관리자">
+    - 글 상세페이지 삭제
+    <br/>
+    - 전체글 페이지 
+    <br/>
+    - 회원 정보 페이지 
+   </td>
+  </tr>
+</table>
 
 ## Member
 
