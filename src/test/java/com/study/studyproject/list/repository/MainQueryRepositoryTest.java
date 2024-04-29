@@ -57,7 +57,7 @@ class MainQueryRepositoryTest {
         String title = "꿈나라";
 
         //when
-        Page<ListResponseDto> listResponseDtos = mainQueryRepository.boardListPage(title, listRequestDto, pageRequest);
+        Page<ListResponseDto> listResponseDtos = mainQueryRepository.getBoardListPage(title, listRequestDto, pageRequest);
 
         List<ListResponseDto> content = listResponseDtos.getContent();
 
