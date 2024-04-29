@@ -25,7 +25,7 @@
 | :------------------------------------------: | :------------------------------------------------: |
 | <img width="100%" src="https://github.com/Study-Blog-Project/Backend/assets/70208747/fd45bba1-964d-4393-b86b-6978dea5de2d"/> | <img width="100%" src="https://github.com/Study-Blog-Project/Backend/assets/70208747/691cd102-caee-4813-ac92-fea20673d652"/> | 
 
-|           글 상세(자신 게시글)                   |                        글상세(타인 게시글)   |     
+|           게시글 상세(자신 게시글)                   |                        게시글 상세(타인 게시글)   |     
 | :------------------------------------------: | :------------------------------------------------: |
 | <img width="100%" src="https://github.com/Study-Blog-Project/Backend/assets/70208747/87dfe5a5-8355-4202-bd70-bd4bf4597a58"/> | <img width="100%" src="https://github.com/Study-Blog-Project/Backend/assets/70208747/d8eacf3e-39e8-4e6e-a0bf-c1f99fa32a81"/> | 
 
@@ -95,24 +95,28 @@
     <br/>
     - 메인페이지
          <br/>
-    - 글 상세 페이지 조회
+    - 게시글 상세 조회 및 댓글 조회 기능 
    </td>
    <td align="left" width="350px" class="사용자 및 관리자">
-    - 사용자 마이페이지
+    - 게시글 관리 
     <br/>
-    - 글쓰기 등록 및 수정 및 삭제
+    - 관심 게시글 및 내가 작성한 게시글 조회 
     <br/>
-    - 댓글쓰기
+    - 사용자 정보 조회 및 수정 기능
+       <br/>
+    - 댓글 관리 
    </td>
    <td align="left" width="350px" class="관리자">
-    - 글 상세페이지 삭제
+    - 사용자 전체 게시글 조회 기능
     <br/>
-    - 전체글 페이지 
+    - 회원 정보 조회 기능 
     <br/>
-    - 회원 정보 페이지 
+    - 사용자 게시글 삭제 기능
    </td>
   </tr>
 </table>
+
+
 
 ## Member
 
