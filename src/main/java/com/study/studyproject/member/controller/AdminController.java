@@ -1,5 +1,8 @@
 package com.study.studyproject.member.controller;
 
+import com.study.studyproject.board.service.BoardService;
+import com.study.studyproject.entity.Role;
+import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.dto.AdminDashBoardResponseDto;
@@ -13,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +28,7 @@ public class AdminController {
 
     private final AdminServiceImpl adminService;
     private final JwtUtil jwtUtil;
+    private final BoardService boardService;
 
 
     @GetMapping("/user-all")
@@ -40,5 +45,11 @@ public class AdminController {
                                                    MemberListRequestDto memberListRequestDto, @PageableDefault(size = 10) Pageable pageable) {
         Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
         return adminService.adminDashBoardInfo(idFromToken,memberListRequestDto,pageable);
+    }
+
+    @DeleteMapping("/board/{boardId}")
+    @Operation(summary = "관리자 게시글 삭제 ", description = "관리자 게시글 삭제")
+    public ResponseEntity<GlobalResultDto> adminDelete(@PathVariable(name = "boardId") Long boardId) {
+        return ResponseEntity.ok(boardService.boardDeleteOne(boardId,Role.ROLE_ADMIN));
     }
 }
