@@ -26,6 +26,7 @@ public class AdminServiceImpl implements AdminService{
 
     private final MemberRepository memberRepository;
     private final MyPageQueryRepository myPageQueryRepository;
+    private final String  getAdmin= "Admin";
 
     @Override
     public Page<UserInfoResponseDto> userInfoAll(String username, Pageable pageable) {
@@ -37,7 +38,7 @@ public class AdminServiceImpl implements AdminService{
 
     public AdminDashBoardResponseDto adminDashBoardInfo(Long id, MemberListRequestDto memberListRequestDto, Pageable pageable) {
         Member member = memberRepository.findById(id).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
-        Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable, null,"Admin");
+        Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable, null,getAdmin);
         return AdminDashBoardResponseDto.of(member, listResponseDtos);
     }
 }
