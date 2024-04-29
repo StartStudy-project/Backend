@@ -27,6 +27,7 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final MyPageQueryRepository myPageQueryRepository;
     private final MyPagePostLikeQueryRepository myPagePostLikeQueryRepository;
+    private final String  getMember= "member";
 
     //사용자 정보조회
     @Override
@@ -49,7 +50,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public Page<ListResponseDto> listMember(Long token, MemberListRequestDto memberListRequestDto, Pageable pageable) {
-        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable,token, "member");
+        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable,token, getMember);
     }
 
 
