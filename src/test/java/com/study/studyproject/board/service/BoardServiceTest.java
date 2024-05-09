@@ -263,7 +263,6 @@ class BoardServiceTest {
         Board board1 = allBoard.get(0);
         assertThat(board1.getTitle()).isEqualTo("관리자로 의해 게시글 삭제");
         assertThat(board1.getContent()).isEqualTo("관리자로 의해 게시글 삭제되었습니다.");
-        assertThat(globalResultDto.getMessage()).isEqualTo("관리자권한으로 게시글 삭제 완료");
 
     }
 

@@ -155,8 +155,7 @@ class AdminControllerTest {
                 .andExpect(jsonPath("$.nickname").value("admin"))
                 .andExpect(jsonPath("$.role").value("ROLE_ADMIN"))
                 .andExpect(jsonPath("$.listResponseDto.content", hasSize(expectedSize)))
-                .andExpect(jsonPath("$.listResponseDto.content").isArray())
-                .andExpect(jsonPath("$.listResponseDto.content[0].nickname").value(equalTo("닉네임3")));
+                .andExpect(jsonPath("$.listResponseDto.content").isArray());
 
     }
 

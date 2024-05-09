@@ -75,7 +75,7 @@ class ReplyControllerTest {
 
         ReplyRequestDto replyRequestDto = new ReplyRequestDto(boardCreate.getId(), null, "댓글내용");
         //when
-        mockMvc.perform(post("/reply/insertReply")
+        mockMvc.perform(post("/reply/")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .content(objectMapper.writeValueAsString(replyRequestDto))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -99,7 +99,7 @@ class ReplyControllerTest {
         TokenDtoResponse allToken = jwtUtil.createAllToken(member1.getEmail(), member1.getId());
 
         //when
-        mockMvc.perform(post("/reply/insertReply")
+        mockMvc.perform(post("/reply/")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .content(objectMapper.writeValueAsString(replyRequestDto))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -130,7 +130,7 @@ class ReplyControllerTest {
 
 
         //when
-        mockMvc.perform(post("/reply/insertReply")
+        mockMvc.perform(post("/reply/")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .content(objectMapper.writeValueAsString(replyRequestDto))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -160,7 +160,7 @@ class ReplyControllerTest {
 
 
         //when
-        mockMvc.perform(patch("/reply/updateReply")
+        mockMvc.perform(patch("/reply/")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .content(objectMapper.writeValueAsString(replyRequestDto))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -189,7 +189,7 @@ class ReplyControllerTest {
 
 
         //when
-        mockMvc.perform(patch("/reply/updateReply")
+        mockMvc.perform(patch("/reply/")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .content(objectMapper.writeValueAsString(replyRequestDto))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -217,9 +217,8 @@ class ReplyControllerTest {
 
 
         //when
-        mockMvc.perform(delete("/reply/deleteReply")
+        mockMvc.perform(delete("/reply/"+one.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .param("rno", String.valueOf(one.getId()))
                 )
                 .andDo(print())
                 .andExpect(status().isOk());

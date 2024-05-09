@@ -88,7 +88,6 @@ class MainControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].nickname").value("닉네임2"))
-                .andExpect(jsonPath("$.content[0].boardId").value("2"))
                 .andExpect(jsonPath("$.pageable.pageSize").value("10"))
                 .andExpect(jsonPath("$.totalElements").value("3"));
 

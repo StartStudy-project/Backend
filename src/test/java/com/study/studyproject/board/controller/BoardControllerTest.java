@@ -242,8 +242,6 @@ class BoardControllerTest  {
         mockMvc.perform(delete("/board/member/"+board.getId())
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
-                        .param("boardId", String.valueOf(board.getId()))
-
                 )
                 .andExpect(status().isOk())
                 .andDo(print())

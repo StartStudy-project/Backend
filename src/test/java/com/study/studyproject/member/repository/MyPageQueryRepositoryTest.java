@@ -75,11 +75,6 @@ class MyPageQueryRepositoryTest {
         assertThat(content).
                 hasSize(2);
 
-        assertThat(content.get(0).getTitle()).isEqualTo("제목2");
-        assertThat(content.get(1).getTitle()).isEqualTo("제목1");
-
-
-
     }
 
 

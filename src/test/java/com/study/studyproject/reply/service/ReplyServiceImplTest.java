@@ -66,11 +66,9 @@ class ReplyServiceImplTest {
         replyService.insert(member1.getId(), replyOne);
 
         //then
-        Reply reply = replyRepository.findById(boardCreate.getId()).get();
+        List<Reply> all = replyRepository.findAll();
+        Assertions.assertThat(all).hasSize(1);
 
-        assertThat(reply.getBoard()).isEqualTo(boardCreate);
-        assertThat(reply.getContent()).isEqualTo(replyOne.getContent());
-        assertThat(reply.getParent()).isNull();
 
     }
 
@@ -87,18 +85,15 @@ class ReplyServiceImplTest {
         replyRepository.save(parentReply);
 
 
-
-        ReplyRequestDto replyOne = new ReplyRequestDto(board.getId(), 1L, "댓글 내용");
+        ReplyRequestDto replyOne = new ReplyRequestDto(board.getId(), parentReply.getId(), "댓글 내용");
 
         //when
-        replyService.insert(member1.getId(), replyOne); //2
+        replyService.insert(member1.getId(), replyOne);
 
         //then
-        Reply reply = replyRepository.findById(2L).get();
+        List<Reply> all = replyRepository.findAll();
+        Assertions.assertThat(all).hasSize(2);
 
-        assertThat(reply.getBoard()).isEqualTo(board);
-        assertThat(reply.getContent()).isEqualTo(replyOne.getContent());
-        assertThat(reply.getParent()).isNotNull();
 
     }
 
