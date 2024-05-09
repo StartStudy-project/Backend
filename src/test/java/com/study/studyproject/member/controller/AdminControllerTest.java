@@ -79,7 +79,7 @@ class AdminControllerTest {
 
         //when
         //when
-        mockMvc.perform(get("/admin/userAll")
+        mockMvc.perform(get("/admin/user-all")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .params(query_param)
@@ -110,7 +110,7 @@ class AdminControllerTest {
 
 
         //when
-        mockMvc.perform(get("/admin/userAll")
+        mockMvc.perform(get("/admin/user-all")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .params(query_param)
@@ -145,7 +145,7 @@ class AdminControllerTest {
 
 
         //when
-        mockMvc.perform(get("/admin/dashBoard")
+        mockMvc.perform(get("/admin/dash-board")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .params(query_param)
                 )

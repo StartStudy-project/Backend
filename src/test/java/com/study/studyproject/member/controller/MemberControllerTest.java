@@ -126,7 +126,7 @@ class MemberControllerTest {
         MemberUpdateResDto memberUpdateResDto = new MemberUpdateResDto("수정이름", "수정닉네임");
 
         //when
-        mockMvc.perform(patch("/user/info/update")
+        mockMvc.perform(patch("/user/info")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(memberUpdateResDto))
@@ -150,7 +150,7 @@ class MemberControllerTest {
         MemberUpdateResDto memberUpdateResDto = new MemberUpdateResDto(null, "수정닉네임");
 
         //when
-        mockMvc.perform(patch("/user/info/update")
+        mockMvc.perform(patch("/user/info")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(memberUpdateResDto))
@@ -174,7 +174,7 @@ class MemberControllerTest {
         MemberUpdateResDto memberUpdateResDto = new MemberUpdateResDto(null, null);
 
         //when //then
-        mockMvc.perform(patch("/user/info/update")
+        mockMvc.perform(patch("/user/info")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(memberUpdateResDto))

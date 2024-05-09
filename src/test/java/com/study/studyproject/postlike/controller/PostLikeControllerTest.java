@@ -60,7 +60,7 @@ class PostLikeControllerTest {
         TokenDtoResponse allToken = jwtUtil.createAllToken(member.getEmail(), member.getId());
 
         //when then
-        mockMvc.perform(post("/postLike/save/"+board.getId())
+        mockMvc.perform(post("/post-like/"+board.getId())
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                 )
@@ -85,7 +85,7 @@ class PostLikeControllerTest {
 
 
         //when then
-        mockMvc.perform(delete("/postLike/delete/"+postLike1.getId())
+        mockMvc.perform(delete("/post-like/"+postLike1.getId())
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                 )

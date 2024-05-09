@@ -39,14 +39,14 @@ public class BoardController {
     private final JwtUtil jwtUtil;
 
     //글쓰기 수정
-    @PatchMapping("member/")
+    @PatchMapping("member")
     @Operation(summary = "글쓰기 수정", description = "글쓰기 수정 기능")
     public ResponseEntity<GlobalResultDto> updateWriting(@RequestBody @Validated  BoardReUpdateRequestDto boardReUpdateRequestDto) {
         return ResponseEntity.ok(boardService.updateWrite(boardReUpdateRequestDto));
 
     }
 
-    @PostMapping("member/")
+    @PostMapping("member")
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
     public ResponseEntity<GlobalResultDto> writing(@RequestBody @Validated  BoardWriteRequestDto boardWriteRequestDto,@RequestHeader("Access_Token") String token)  {
         Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
