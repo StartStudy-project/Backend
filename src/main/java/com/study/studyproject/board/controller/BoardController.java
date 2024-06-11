@@ -55,7 +55,7 @@ public class BoardController {
     }
 
     @Operation(summary = "모집구분 변경", description = "모집구분 변경")
-    @PatchMapping("/member/change-recruit")
+    @PatchMapping("/member/recruit")
     public ResponseEntity<GlobalResultDto> changeRecruit(@RequestBody @Validated BoardChangeRecruitRequestDto boardChangeRecruitRequestDto) {
         return ResponseEntity.ok(boardService.changeRecruit(boardChangeRecruitRequestDto));
     }
