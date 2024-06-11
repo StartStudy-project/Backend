@@ -9,7 +9,7 @@ services:
       - "8080:8080"
     container_name: app
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://43.202.187.32:3306/project?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://15.165.250.19:3306/project?useSSL=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
       SPRING_PROFILES_ACTIVE: prod
