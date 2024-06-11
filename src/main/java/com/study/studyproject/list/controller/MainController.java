@@ -26,7 +26,6 @@ public class MainController {
             @RequestParam(value = "title",required = false) String title,
             MainRequest mainRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
-        log.info("~~~메인~~");
 
         Page<ListResponseDto> list = listService.list(title, mainRequestDto, pageable);
         return ResponseEntity.ok(list);
