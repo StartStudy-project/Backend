@@ -49,7 +49,7 @@ public class MemberController {
 
 
     @Operation(summary = "내가 작성한 게시글 조회", description = "사용자 스터디 게시글 조회")
-    @GetMapping("/list")
+    @GetMapping("/lists")
     public ResponseEntity<Page<ListResponseDto>> mainList(
             @RequestHeader("Access_Token") String token,
              MemberListRequestDto memberListRequestDto,
