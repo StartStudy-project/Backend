@@ -62,7 +62,7 @@ public class MemberController {
 
 
     @Operation(summary = "관심 게시글 조회", description = "사용자 관심 게시글 조회")
-    @GetMapping("/postLike")
+    @GetMapping("/post-likes")
     public ResponseEntity<Page<ListResponseDto>> userPostLike(
             @RequestHeader("Access_Token") String token,
             MemberListRequestDto memberListRequestDto,
