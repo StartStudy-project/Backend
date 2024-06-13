@@ -15,6 +15,9 @@
 
 - 코딩테스트와 프로젝트, cs, 기타 카테고리를 나눔으로써 사용자가 필요한 스터디를 찾기 쉽도록 구성.
 - 관심 게시글을 등록하면 마이페이지에 저장.
+## Swagger
+- [swagger로 이동](http://startstudy.shop:8080/swagger-ui/index.html)
+
 
 ## 서비스 화면
 |           메인화면                   |                        회원가입                    |     
@@ -45,10 +48,6 @@
   -  [API 정의](https://rounded-raclette-de8.notion.site/API-4c057239d78b48b78665749aca53fa3e?pvs=4)
 
 
-<details><summary style="color:skyblue"> Swagger </summary>
-
-![image](https://github.com/Study-Blog-Project/Backend/assets/70208747/d6c86860-a500-440d-a99c-9d9f6333c2ab)
-![image](https://github.com/Study-Blog-Project/Backend/assets/70208747/50a220b4-7eab-4cda-82be-b96dae4f6cce)
 
 
 </details>
