@@ -73,7 +73,7 @@
 
 ## ERD설계
  - [ERD 설계 이동](https://www.erdcloud.com/d/zAY3Zk8H7Eq3xAnsg)
-![image](https://github.com/Study-Blog-Project/Backend/assets/70208747/8167c108-122f-465b-b830-5dd0ac412c74)
+![image](https://github.com/Study-Blog-Project/Backend/assets/70208747/5ad6b003-f039-4b12-8439-f38e4c614fac)
 
 ## 주요 기능
 
