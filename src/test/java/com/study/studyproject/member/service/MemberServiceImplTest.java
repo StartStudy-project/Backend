@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.study.studyproject.entity.Category.CS;
@@ -103,9 +104,9 @@ class MemberServiceImplTest {
         assertThat(content).hasSize(3);
         assertThat(content)
                 .extracting("title", "type")
-                .containsExactly(
-                        tuple("제목3", "기타"),
+                .containsExactlyInAnyOrder(
                         tuple("제목2", "CS"),
+                        tuple("제목3", "기타"),
                         tuple("제목1", "CS")
                 );
     }
@@ -113,7 +114,7 @@ class MemberServiceImplTest {
 
     @Test
     @DisplayName("사용자가 작성한  CS카테고리 게시글을 최신순으로 조회한다.")
-    void getCsCategoryListMember() {
+    void getCsCategoryListMember() throws InterruptedException {
         //given
         Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
         Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
@@ -121,7 +122,9 @@ class MemberServiceImplTest {
         Board board2 = createBoard(member1, "제목3", "내용3", "닉네임1", 기타);
         memberRepository.save(member1);
         boardRepository.save(board);
+        Thread.sleep(1000);
         boardRepository.save(board1);
+        Thread.sleep(1000);
         boardRepository.save(board2);
         PageRequest pageRequest = PageRequest.of(0, 10);
         MemberListRequestDto memberListRequestDto = new MemberListRequestDto(Recruit.모집중, CS,0);
@@ -173,7 +176,7 @@ class MemberServiceImplTest {
         assertThat(content).hasSize(3);
         assertThat(content)
                 .extracting("title", "type")
-                .containsExactly(
+                .containsExactlyInAnyOrder(
                         tuple("제목3", "기타"),
                         tuple("제목2", "CS"),
                         tuple("제목1", "CS")

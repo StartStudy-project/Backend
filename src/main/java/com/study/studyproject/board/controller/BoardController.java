@@ -73,10 +73,10 @@ public class BoardController {
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
     public ResponseEntity<BoardOneResponseDto> getBoard(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId
-            ,@RequestHeader(value = "Access_Token",required = false) String token,HttpServletRequest request,HttpServletResponse response) {
+            ,@RequestHeader(value = "Access_Token",required = false) String token, HttpServletRequest request,HttpServletResponse response) {
 
         String resolveToken = jwtUtil.resolveToken(token);
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, resolveToken,request,response);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, token,request,response);
         return ResponseEntity.ok(boardOneResponseDto);
 
     }

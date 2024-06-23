@@ -38,6 +38,7 @@ class MainControllerTest {
     @Autowired
     private MemberRepository memberRepository;
 
+
     @Test
     @DisplayName("모든 카테고리를 최신순으로 조회한다.")
     void mainListAllTestCreateDateDesc() throws Exception {
@@ -139,7 +140,12 @@ class MainControllerTest {
         Board board4 = createBoard(member1, "타이틀1", "내용3", "닉네임3", 코테);
 
         memberRepository.save((member1));
-        List<Board> products = List.of(board0, board1, board2,board3,board4);
+        boardRepository.save(board0);
+        Thread.sleep(1000);
+        boardRepository.save(board1);
+        Thread.sleep(1000);
+        List<Board> products = List.of( board2,board3,board4);
+
         List<Board> boards = boardRepository.saveAll(products);
 
 

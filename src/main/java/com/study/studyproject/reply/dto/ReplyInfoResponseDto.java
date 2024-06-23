@@ -17,17 +17,17 @@ public class ReplyInfoResponseDto {
     private Long replyId;
     private Long parentId;
     private boolean isMyReply;
-    private MemberReplyRequestDto memberRequestDto;
+    private String nickname;
     private String content;
     private LocalDateTime updateTime;
     private List<ReplyInfoResponseDto> children = new ArrayList<>();
 
-    public ReplyInfoResponseDto(Reply reply, boolean isMyReply, String content, MemberReplyRequestDto userInfoResponseDto) {
+    public ReplyInfoResponseDto(Reply reply, boolean isMyReply, String content) {
         this.replyId = reply.getId();
         this.updateTime = reply.getLastModifiedDate();
+        this.nickname = reply.getNickname();
         this.parentId = (reply.getParent() != null) ? reply.getParent().getId() : null;
         this.content = content;
-        this.memberRequestDto = userInfoResponseDto;
         this.isMyReply = isMyReply;
     }
 
@@ -44,8 +44,8 @@ public class ReplyInfoResponseDto {
 
 
         return reply.getIsDeleted() ?
-                new ReplyInfoResponseDto(reply, isMyReply, "삭제된 댓글입니다.", null) :
-                new ReplyInfoResponseDto(reply, isMyReply,reply.getContent(), new MemberReplyRequestDto(reply.getMember()));
+                new ReplyInfoResponseDto(reply, isMyReply, "삭제된 댓글입니다.") :
+                new ReplyInfoResponseDto(reply, isMyReply,reply.getContent());
 
     }
 

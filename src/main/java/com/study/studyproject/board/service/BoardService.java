@@ -5,7 +5,6 @@ import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.entity.*;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.NotFoundException;
-import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
@@ -17,7 +16,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -78,22 +76,20 @@ public class BoardService {
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
         checkDuplicate(boardId, request, response, board);
 
-
         Long currentMemberId = 0L;
-        String postLike = "관심";
-        Long PostLikeId =0L;
+        String postLike = "";
         if (token != null) {
             currentMemberId = jwtUtil.getIdFromToken(token);
-            Member member = memberRepository.findById(currentMemberId).orElseThrow(() -> new UserNotFoundException("사용자 없음"));
+            Member member = memberRepository.findById(currentMemberId).orElseThrow(() -> new IllegalArgumentException("사용자가 없습니다."));
             Optional<PostLike> postLikeOne = postLikeRepository.findByBoardAndMember(board, member);
+            postLike = "관심";
             if (postLikeOne.isPresent()) {
                 postLike = "관심완료";
-                PostLikeId = postLikeOne.get().getId();
             }
         }
 
         ReplyResponseDto replies = findReplies(boardId,currentMemberId);
-        return BoardOneResponseDto.of(PostLikeId,postLike,board,replies,currentMemberId);
+        return BoardOneResponseDto.of(currentMemberId,postLike,board,replies);
 
     }
 
@@ -118,13 +114,13 @@ public class BoardService {
         }
     }
 
-    private ReplyResponseDto findReplies(Long boardId, Long currentMemberId) {
+    private ReplyResponseDto findReplies(Long boardId,Long currentMemberId) {
            List<Reply> comments = replyRepository.findByBoardReply(boardId);
            List<ReplyInfoResponseDto> commentResponseDTOList = getReplyInfoResponseDtos(comments,currentMemberId);
         return ReplyResponsetoDto(replyRepository.findBoardReplyCnt(boardId), commentResponseDTOList);
     }
 
-    private static List<ReplyInfoResponseDto> getReplyInfoResponseDtos(List<Reply> comments, Long currentMemberId) {
+    private static List<ReplyInfoResponseDto> getReplyInfoResponseDtos(List<Reply> comments,Long currentMemberId) {
 
         List<ReplyInfoResponseDto> commentResponseDTOList = new ArrayList<>();
         Map<Long, ReplyInfoResponseDto> commentDTOHashMap = new HashMap<>();
@@ -143,8 +139,7 @@ public class BoardService {
 
     //삭제
     public GlobalResultDto boardDeleteOne(Long boardId, Role role) {
-
-        if (role.equals(Role.ROLE_ADMIN)) {
+        if (role == Role.ROLE_ADMIN) {
             Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
             board.ChangeBoardIsDeleted(true);
             board.deleteBoardContent("관리자로 의해 게시글 삭제","관리자로 의해 게시글 삭제되었습니다.");
@@ -155,6 +150,7 @@ public class BoardService {
         List<Reply> replies = replyRepository.findByBoardReplies(boardId);
         //postLike
         List<PostLike> postLikes = postLikeRepository.findByBoardId(boardId);
+
 
         if (replies.size() != 0 || postLikes.size() != 0) {
             return new GlobalResultDto("게시글을 삭제 할 수 없습니다.", HttpStatus.FORBIDDEN.value());

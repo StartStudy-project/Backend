@@ -177,7 +177,7 @@ class LoginControllerTest {
         TokenDtoResponse allToken = jwtUtil.createAllToken(member.getEmail(), member.getId());
 
         //when & then
-        mockMvc.perform(post("/service_logout")
+        mockMvc.perform(post("/service-logout")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .content(objectMapper.writeValueAsString(loginRequest))
                         .contentType(MediaType.APPLICATION_JSON)
