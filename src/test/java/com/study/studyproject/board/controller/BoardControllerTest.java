@@ -191,7 +191,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(patch("/board/member/change-recruit")
+        mockMvc.perform(patch("/board/member/recruit")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -214,7 +214,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(patch("/board/member/change-recruit")
+        mockMvc.perform(patch("/board/member/recruit")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(requestDto))
