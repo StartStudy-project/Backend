@@ -88,7 +88,7 @@ public class BoardService {
             }
         }
 
-        ReplyResponseDto replies = findReplies(boardId,currentMemberId);
+        ReplyResponseDto replies = findReplies(boardId);
         return BoardOneResponseDto.of(currentMemberId,postLike,board,replies);
 
     }
@@ -114,19 +114,19 @@ public class BoardService {
         }
     }
 
-    private ReplyResponseDto findReplies(Long boardId,Long currentMemberId) {
+    private ReplyResponseDto findReplies(Long boardId) {
            List<Reply> comments = replyRepository.findByBoardReply(boardId);
-           List<ReplyInfoResponseDto> commentResponseDTOList = getReplyInfoResponseDtos(comments,currentMemberId);
+           List<ReplyInfoResponseDto> commentResponseDTOList = getReplyInfoResponseDtos(comments);
         return ReplyResponsetoDto(replyRepository.findBoardReplyCnt(boardId), commentResponseDTOList);
     }
 
-    private static List<ReplyInfoResponseDto> getReplyInfoResponseDtos(List<Reply> comments,Long currentMemberId) {
+    private static List<ReplyInfoResponseDto> getReplyInfoResponseDtos(List<Reply> comments) {
 
         List<ReplyInfoResponseDto> commentResponseDTOList = new ArrayList<>();
         Map<Long, ReplyInfoResponseDto> commentDTOHashMap = new HashMap<>();
 
         comments.forEach(c -> {
-            ReplyInfoResponseDto commentResponseDTO = convertReplyToDto(c,currentMemberId);
+            ReplyInfoResponseDto commentResponseDTO = convertReplyToDto(c);
             commentDTOHashMap.put(commentResponseDTO.getReplyId(), commentResponseDTO);
             if (c.getParent() != null) commentDTOHashMap.get(c.getParent().getId()).getChildren().add(commentResponseDTO);
             else commentResponseDTOList.add(commentResponseDTO);
