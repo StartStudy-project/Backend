@@ -49,9 +49,12 @@ class ListServiceTest {
         Board board4 = createBoard(member1, "타이틀1", "내용3", "닉네임3", CS);
 
          boardRepository.save(board);
-         boardRepository.save(board1);
-         boardRepository.save(board2);
-         boardRepository.save(board4);
+        Thread.sleep(1000);
+        boardRepository.save(board1);
+        Thread.sleep(1000);
+        boardRepository.save(board2);
+        Thread.sleep(1000);
+        boardRepository.save(board4);
 
         MainRequest mainRequest = new MainRequest(CS, 0);
         PageRequest pageRequest = PageRequest.of(0, 3);
@@ -85,8 +88,14 @@ class ListServiceTest {
         Board board2 = createBoard(member1, "자바공부 풀 사람1", "내용3", "닉네임3", 기타);
         Board board3 = createBoard(member1, "제목15", "내용3", "닉네임3", 코테);
         Board board4 = createBoard(member1, "타이틀1", "내용3", "닉네임3", CS);
+        List<Board> products = List.of( board2,board3,board4);
 
-        List<Board> products = List.of(board, board1, board2,board3,board4);
+        boardRepository.save(board);
+        Thread.sleep(1000);
+
+        boardRepository.save(board1);
+        Thread.sleep(1000);
+
         List<Board> boards = boardRepository.saveAll(products);
 
         MainRequest mainRequest = new MainRequest(CS, 0);
