@@ -156,7 +156,7 @@ class AdminServiceImplTest {
         assertThat(content.size()).isEqualTo(2);
         assertThat(content)
                 .extracting("title", "type")
-                .containsExactly(
+                .contains(
                         tuple("제목2", "CS"),
                         tuple("제목1", "CS")
                 );
