@@ -143,8 +143,7 @@ public class BoardService {
 
     //삭제
     public GlobalResultDto boardDeleteOne(Long boardId, Role role) {
-
-        if (role.equals(Role.ROLE_ADMIN)) {
+        if (role == Role.ROLE_ADMIN) {
             Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
             board.ChangeBoardIsDeleted(true);
             board.deleteBoardContent("관리자로 의해 게시글 삭제","관리자로 의해 게시글 삭제되었습니다.");
@@ -155,6 +154,7 @@ public class BoardService {
         List<Reply> replies = replyRepository.findByBoardReplies(boardId);
         //postLike
         List<PostLike> postLikes = postLikeRepository.findByBoardId(boardId);
+
 
         if (replies.size() != 0 || postLikes.size() != 0) {
             return new GlobalResultDto("게시글을 삭제 할 수 없습니다.", HttpStatus.FORBIDDEN.value());
