@@ -14,7 +14,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@ToString(of = {"id", "email", "password","nickname","username","role"})
+@ToString(of = {"id", "email", "password", "nickname", "username", "role"})
+@Table(name = "Member",indexes = @Index(name = "username_idx", columnList = "username"))
 public class Member extends BaseTimeEntity {
 
     @Id
@@ -32,13 +33,13 @@ public class Member extends BaseTimeEntity {
     private Role role;
 
 
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostLike> postLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board> board = new ArrayList<>();
 
 
