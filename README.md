@@ -41,13 +41,6 @@
 | :------------------------------------------: | :------------------------------------------------: |
 | <img width="100%" src="https://github.com/Study-Blog-Project/Backend/assets/70208747/9e2ae7b6-39b4-40a0-be28-3254825aa56d"/> | <img width="100%" src="https://github.com/Study-Blog-Project/Backend/assets/70208747/17d1e869-d8cb-4181-bff3-cb22efbd9241"/> | 
 
-## 설계 및 협업 
-
-
-
-
-</details>
-
 
 ## 기술 스택
 
