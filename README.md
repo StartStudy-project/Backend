@@ -16,8 +16,16 @@
 - 코딩테스트와 프로젝트, cs, 기타 카테고리를 나눔으로써 사용자가 필요한 스터디를 찾기 쉽도록 구성.
 - 관심 게시글을 등록하면 마이페이지에 저장.
 ## Swagger
-- [swagger로 이동](http://startstudy.shop:8080/swagger-ui/index.html)
 
+<details><summary style="color:skyblue"> Swagger </summary>
+
+ ![image](https://github.com/user-attachments/assets/8d9dedb8-4495-4bc2-9e61-afdb7f04c1ed)
+ ![image](https://github.com/user-attachments/assets/dda24443-3bb6-4239-ab2e-c45d50e748bf)
+ ![image](https://github.com/user-attachments/assets/f33614c6-8c55-42ea-9c60-d37777c7fdaf)
+
+
+
+</details>
 
 ## 서비스 화면
 |           메인화면                   |                        회원가입                    |     
