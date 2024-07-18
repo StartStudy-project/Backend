@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.util.Random;
 
 
-//@Profile({"local,prod"})
+@Profile({"local"})
 @Component
 public class InitData {
 
