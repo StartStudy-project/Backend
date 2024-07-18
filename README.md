@@ -16,8 +16,16 @@
 - 코딩테스트와 프로젝트, cs, 기타 카테고리를 나눔으로써 사용자가 필요한 스터디를 찾기 쉽도록 구성.
 - 관심 게시글을 등록하면 마이페이지에 저장.
 ## Swagger
-- [swagger로 이동](http://startstudy.shop:8080/swagger-ui/index.html)
 
+<details><summary style="color:skyblue"> Swagger </summary>
+
+ ![image](https://github.com/user-attachments/assets/8d9dedb8-4495-4bc2-9e61-afdb7f04c1ed)
+ ![image](https://github.com/user-attachments/assets/dda24443-3bb6-4239-ab2e-c45d50e748bf)
+ ![image](https://github.com/user-attachments/assets/f33614c6-8c55-42ea-9c60-d37777c7fdaf)
+
+
+
+</details>
 
 ## 서비스 화면
 |           메인화면                   |                        회원가입                    |     
@@ -40,17 +48,6 @@
 |         회원정보[관리자]                   |                        전체글[관리자]   |     
 | :------------------------------------------: | :------------------------------------------------: |
 | <img width="100%" src="https://github.com/Study-Blog-Project/Backend/assets/70208747/9e2ae7b6-39b4-40a0-be28-3254825aa56d"/> | <img width="100%" src="https://github.com/Study-Blog-Project/Backend/assets/70208747/17d1e869-d8cb-4181-bff3-cb22efbd9241"/> | 
-
-## 설계 및 협업 
-### [Notion](https://rounded-raclette-de8.notion.site/6b818717ac554fef86a01748349fac7c?pvs=74)
-  -  [figma](https://www.figma.com/file/PjRozZCGgmik4tW8T0ksiE/%EC%8A%A4%ED%84%B0%EB%94%94-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?type=design&node-id=0-1&mode=design&t=OR6coK5AHWePgQ1n-0)
-  -  [기술스택](https://rounded-raclette-de8.notion.site/c7fd7fbbdeb2412597c0f3a1e8533e0f?pvs=74)
-  -  [API 정의](https://rounded-raclette-de8.notion.site/API-4c057239d78b48b78665749aca53fa3e?pvs=4)
-
-
-
-
-</details>
 
 
 ## 기술 스택

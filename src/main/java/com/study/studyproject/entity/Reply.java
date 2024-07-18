@@ -25,6 +25,8 @@ public class Reply extends BaseTimeEntity{
     private Long id;
 
     private String content;
+    private String nickname;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -54,6 +56,7 @@ public class Reply extends BaseTimeEntity{
         this.parent = parent;
         this.isDeleted = false;
         this.member = member;
+        this.nickname = member.getNickname();
         this.board = board;
     }
 

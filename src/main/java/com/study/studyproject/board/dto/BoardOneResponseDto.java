@@ -74,7 +74,7 @@ public class BoardOneResponseDto {
 
 
 
-    public static BoardOneResponseDto of(Long postLikeId, String postLike, Board board, ReplyResponseDto replies, Long currentMemberId) {
+    public static BoardOneResponseDto of(Long currentMemberId, String postLike, Board board, ReplyResponseDto replies) {
 
         boolean myBoard = false;
         if (board.getMember().getId().equals(currentMemberId)) {
@@ -89,7 +89,6 @@ public class BoardOneResponseDto {
                 .title(board.getTitle())
                 .recruit(board.getRecruit())
                 .content(board.getContent())
-                .PostLikeId(postLikeId)
                 .postLike(postLike)
                 .viewCnt(Math.toIntExact(board.getViewCount()))
                 .userId(board.getNickname())
