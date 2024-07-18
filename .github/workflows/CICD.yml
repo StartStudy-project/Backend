@@ -58,7 +58,7 @@ jobs:
           script_stop: true
           script: |
             cd Backend
-            git pull
+            git config --global pull.rebase false
             docker stop backend
             docker rm backend
             docker rmi -f backend
