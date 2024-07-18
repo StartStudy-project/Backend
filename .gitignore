@@ -34,5 +34,7 @@ src/main/generated
 /nbdist/
 /.nb-gradle/
 
+src/main/resources/application-prod.yml
+
 ### VS Code ###
 .vscode/
