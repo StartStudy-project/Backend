@@ -288,4 +288,4 @@
 
 |           Backend                    |                        Frontend                    |
 | :------------------------------------------: | :------------------------------------------------: |
-|  [전유진](https://github.com/jacomyou1026)  |  [원종대](https://github.com/blkaka66)  |  
+|  [전유진](https://github.com/jacomyou0121)  |  [원종대](https://github.com/blkaka66)  |  
