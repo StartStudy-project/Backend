@@ -62,7 +62,8 @@
 ## 프로젝트 아키텍처
 
 ### 백엔드
-![image](https://github.com/Study-Blog-Project/Backend/assets/70208747/30704870-fa9a-44fa-99c8-98a63818c760)
+![image](https://github.com/user-attachments/assets/d64dfd80-2f40-4a94-a765-8b98011e504e)
+
 
 
 ### CI/CD
