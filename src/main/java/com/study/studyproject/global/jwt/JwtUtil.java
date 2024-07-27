@@ -1,5 +1,6 @@
 package com.study.studyproject.global.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.studyproject.entity.RefreshToken;
 import com.study.studyproject.global.auth.UserDetailsServiceImpl;
 import com.study.studyproject.global.exception.ex.TokenNotValidatException;
@@ -20,10 +21,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.security.Key;
-import java.util.Base64;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -32,7 +32,7 @@ public class JwtUtil {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final RefreshRepository refreshTokenRepository;
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private static final long ACCESS_TIME = 30 * 60 * 1000L;
     private static final long REFRESH_TIME =  24 * 60 * 60 * 1000L;
     public static final String ACCESS_TOKEN = "Access_Token";
@@ -58,6 +58,17 @@ public class JwtUtil {
     public String getHeaderToken(HttpServletRequest request, String type) {
         return type.equals(ACCESS_TOKEN) ? request.getHeader(ACCESS_TOKEN) : request.getHeader(REFRESH_TOKEN);
     }
+
+    private void setTokenResponse(HttpServletResponse response, String accessToken, String refreshToken) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put(ACCESS_TOKEN, accessToken);
+        result.put(REFRESH_TOKEN, refreshToken);
+
+    }
+
 
 
     // 토큰 생성
