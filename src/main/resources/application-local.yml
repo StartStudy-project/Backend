@@ -18,5 +18,6 @@ spring:
 
   data:
     redis:
-      host: redis # 로컬에서 테스트 할 때는 localhost로 사용
+      host: localhost
       port: 6379
+      password: 1234
