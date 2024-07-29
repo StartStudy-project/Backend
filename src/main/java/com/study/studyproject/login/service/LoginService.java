@@ -4,6 +4,7 @@ import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.RefreshToken;
 import com.study.studyproject.entity.Role;
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.config.redis.RedisUtils;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
@@ -49,20 +50,17 @@ public class LoginService {
 
         TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail(),member.getId());
 
-        log.info("로그인 Token");
-        Optional<RefreshToken> refreshToken = refreshRepository.findByEmail(loginRequest.getEmail());
-        log.info("로그인 find Token : {}",refreshToken );
+        Optional<RefreshToken> refreshToken = refreshRepository.findByAccessToken(tokensDto.getAccessToken());
 
         if (refreshToken.isPresent()) {
             refreshRepository.save(refreshToken.get().updateToken(tokensDto.getRefreshToken()));
-            log.info("로그인1 find Token : {}",refreshToken );
         } else {
             RefreshToken getRefreshToken = RefreshToken.builder()
-                    .token(tokensDto.getRefreshToken())
+                    .accessToken(tokensDto.getAccessToken())
+                    .refreshToken(tokensDto.getRefreshToken())
                     .email(loginRequest.getEmail())
                     .build();
             refreshRepository.save(getRefreshToken);
-            log.info("로그인2  : {}",refreshToken );
 
         }
 
