@@ -15,10 +15,10 @@ import java.util.UUID;
 @RedisHash(value = "refreshToken", timeToLive = 86400)
 public class RefreshToken {
     @Id
-    private String accessToken;
+    private String email;
 
     @Indexed
-    private String email;
+    private String accessToken;
 
     private String refreshToken;
 
