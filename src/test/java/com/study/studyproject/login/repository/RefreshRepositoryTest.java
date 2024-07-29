@@ -44,7 +44,7 @@ class RefreshRepositoryTest {
     @DisplayName("redis에서 데이터를 저장하여 조회한다.")
     void saveAndFindTest() throws Exception {
         //given
-        Optional<RefreshToken> findRefreshToken = refreshRepository.findByEmail(email);
+        Optional<RefreshToken> findRefreshToken = refreshRepository.findByAccessToken(Access_Token);
 
 
         //then
@@ -56,15 +56,15 @@ class RefreshRepositoryTest {
     @DisplayName("redis에서 데이터를 저장하여 삭제한다")
     void deleteTest() throws Exception {
         //given
-        Optional<RefreshToken> findRefreshToken = refreshRepository.findByEmail(email);
+        Optional<RefreshToken> findRefreshToken = refreshRepository.findByAccessToken(Access_Token);
 
 
         //then
         refreshRepository.delete(findRefreshToken.get());
 
 
-        Optional<RefreshToken> find = refreshRepository.findByEmail(email);
-        assertThat(find).isEmpty();
+        Optional<RefreshToken> res = refreshRepository.findByAccessToken(Access_Token);
+        assertThat(res).isEmpty();
 
     }
 
