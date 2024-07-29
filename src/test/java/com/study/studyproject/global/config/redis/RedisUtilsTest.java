@@ -1,11 +1,13 @@
 package com.study.studyproject.global.config.redis;
 
 import jakarta.transaction.Transactional;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.security.Key;
 import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,6 +71,21 @@ class RedisUtilsTest {
         //then
         assertThat(findValue).isEqualTo("false");
     }
+
+    @Test
+    @DisplayName("Redis에 저장된 데이터는 만료시간이 지나면 삭제된다.")
+    void expiredTest() throws Exception {
+        String findValue = redisUtils.getValues(KEY);
+        Awaitility.await().pollDelay(Duration.ofMillis(6000)).untilAsserted(
+                () -> {
+                    String expiredValue = redisUtils.getValues(KEY);
+                    assertThat(expiredValue).isNotEqualTo(findValue);
+                    assertThat(expiredValue).isEqualTo("false");
+                }
+        );
+
+    }
+
 
 
 
