@@ -59,6 +59,18 @@ class RedisUtilsTest {
         assertThat(VALUE).isNotEqualTo(findValue);
     }
 
+    @Test
+    @DisplayName("Redis에 저장된 데이터를 삭제한다.")
+    void deleteTest() throws Exception {
+        //given
+        redisUtils.deleteValues(KEY);
+        String findValue = redisUtils.getValues(KEY);
+
+        //then
+        assertThat(findValue).isEqualTo("false");
+    }
+
+
 
 
 
