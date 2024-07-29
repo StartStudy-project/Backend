@@ -6,6 +6,11 @@ spring:
 
 ---
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
   datasource:
     url: jdbc:h2:tcp://localhost/~/bookstore
     driver-class-name: org.h2.Driver
@@ -19,6 +24,7 @@ spring:
         format_sql: true
         show_sql: true
     defer-datasource-initialization: true
+
 
 jwt:
   secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
