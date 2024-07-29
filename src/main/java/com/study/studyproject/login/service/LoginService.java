@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class LoginService {
 
     private final RefreshRepository refreshRepository;
@@ -47,21 +49,26 @@ public class LoginService {
 
         TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail(),member.getId());
 
+        log.info("로그인 Token");
         Optional<RefreshToken> refreshToken = refreshRepository.findByEmail(loginRequest.getEmail());
+        log.info("로그인 find Token : {}",refreshToken );
 
         if (refreshToken.isPresent()) {
             refreshRepository.save(refreshToken.get().updateToken(tokensDto.getRefreshToken()));
+            log.info("로그인1 find Token : {}",refreshToken );
         } else {
             RefreshToken getRefreshToken = RefreshToken.builder()
                     .token(tokensDto.getRefreshToken())
                     .email(loginRequest.getEmail())
                     .build();
             refreshRepository.save(getRefreshToken);
+            log.info("로그인2  : {}",refreshToken );
+
         }
 
         setHeader(response, tokensDto);
 
-        return new LoginResponseDto("로그인 되었습니다.", HttpStatus.OK.value(),member.getNickname());
+        return new LoginResponseDto("로그인 되었습니다. : "+refreshToken.get(), HttpStatus.OK.value(),member.getNickname());
 
     }
     private void setHeader(HttpServletResponse response, TokenDtoResponse tokensDto) {
