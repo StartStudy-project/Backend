@@ -15,11 +15,10 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class RedisUtils {
     private final RedisTemplate<String, Object> redisTemplate;
-    public RedisUtils(RedisTemplate<String, Object> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
+
     public void setValues(String key, String data) {
         ValueOperations<String, Object> values = redisTemplate.opsForValue();
         values.set(key, data);
