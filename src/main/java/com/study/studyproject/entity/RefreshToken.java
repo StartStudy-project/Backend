@@ -8,21 +8,25 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
+import java.util.UUID;
+
 @Getter
 @NoArgsConstructor
-@RedisHash(value = "refreshToken", timeToLive = 14440)
+@RedisHash(value = "refreshToken", timeToLive = 86400)
 public class RefreshToken {
     @Id
-    private String id;
+    private String accessToken;
 
     @Indexed
-    private String refreshToken;
-
     private String email;
 
+    private String refreshToken;
+
+
     @Builder
-    public RefreshToken(String email, String token) {
-        this.refreshToken = token;
+    public RefreshToken(String email, String accessToken,String refreshToken) {
+        this.refreshToken = refreshToken;
+        this.accessToken = accessToken;
         this.email = email;
     }
 
