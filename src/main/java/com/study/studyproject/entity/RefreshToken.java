@@ -1,25 +1,32 @@
 package com.study.studyproject.entity;
 
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
+
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
-@Entity
+@RedisHash(value = "refreshToken", timeToLive = 86400)
 public class RefreshToken {
-     @Id
-     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String refreshToken;
-
+    @Id
     private String email;
 
+    @Indexed
+    private String accessToken;
+
+    private String refreshToken;
+
+
     @Builder
-    public RefreshToken(String email, String token) {
-        this.refreshToken = token;
+    public RefreshToken(String email, String accessToken,String refreshToken) {
+        this.refreshToken = refreshToken;
+        this.accessToken = accessToken;
         this.email = email;
     }
 

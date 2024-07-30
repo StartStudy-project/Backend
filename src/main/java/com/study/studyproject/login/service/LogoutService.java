@@ -24,10 +24,10 @@ public class LogoutService {
 
 
     //로그아웃
-    public GlobalResultDto logoutService(String memberEmail) {
-        Optional<RefreshToken> findEmail = refreshRepository.findByEmail(memberEmail);
-        if (findEmail.isPresent()) {
-            refreshRepository.delete(findEmail.get());
+    public GlobalResultDto logoutService(String token) {
+        Optional<RefreshToken> findERefreshToken = refreshRepository.findByAccessToken(token);
+        if (findERefreshToken.isPresent()) {
+            refreshRepository.delete(findERefreshToken.get());
         }
         return new GlobalResultDto("로그아웃 되었습니다.", HttpStatus.OK.value());
     }

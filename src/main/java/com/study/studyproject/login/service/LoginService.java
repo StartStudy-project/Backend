@@ -4,6 +4,7 @@ import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.RefreshToken;
 import com.study.studyproject.entity.Role;
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.config.redis.RedisUtils;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
@@ -17,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class LoginService {
 
     private final RefreshRepository refreshRepository;
@@ -47,21 +50,23 @@ public class LoginService {
 
         TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail(),member.getId());
 
-        Optional<RefreshToken> refreshToken = refreshRepository.findByEmail(loginRequest.getEmail());
+        Optional<RefreshToken> refreshToken = refreshRepository.findByAccessToken(tokensDto.getAccessToken());
 
         if (refreshToken.isPresent()) {
             refreshRepository.save(refreshToken.get().updateToken(tokensDto.getRefreshToken()));
         } else {
             RefreshToken getRefreshToken = RefreshToken.builder()
-                    .token(tokensDto.getRefreshToken())
+                    .accessToken(tokensDto.getAccessToken())
+                    .refreshToken(tokensDto.getRefreshToken())
                     .email(loginRequest.getEmail())
                     .build();
             refreshRepository.save(getRefreshToken);
+
         }
 
         setHeader(response, tokensDto);
 
-        return new LoginResponseDto("로그인 되었습니다.", HttpStatus.OK.value(),member.getNickname());
+        return new LoginResponseDto("로그인 되었습니다. ", HttpStatus.OK.value(),member.getNickname());
 
     }
     private void setHeader(HttpServletResponse response, TokenDtoResponse tokensDto) {

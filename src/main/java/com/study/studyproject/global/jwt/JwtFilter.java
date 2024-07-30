@@ -1,6 +1,7 @@
 package com.study.studyproject.global.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.study.studyproject.entity.Member;
 import com.study.studyproject.global.GlobalResultDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -21,12 +23,14 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final JwtUtil jwtUtil;
 
     @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("로그인");
+
         String accessToken = jwtUtil.getHeaderToken(request, JwtUtil.ACCESS_TOKEN);
         String refreshToken = jwtUtil.getHeaderToken(request, JwtUtil.REFRESH_TOKEN);
         accessToken = resolveToken(accessToken);
