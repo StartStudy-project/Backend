@@ -35,6 +35,6 @@ src/main/generated
 /.nb-gradle/
 
 src/main/resources/application-prod.yml
-.env
+
 ### VS Code ###
 .vscode/
