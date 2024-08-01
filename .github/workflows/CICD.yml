@@ -1,3 +1,4 @@
+
 name: Spring Boot & Gradle CI/CD
 
 # master branch에 push 또는 pull request가 발생할 경우 동작
@@ -5,16 +6,14 @@ name: Spring Boot & Gradle CI/CD
 
 on:
   pull_request:
-    branches: [ develop ]
+    branches: [ develop  ]
   push:
     branches: [ develop ]
 
 jobs:
   build:
-    # 실행 환경 지정
     runs-on: ubuntu-latest
 
-    # Task의 sequence를 명시한다.
     steps:
       - uses: actions/checkout@v2
 
@@ -30,8 +29,6 @@ jobs:
         run: |
           echo '${{ secrets.APPLICATION_SECRET }}' > ./src/main/resources/application-prod.yml
           ./gradlew clean build -x test
-        
-
 
       - name: Set up Docker Build
         uses: docker/setup-buildx-action@v2
@@ -60,13 +57,11 @@ jobs:
           script_stop: true
           script: |
             cd Backend
-            git pull
+            git pull origin develop
             docker stop backend
             docker rm backend
             docker rmi -f backend
-#
+            
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
             docker run -d --name backend -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
             sudo docker image prune -f
-
-            
