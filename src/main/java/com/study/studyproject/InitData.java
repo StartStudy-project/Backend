@@ -43,32 +43,6 @@ public class InitData {
 
     @PostConstruct
     void init() {
-//        String url = "jdbc:h2:tcp://localhost/~/bookstore";
-//        String user = "sa";
-//        String password = "";
-//
-//        try (Connection conn = DriverManager.getConnection(url, user, password)) {
-//            String insertSQL = "INSERT INTO member (username, email, nickname, password, role, created_date, last_modified_date) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
-//            PreparedStatement pstmt = conn.prepareStatement(insertSQL);
-//
-//            Random random = new Random();
-//            for (int i = 1; i <= 200000; i++) {
-//                pstmt.setString(1, "user" + i);
-//                pstmt.setString(2, "user" + i + "@example.com");
-//                pstmt.setString(3, "nickname" + i);
-//                pstmt.setString(4, "password" + random.nextInt(100000));
-//                pstmt.setString(5, String.valueOf(Role.ROLE_ADMIN));
-//                pstmt.addBatch();
-//
-//                if (i % 1000 == 0) {
-//                    pstmt.executeBatch();
-//                }
-//            }
-//            pstmt.executeBatch();
-//            System.out.println("Dummy data inserted.");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
 
         String encode = passwordEncoder.encode("1234");
         Member memberOne = Member.builder()
