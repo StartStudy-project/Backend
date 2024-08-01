@@ -57,7 +57,7 @@ jobs:
           script_stop: true
           script: |
             cd Backend
-            git pull
+            git pull origin develop
             docker stop backend
             docker rm backend
             docker rmi -f backend
