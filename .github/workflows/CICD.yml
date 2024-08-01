@@ -28,7 +28,7 @@ jobs:
       - name: Execute Gradle build
 
         run: |
-           echo '${{ secrets.APPLICATION_SECRET }}'| base64 --decode > ./src/main/resources/application-prod.yml
+           echo '${{ secrets.APPLICATION_SECRET }}' > ./src/main/resources/application-prod.yml
           ./gradlew clean build -x test
         
 
