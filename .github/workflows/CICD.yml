@@ -3,6 +3,10 @@ name: Spring Boot & Gradle CI/CD
 
 # master branch에 push 또는 pull request가 발생할 경우 동작
 # branch 단위 외에도, tag나 cron 식 등을 사용할 수 있음
+#         docker stop backend
+#            docker rm backend
+#            docker rmi -f backend
+#
 
 on:
   pull_request:
@@ -58,10 +62,7 @@ jobs:
           script: |
             cd Backend
             git pull origin develop
-#            docker stop backend
-#            docker rm backend
-#            docker rmi -f backend
-            
+   
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
             docker run -d --name backend -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
             sudo docker image prune -f
