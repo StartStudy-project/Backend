@@ -32,7 +32,8 @@ jobs:
       - name: Execute Gradle build
 
         run: |
-          echo ${{ secrets.APPLICATION_SECRET }} | base64 --decode > ./src/main/resources/application-prod.yml
+          pwd
+          echo ${{ secrets.APPLICATION_SECRET }} | base64 --decode > /home/ubuntu/Backend/src/main/resources/application-prod.yml
           ./gradlew clean build -x test
 
       - name: Set up Docker Build
