@@ -57,13 +57,13 @@
 
 
 ### Infra
-![image](https://github.com/Study-Blog-Project/Backend/assets/70208747/076b0e32-07d0-4db2-b3c7-bfb7721be8b5)
+![img_1.png](img_1.png)
+
 
 ## 프로젝트 아키텍처
 
 ### 백엔드
-![image](https://github.com/user-attachments/assets/d64dfd80-2f40-4a94-a765-8b98011e504e)
-
+![img.png](img.png)
 
 
 ### CI/CD
@@ -282,7 +282,6 @@
     - 회원 정보 전체 조회 및 특정 문자열에 시작하는 모든 회원 정보 제공
 - **구현 방법** <br>
     - Querydsl의 동적 쿼리를 null값을 이용하여 회원 정체를 제공 받거나 startsWith()를 이용하여 특정 문자열에 시작되는 사용자 정보 조회
-
 </details>
 
 ## Member
