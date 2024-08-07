@@ -74,9 +74,13 @@ dependencies {
 }
 
 test {
+    useJUnitPlatform()
     finalizedBy jacocoTestReport
-}
 
+}
+jacoco {
+    toolVersion = '0.8.7'
+}
 jacocoTestReport {
     dependsOn test
 
@@ -93,7 +97,10 @@ jacocoTestReport {
         afterEvaluate {
             classDirectories.setFrom(files(classDirectories.files.collect {
                 fileTree(dir: it,
-                        exclude: [] + Qdomains)
+                        exclude: [
+                                "**/InitData*",
+                                  "**/global/**"
+                        ,"**/*Application*"] + Qdomains)
             }))
         }
 
@@ -103,9 +110,7 @@ jacocoTestReport {
 }
 
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
+
 
 //Querydsl 추가,   동 생성된 Q클래스 gradle clean으로 제거
 clean {
@@ -115,5 +120,27 @@ clean {
 
 
 
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true;
+            element = 'CLASS'
 
+            // 라인 커버리지 제한을 90%로 설정
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.80
+            }
 
+            excludes = [
+                    '**.InitData*',
+                    '**.*Application',
+                    '**.domain.**',
+                    '**.global.**'
+
+            ]
+        }
+
+    }
+}
