@@ -54,7 +54,7 @@ class MemberServiceImplTest {
         memberRepository.save(member1);
 
         //when
-        UserInfoResponseDto userInfoResponseDto = memberService.userInfoService(member1.getId());
+        UserInfoResponseDto userInfoResponseDto = memberService.userInfoService(member1);
 
         //then
         assertThat(userInfoResponseDto.getEmail()).isEqualTo(member1.getEmail());
@@ -72,7 +72,7 @@ class MemberServiceImplTest {
         MemberUpdateResDto memberUpdateResDto = new MemberUpdateResDto("수정이름", "수정닉네임");
 
         //when
-        memberService.userInfoUpdate(member1.getId(), memberUpdateResDto);
+        memberService.userInfoUpdate(member1, memberUpdateResDto);
 
         //then
         Member getMember = memberRepository.findById(member1.getId()).get();
