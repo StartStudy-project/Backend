@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ import static com.study.studyproject.reply.dto.ReplyResponseDto.ReplyResponsetoD
 @Transactional
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class BoardServiceImpl implements BoardService{
 
     private final BoardRepository boardRepository;
@@ -41,9 +43,8 @@ public class BoardServiceImpl implements BoardService{
 
     //작성
     @Override
-    public GlobalResultDto boardSave(BoardWriteRequestDto boardWriteRequestDto, Long idFromToken) {
-        Member member = memberRepository.findById(idFromToken).orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다."));
-
+    public GlobalResultDto boardSave(BoardWriteRequestDto boardWriteRequestDto, Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("사용자가 없습니다."));
         Board entity = boardWriteRequestDto.toEntity(member);
         boardRepository.save(entity);
         return new GlobalResultDto("글 작성 완료", HttpStatus.OK.value());
@@ -77,8 +78,8 @@ public class BoardServiceImpl implements BoardService{
     public BoardOneResponseDto boardOne(Long boardId, String token, HttpServletRequest request, HttpServletResponse response) {
 
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
-        checkDuplicate(boardId, request, response, board);
 
+        checkDuplicate(boardId, request, response, board);
         Long currentMemberId = 0L;
         String postLike = "";
         if (token != null) {
@@ -89,9 +90,10 @@ public class BoardServiceImpl implements BoardService{
             if (postLikeOne.isPresent()) {
                 postLike = "관심완료";
             }
-        }
+        };
 
         ReplyResponseDto replies = findReplies(boardId,currentMemberId);
+
         return BoardOneResponseDto.of(currentMemberId,postLike,board,replies);
 
     }
