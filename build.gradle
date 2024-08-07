@@ -28,6 +28,11 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-parameters"
+}
+
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -67,6 +72,36 @@ dependencies {
 
 
 }
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+
+        // QueryDSL Q클래스 제외
+        def Qdomains = []
+        for (qPattern in "**/QA".."**/QZ") {
+            Qdomains.add(qPattern + "*")
+        }
+
+        afterEvaluate {
+            classDirectories.setFrom(files(classDirectories.files.collect {
+                fileTree(dir: it,
+                        exclude: [] + Qdomains)
+            }))
+        }
+
+        xml.destination file("${buildDir}/jacoco/index.xml")
+        html.destination file("${buildDir}/jacoco/index.html")
+    }
+}
+
 
 tasks.named('test') {
     useJUnitPlatform()
