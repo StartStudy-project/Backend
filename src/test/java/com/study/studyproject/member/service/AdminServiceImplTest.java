@@ -112,7 +112,7 @@ class AdminServiceImplTest {
 
 
         //when
-        AdminDashBoardResponseDto adminDashBoardResponseDto = adminService.adminDashBoardInfo(adminOne.getId(), memberListRequestDto, pageRequest);
+        AdminDashBoardResponseDto adminDashBoardResponseDto = adminService.adminDashBoardInfo(adminOne, memberListRequestDto, pageRequest);
 
         //then
         List<ListResponseDto> content = adminDashBoardResponseDto.getListResponseDto().getContent();
@@ -148,7 +148,7 @@ class AdminServiceImplTest {
 
 
         //when
-        AdminDashBoardResponseDto adminDashBoardResponseDto = adminService.adminDashBoardInfo(adminOne.getId(), memberListRequestDto, pageRequest);
+        AdminDashBoardResponseDto adminDashBoardResponseDto = adminService.adminDashBoardInfo(adminOne, memberListRequestDto, pageRequest);
 
         //then
         List<ListResponseDto> content = adminDashBoardResponseDto.getListResponseDto().getContent();
