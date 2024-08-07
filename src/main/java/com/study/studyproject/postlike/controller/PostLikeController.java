@@ -2,6 +2,7 @@ package com.study.studyproject.postlike.controller;
 
 
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.postlike.service.PostLikeService;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +26,8 @@ public class PostLikeController {
 
     @Operation(summary = "관심글 등록", description = "사용자의 관심글 등록합니다.")
     @PostMapping("/{boardId}")
-    public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable Long boardId, @RequestHeader("Access_Token") String token) {
-        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
-        return ResponseEntity.ok(postLikeService.postLikeSave(boardId,idFromToken));
+    public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok(postLikeService.postLikeSave(boardId,userDetails.getMember()));
     }
 
 

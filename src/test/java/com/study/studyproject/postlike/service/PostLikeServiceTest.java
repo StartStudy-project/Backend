@@ -45,7 +45,7 @@ class PostLikeServiceTest {
         boardRepository.save(boardCreate);
 
         //when
-        GlobalResultDto globalResultDto = postLikeService.postLikeSave(boardCreate.getId(), member1.getId());
+        GlobalResultDto globalResultDto = postLikeService.postLikeSave(boardCreate.getId(), member1);
 
         //then
         assertThat(globalResultDto.getMessage()).isEqualTo("관심글이 추가되었습니다.");
@@ -65,7 +65,7 @@ class PostLikeServiceTest {
         postLikeRepository.save(postLike1);
 
         //when
-        GlobalResultDto globalResultDto = postLikeService.postLikeSave(boardCreate.getId(), member1.getId());
+        GlobalResultDto globalResultDto = postLikeService.postLikeSave(boardCreate.getId(), member1);
 
         //then
         assertThat(globalResultDto.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());

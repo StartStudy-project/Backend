@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface ReplyService {
 
 
-    void insert(Long idFromToken, ReplyRequestDto replyRequestDto);
+    void insert(Member member, ReplyRequestDto replyRequestDto);
 
     //수정
     void updateReply(UpdateReplyRequest updateReplyRequest);

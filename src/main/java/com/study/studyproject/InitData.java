@@ -22,6 +22,7 @@ import java.util.Random;
 
 
 @Component
+@Profile({"local","prod"})
 public class InitData {
 
     @Autowired
