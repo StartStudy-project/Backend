@@ -14,4 +14,5 @@ import java.util.function.Function;
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
     Optional<Member> findByEmail(String email);
+    Optional<Member> findByNickname(String email);
 }
