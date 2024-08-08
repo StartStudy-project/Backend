@@ -15,11 +15,11 @@ public interface MemberService {
 
 
     //사용자 정보 조회
-    UserInfoResponseDto userInfoService(Member member);
+    UserInfoResponseDto userInfoService(Long id);
 
 
     //수정
-    GlobalResultDto userInfoUpdate(Member member , MemberUpdateResDto memberUpdateResDto);
+    GlobalResultDto userInfoUpdate(Long token , MemberUpdateResDto memberUpdateResDto);
 
     Page<ListResponseDto> listMember(Long token, MemberListRequestDto memberListRequestDto, Pageable pageable);
     //

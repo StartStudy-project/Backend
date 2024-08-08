@@ -34,38 +34,42 @@ public class MemberController {
     //사용자 정보 조회
     @Operation(summary = "사용자 정보 조회", description = "자신의 사용자 정보를 조회")
     @GetMapping("/info")
-    public ResponseEntity<UserInfoResponseDto> userInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok(memberService.userInfoService(userDetails.getMember()));
+    public ResponseEntity<UserInfoResponseDto> userInfo(@RequestHeader("Access_Token") String token) {
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
+        return ResponseEntity.ok(memberService.userInfoService(idFromToken));
     }
 
     //수정
     @Operation(summary = "사용자 정보 수정", description = "사용자 정보 수정 기능")
     @PatchMapping("/info")
-    public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody @Validated MemberUpdateResDto memberUpdateResDto,@AuthenticationPrincipal UserDetailsImpl userDetails ) {
-        return ResponseEntity.ok(memberService.userInfoUpdate(userDetails.getMember(), memberUpdateResDto));
+    public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody @Validated MemberUpdateResDto memberUpdateResDto, @RequestHeader("Access_Token") String token) {
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
+        return ResponseEntity.ok(memberService.userInfoUpdate(idFromToken, memberUpdateResDto));
     }
 
 
     @Operation(summary = "내가 작성한 게시글 조회", description = "사용자 스터디 게시글 조회")
-    @GetMapping("/lists/{memberId}")
+    @GetMapping("/lists")
     public ResponseEntity<Page<ListResponseDto>> mainList(
-             @PathVariable Long memberId,
+            @RequestHeader("Access_Token") String token,
              MemberListRequestDto memberListRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
 
-        return ResponseEntity.ok(memberService.listMember(memberId, memberListRequestDto, pageable));
+        return ResponseEntity.ok(memberService.listMember(idFromToken, memberListRequestDto, pageable));
     }
 
 
 
     @Operation(summary = "관심 게시글 조회", description = "사용자 관심 게시글 조회")
-    @GetMapping("/post-likes/{memberId}")
+    @GetMapping("/post-likes")
     public ResponseEntity<Page<ListResponseDto>> userPostLike(
-            @PathVariable Long memberId,
+            @RequestHeader("Access_Token") String token,
             MemberListRequestDto memberListRequestDto,
             @PageableDefault(size = 10) Pageable pageable) {
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
 
-        return ResponseEntity.ok(memberService.postLikeBoard(memberId, memberListRequestDto, pageable));
+        return ResponseEntity.ok(memberService.postLikeBoard(idFromToken, memberListRequestDto, pageable));
     }
 
 

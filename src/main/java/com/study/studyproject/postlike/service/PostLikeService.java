@@ -26,7 +26,8 @@ public class PostLikeService {
     private final PostLikeRepository postLikeRepository;
     private final BoardRepository boardRepository;
 
-    public GlobalResultDto postLikeSave(Long boardId ,Member member) {
+    public GlobalResultDto postLikeSave(Long boardId ,Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(()->new UserNotFoundException("사용자를 찾지 못했습니다."));
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
         Optional<PostLike> postLike = postLikeRepository.findByBoardAndMember(board, member);
         if (postLike.isPresent()) {

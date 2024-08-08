@@ -66,7 +66,7 @@ public class LoginService {
 
         setHeader(response, tokensDto);
 
-        return new LoginResponseDto("로그인 되었습니다.", HttpStatus.OK.value(),member.getNickname());
+        return new LoginResponseDto("로그인 되었습니다. ", HttpStatus.OK.value(),member.getNickname());
 
     }
     private void setHeader(HttpServletResponse response, TokenDtoResponse tokensDto) {

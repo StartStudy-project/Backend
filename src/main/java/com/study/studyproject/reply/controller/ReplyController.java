@@ -4,7 +4,6 @@ import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
 import com.study.studyproject.reply.dto.UpdateReplyRequest;
-import com.study.studyproject.reply.service.ReplyService;
 import com.study.studyproject.reply.service.ReplyServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,14 +21,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/reply")
 public class ReplyController {
 
-    private final ReplyService replyService;
+    private final ReplyServiceImpl replyService;
     private final JwtUtil jwtUtil;
 
     @PostMapping
     @Operation(summary = "댓글 추가", description = "댓글 추가")
-    public void insertReply(@AuthenticationPrincipal UserDetailsImpl userDetails
+    public void insertReply(   @RequestHeader("Access_Token") String token
             , @RequestBody @Validated ReplyRequestDto replyRequestDto) {
-        replyService.insert(userDetails.getMember(), replyRequestDto);
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
+        replyService.insert(idFromToken, replyRequestDto);
 
     }
 

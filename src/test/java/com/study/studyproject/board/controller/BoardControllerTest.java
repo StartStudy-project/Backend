@@ -12,7 +12,6 @@ import com.study.studyproject.entity.*;
 import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.repository.ReplyRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,7 +60,6 @@ class BoardControllerTest  {
     private JwtUtil jwtUtil;
 
 
-
     @Test
     @DisplayName("게시글을 작성한다.")
     void writingTest() throws Exception {
@@ -80,7 +78,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(MockMvcRequestBuilders.post("/board/member/"+member1.getId())
+        mockMvc.perform(MockMvcRequestBuilders.post("/board/member")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -109,7 +107,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(MockMvcRequestBuilders.post("/board/member/"+member1.getId())
+        mockMvc.perform(MockMvcRequestBuilders.post("/board/member")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -262,8 +260,6 @@ class BoardControllerTest  {
         memberRepository.save(member1);
         boardRepository.save(board);
         TokenDtoResponse allToken = jwtUtil.createAllToken(member1.getEmail(), member1.getId());
-        System.out.println("allToken.getAccessToken() = " + allToken.getAccessToken());
-        System.out.println("allToken.getAccessToken() = " + allToken.getRefreshToken());
 
         //when then
         mockMvc.perform(get("/board/"+board.getId())

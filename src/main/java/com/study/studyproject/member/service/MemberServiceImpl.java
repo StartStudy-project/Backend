@@ -32,22 +32,25 @@ public class MemberServiceImpl implements MemberService{
     //사용자 정보조회
     @Override
     @Transactional(readOnly  = true)
-    public UserInfoResponseDto userInfoService(Member member) {
+    public UserInfoResponseDto userInfoService(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
         return UserInfoResponseDto.of(member);
 
     }
 
     @Override
-    public GlobalResultDto userInfoUpdate(Member member , MemberUpdateResDto memberUpdateResDto) {
+    public GlobalResultDto userInfoUpdate(Long memberId , MemberUpdateResDto memberUpdateResDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
         member.updateMemberInfo(memberUpdateResDto);
+
         return new GlobalResultDto("사용자 수정 성공", HttpStatus.OK.value());
 
 
     }
 
     @Override
-    public Page<ListResponseDto> listMember(Long memberId, MemberListRequestDto memberListRequestDto, Pageable pageable) {
-        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable,memberId, getMember);
+    public Page<ListResponseDto> listMember(Long token, MemberListRequestDto memberListRequestDto, Pageable pageable) {
+        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable,token, getMember);
     }
 
 

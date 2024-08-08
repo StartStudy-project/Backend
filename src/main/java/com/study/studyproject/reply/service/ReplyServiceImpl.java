@@ -28,7 +28,9 @@ public class ReplyServiceImpl implements ReplyService {
 
 
     @Override
-    public void insert(Member member, ReplyRequestDto replyRequestDto) {
+    public void insert(Long idFromToken, ReplyRequestDto replyRequestDto) {
+        Member member = memberRepository.findById(idFromToken).orElseThrow(() -> new NotFoundException("사용자 없음"));
+
         Board board = boardRepository.findById(replyRequestDto.getBoardId())
                 .orElseThrow(() -> new NotFoundException("게시글이 없습니다."));
 

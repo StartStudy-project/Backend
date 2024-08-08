@@ -33,26 +33,11 @@ jobs:
       - name: Build secrets
         run: |
           pwd
+          echo ${{ secrets.APPLICATION_SECRET }} | base64 --decode > ./src/main/resources/application-prod.yml
           echo ${{ secrets.ENV }} | base64 --decode > ./.env
-          
-          cd ./src/main/resources
-          touch ./application-prod.yml 
-          echo ${{ secrets.APPLICATION_SECRET }} | base64 --decode > ./application-prod.yml
       - name: Execute Gradle build
         run: |
           ./gradlew clean build -x test
-
-      - name: 테스트 커버리지를 PR에 코멘트로 등록합니다
-        id: jacoco
-        uses: madrapps/jacoco-report@v1.2
-        with:
-          title:  테스트 커버리지 리포트입니다
-          paths: ${{ github.workspace }}/backend/build/jacoco/index.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          min-coverage-overall: 50
-          min-coverage-changed-files: 50
-          update-comment: true
-
       - name: Set up Docker Build
         uses: docker/setup-buildx-action@v2
 
