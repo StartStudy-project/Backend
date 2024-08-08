@@ -39,8 +39,7 @@ jobs:
           echo ${{ secrets.APPLICATION_SECRET }} | base64 --decode > ./application-prod.yml
       - name: Execute Gradle build
         run: |
-          ./gradlew clean build -x test
-
+          ./gradlew clean build
       - name: Jacoco Report to PR
         id: jacoco
         uses: madrapps/jacoco-report@v1.2

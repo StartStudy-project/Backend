@@ -104,8 +104,8 @@ jacocoTestReport {
             }))
         }
 
-        xml.destination file("${buildDir}/jacoco/index.xml")
-        html.destination file("${buildDir}/jacoco/index.html")
+//        xml.destination file("${buildDir}/jacoco/index.xml")
+//        html.destination file("${buildDir}/jacoco/index.html")
     }
 }
 
