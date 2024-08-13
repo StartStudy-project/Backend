@@ -3,7 +3,6 @@ package com.study.studyproject.member.service;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.global.GlobalResultDto;
-import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.MemberUpdateResDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
@@ -27,7 +26,7 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final MyPageQueryRepository myPageQueryRepository;
     private final MyPagePostLikeQueryRepository myPagePostLikeQueryRepository;
-    private final String  getMember= "member";
+    private final String GET_MEMBER = "member";
 
     //사용자 정보조회
     @Override
@@ -47,7 +46,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public Page<ListResponseDto> listMember(Long memberId, MemberListRequestDto memberListRequestDto, Pageable pageable) {
-        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable,memberId, getMember);
+        return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable,memberId, GET_MEMBER);
     }
 
 
