@@ -17,15 +17,20 @@ import java.util.List;
 @Configuration
 @Slf4j
 public class CorsConfig  {
+
+    public static final String REFRESH_TOKEN = "Refresh_Token";
+    public static final String ACCESS_TOKEN = "Access_Token";
+    public static final String ALL = "*";
+
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        config.setExposedHeaders(Arrays.asList("Refresh_Token", "Access_Token"));
+        config.addAllowedOriginPattern(ALL);
+        config.addAllowedHeader(ALL);
+        config.addAllowedMethod(ALL);
+        config.setExposedHeaders(Arrays.asList(REFRESH_TOKEN, ACCESS_TOKEN));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
