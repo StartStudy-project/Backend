@@ -7,6 +7,8 @@ import com.study.studyproject.board.dto.BoardWriteRequestDto;
 import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.entity.*;
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.exception.ex.ErrorCode;
+import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.member.repository.MemberRepository;
@@ -168,7 +170,7 @@ class BoardServiceTest {
 
 
     @Test
-    @DisplayName(" 사용자가 댓글 입력하지 않은 게시글을 조회한다.")
+    @DisplayName("사용자가 댓글 입력하지 않은 게시글을 조회한다.")
     void selectBaordOnewithNoMyReplies() {
         //given
         Member member1 = createAdmin();
@@ -224,13 +226,15 @@ class BoardServiceTest {
 
         Role role = ROLE_USER;
 
-        //when
-        GlobalResultDto globalResultDto = boardService.boardDeleteOne(board.getId(), role);
+        //when & then
+        assertThatThrownBy(() -> boardService.boardDeleteOne(board.getId(), role))
+                .isInstanceOf(NotFoundException.class);
+
 
         //then
         List<Board> allBoard = boardRepository.findAll();
         assertThat(allBoard).hasSize(1);
-        assertThat(globalResultDto.getMessage()).isEqualTo("게시글을 삭제 할 수 없습니다.");
+
 
     }
 
