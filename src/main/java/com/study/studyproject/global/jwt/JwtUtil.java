@@ -3,13 +3,12 @@ package com.study.studyproject.global.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.studyproject.entity.RefreshToken;
 import com.study.studyproject.global.auth.UserDetailsServiceImpl;
-import com.study.studyproject.global.exception.ex.TokenNotValidatException;
+import com.study.studyproject.global.exception.ex.TokenNotValidationException;
 import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.login.repository.RefreshRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +29,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class JwtUtil {
 
+    public static final String BEARER = "Bearer ";
     private final UserDetailsServiceImpl userDetailsService;
     private final RefreshRepository refreshTokenRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -37,7 +37,6 @@ public class JwtUtil {
     private static final long REFRESH_TIME =  24 * 60 * 60 * 1000L;
     public static final String ACCESS_TOKEN = "Access_Token";
     public static final String REFRESH_TOKEN = "Refresh_Token";
-    public static final String BEARER = "Bearer ";
 
 
 
@@ -123,7 +122,7 @@ public class JwtUtil {
 
 
     // 토큰 검증
-    public Boolean tokenValidation(String token) throws ExpiredJwtException, TokenNotValidatException {
+    public Boolean tokenValidation(String token) throws ExpiredJwtException, TokenNotValidationException {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
@@ -140,7 +139,7 @@ public class JwtUtil {
     }
 
 
-    public Boolean refreshTokenValidation(String token) throws TokenNotValidatException {
+    public Boolean refreshTokenValidation(String token) throws TokenNotValidationException {
 
         if (!tokenValidation(token)) return false;
 
@@ -180,7 +179,7 @@ public class JwtUtil {
 
     public  String resolveToken(String token) {
 
-        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+        if (StringUtils.hasText(token) && token.startsWith(BEARER)) {
             String[] split = token.split(" ");
             return split[1];
         }
