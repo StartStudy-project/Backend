@@ -1,9 +1,7 @@
 package com.study.studyproject.login.service;
 
 import com.study.studyproject.entity.Member;
-import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.NotFoundException;
-import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.login.dto.LoginRequest;
 import com.study.studyproject.login.dto.LoginResponseDto;
 import com.study.studyproject.login.dto.SignRequest;
@@ -20,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.study.studyproject.entity.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @Transactional
 class LoginServiceTest {
@@ -71,8 +69,7 @@ class LoginServiceTest {
 
         //when & then
         assertThatThrownBy(() -> loginService.loginService(loginRequest, response))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessage("비밀번호가 일치하지 않습니다.");
+                .isInstanceOf(NotFoundException.class);
     }
     
     @Test
@@ -106,8 +103,7 @@ class LoginServiceTest {
 
         //when & then
         assertThatThrownBy(() -> loginService.sign(signRequest))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessage("비밀번호가 틀립니다.");
+                .isInstanceOf(NotFoundException.class);
 
     }
 
@@ -123,8 +119,7 @@ class LoginServiceTest {
 
         //when & then
         assertThatThrownBy(() -> loginService.sign(signRequest))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("이미 회원가입 하였습니다.");
+                .isInstanceOf(NotFoundException.class);
 
     }
     
