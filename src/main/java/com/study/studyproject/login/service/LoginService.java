@@ -86,7 +86,7 @@ public class LoginService {
 
         //중복 확인
         if (memberRepository.findByEmail(signRequest.getEmail()).isPresent()) {
-            throw new DuplicateRequestException();
+            throw new NotFoundException(MEMBER_DUPLICATED);
         }
 
 
