@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 public class ReplyController {
 
     private final ReplyService replyService;
-    private final JwtUtil jwtUtil;
 
     @PostMapping
     @Operation(summary = "댓글 추가", description = "댓글 추가")

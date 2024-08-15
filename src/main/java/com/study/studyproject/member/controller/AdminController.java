@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final AdminServiceImpl adminService;
-    private final JwtUtil jwtUtil;
     private final BoardService boardService;
 
 

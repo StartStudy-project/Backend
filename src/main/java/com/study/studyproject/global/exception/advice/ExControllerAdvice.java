@@ -1,8 +1,8 @@
 package com.study.studyproject.global.exception.advice;
 
 import com.study.studyproject.global.exception.ExceptionResponse;
-import com.study.studyproject.global.exception.ex.TokenNotValidatException;
-import com.study.studyproject.global.exception.ex.UserNotFoundException;
+import com.study.studyproject.global.exception.ex.BusinessException;
+import com.study.studyproject.global.exception.ex.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.study.studyproject.global.exception.ex.ErrorCode.INTERNAL_SEVER_ERROR;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -31,59 +33,24 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RestControllerAdvice
 public class ExControllerAdvice extends ResponseEntityExceptionHandler {
 
-    @ResponseStatus(BAD_REQUEST) //400
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ExceptionResponse illegalExHandler(IllegalArgumentException e) {
-        return new ExceptionResponse(BAD_REQUEST.value(), e.getMessage());
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> userExHandler(UserNotFoundException e) {
-        ExceptionResponse errorResult = new ExceptionResponse(NOT_FOUND.value(), e.getMessage());
-        return new ResponseEntity<>(errorResult, NOT_FOUND);
-    }
-
-
-    @ExceptionHandler
-    public ResponseEntity<ExceptionResponse> tokenNotValidatException(TokenNotValidatException e) {
-        ExceptionResponse errorResult = new ExceptionResponse(NOT_FOUND.value(), e.getMessage());
-        return new ResponseEntity<>(errorResult, NOT_FOUND);
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ExceptionResponse> exceptionHandler(BusinessException e) {
+        log.info("e : {}",e.getErrorCode().getStatus());
+        return createErrorResponse(e.getErrorCode());
     }
 
 
     //500
-    @ResponseStatus(INTERNAL_SERVER_ERROR)
-    @ExceptionHandler
-    public ResponseEntity<ExceptionResponse> exception(Exception e) {
-        ExceptionResponse errorResult = new ExceptionResponse(INTERNAL_SERVER_ERROR.value(), INTERNAL_SERVER_ERROR.getReasonPhrase());
-        return new ResponseEntity<>(errorResult, INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponse> exceptionHandler(Exception e) {
+        log.info("500 에러");
+        ExceptionResponse errorResponse = ExceptionResponse.builder()
+                .message(INTERNAL_SEVER_ERROR.getMessage())
+                .status(INTERNAL_SEVER_ERROR.getStatus().value())
+                .build();
+        return ResponseEntity.internalServerError().body(errorResponse);
     }
 
-
-
-    @ResponseStatus(FORBIDDEN)
-    @ExceptionHandler(value = { AccessDeniedException.class })
-    protected ResponseEntity forbidden(AccessDeniedException e) {
-        ExceptionResponse errorResult = new ExceptionResponse(FORBIDDEN.value(),e.getMessage());
-        return new ResponseEntity<>(errorResult, FORBIDDEN);
-
-    }
-
-
-    @ExceptionHandler
-    @ResponseStatus(NOT_FOUND)
-    public ResponseEntity<ExceptionResponse> notFoundEx(NotFoundException e) {
-        ExceptionResponse errorResult = new ExceptionResponse(NOT_FOUND.value(), NOT_FOUND.getReasonPhrase());
-        return new ResponseEntity<>(errorResult, NOT_FOUND);
-    }
-
-
-
-    @ExceptionHandler
-    public ResponseEntity<ExceptionResponse> exhandle(IllegalStateException e) {
-        ExceptionResponse errorResult = new ExceptionResponse(BAD_REQUEST.value(),e.getMessage());
-        return new ResponseEntity<>(errorResult, BAD_REQUEST);
-    }
 
 
     // Bean
@@ -103,6 +70,16 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
 
 
         return new ResponseEntity<>(body, headers, status);
+    }
+
+    private ResponseEntity<ExceptionResponse> createErrorResponse(ErrorCode errorCode) {
+        ExceptionResponse errorResponse = ExceptionResponse.builder()
+                .message(errorCode.getMessage())
+                .status(errorCode.getStatus().value())
+                .build();
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(errorResponse);
     }
 
 

@@ -1,15 +1,12 @@
 package com.study.studyproject.member.service;
 
 import com.study.studyproject.entity.Member;
-import com.study.studyproject.global.exception.ex.UserNotFoundException;
-import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.member.dto.AdminDashBoardResponseDto;
 import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.member.repository.MyPageQueryRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +23,7 @@ public class AdminServiceImpl implements AdminService{
 
     private final MemberRepository memberRepository;
     private final MyPageQueryRepository myPageQueryRepository;
-    private final String  getAdmin= "Admin";
+    private final String GET_ADMIN = "Admin";
 
     @Override
     public Page<UserInfoResponseDto> userInfoAll(String username, Pageable pageable) {
@@ -37,7 +34,7 @@ public class AdminServiceImpl implements AdminService{
     }
 
     public AdminDashBoardResponseDto adminDashBoardInfo(Member member, MemberListRequestDto memberListRequestDto, Pageable pageable) {
-        Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable, null,getAdmin);
+        Page<ListResponseDto> listResponseDtos = myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable, null, GET_ADMIN);
         return AdminDashBoardResponseDto.of(member, listResponseDtos);
     }
 }

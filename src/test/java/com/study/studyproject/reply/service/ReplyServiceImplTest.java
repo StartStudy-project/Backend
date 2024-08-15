@@ -6,9 +6,6 @@ import com.study.studyproject.entity.Category;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.Reply;
 import com.study.studyproject.global.exception.ex.NotFoundException;
-import com.study.studyproject.global.exception.ex.UserNotFoundException;
-import com.study.studyproject.global.jwt.JwtUtil;
-import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
 import com.study.studyproject.reply.dto.UpdateReplyRequest;
@@ -20,16 +17,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 import static com.study.studyproject.entity.Category.CS;
 import static com.study.studyproject.entity.Role.ROLE_USER;
+import static com.study.studyproject.global.exception.ex.ErrorCode.NOT_FOUND_REPLY;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")
@@ -183,9 +180,8 @@ class ReplyServiceImplTest {
 
         //then
         List<Reply> all = replyRepository.findAll();
-        assertThatThrownBy(() -> replyRepository.findById(two.getId()).orElseThrow(() -> new UserNotFoundException("댓글을 찾을 수 없습니다.")))
-                .isInstanceOf(UserNotFoundException.class)
-                .hasMessage("댓글을 찾을 수 없습니다.");
+        assertThatThrownBy(() -> replyRepository.findById(two.getId()).orElseThrow(() -> new NotFoundException(NOT_FOUND_REPLY)))
+                .isInstanceOf(NotFoundException.class);
 
     }
 
