@@ -4,6 +4,7 @@ import com.study.studyproject.board.dto.*;
 import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.entity.*;
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.exception.ex.ErrorCode;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.repository.MemberRepository;
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+import static com.study.studyproject.global.exception.ex.ErrorCode.*;
 import static com.study.studyproject.reply.dto.ReplyInfoResponseDto.convertReplyToDto;
 import static com.study.studyproject.reply.dto.ReplyResponseDto.ReplyResponsetoDto;
 
@@ -44,7 +46,7 @@ public class BoardServiceImpl implements BoardService{
     //작성
     @Override
     public GlobalResultDto boardSave(BoardWriteRequestDto boardWriteRequestDto, Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("사용자가 없습니다."));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD)) ;
         Board entity = boardWriteRequestDto.toEntity(member);
         boardRepository.save(entity);
         return new GlobalResultDto("글 작성 완료", HttpStatus.OK.value());
@@ -54,7 +56,7 @@ public class BoardServiceImpl implements BoardService{
     //수정
     @Override
     public GlobalResultDto updateWrite(BoardReUpdateRequestDto boardReUpdateRequestDto) {
-        Board board = boardRepository.findById(boardReUpdateRequestDto.getBoardId()).orElseThrow(() -> new IllegalArgumentException("작성된 게시글이 없습니다."));
+        Board board = boardRepository.findById(boardReUpdateRequestDto.getBoardId()).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
         board.updateBoard(boardReUpdateRequestDto);
         return new GlobalResultDto("글 작성 완료", HttpStatus.OK.value());
     }
@@ -77,14 +79,16 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public BoardOneResponseDto boardOne(Long boardId, String token, HttpServletRequest request, HttpServletResponse response) {
 
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
+        Board board = boardRepository.findById(boardId).orElseThrow(()->new NotFoundException(NOT_FOUND_BOARD));
 
         checkDuplicate(boardId, request, response, board);
         Long currentMemberId = 0L;
+
+
         String postLike = "";
         if (token != null) {
             currentMemberId = jwtUtil.getIdFromToken(token);
-            Member member = memberRepository.findById(currentMemberId).orElseThrow(() -> new IllegalArgumentException("사용자가 없습니다."));
+            Member member = memberRepository.findById(currentMemberId).orElseThrow(()->new NotFoundException(NOT_FOUND_MEMBER));
             Optional<PostLike> postLikeOne = postLikeRepository.findByBoardAndMember(board, member);
             postLike = "관심";
             if (postLikeOne.isPresent()) {
@@ -146,8 +150,8 @@ public class BoardServiceImpl implements BoardService{
     //삭제
     @Override
     public GlobalResultDto boardDeleteOne(Long boardId, Role role) {
-        if (role == Role.ROLE_ADMIN) {
-            Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
+        if (isAdmin(role)) {
+            Board board = boardRepository.findById(boardId).orElseThrow(()->new NotFoundException(NOT_FOUND_BOARD) );
             board.ChangeBoardIsDeleted(true);
             board.deleteBoardContent("관리자로 의해 게시글 삭제","관리자로 의해 게시글 삭제되었습니다.");
             return new GlobalResultDto("관리자 권한으로 게시글 삭제 완료", HttpStatus.OK.value());
@@ -159,18 +163,34 @@ public class BoardServiceImpl implements BoardService{
         List<PostLike> postLikes = postLikeRepository.findByBoardId(boardId);
 
 
-        if (replies.size() != 0 || postLikes.size() != 0) {
-            return new GlobalResultDto("게시글을 삭제 할 수 없습니다.", HttpStatus.FORBIDDEN.value());
-        }
+        validateDeleteBoard(replies, postLikes);
 
         boardRepository.deleteById(boardId);
         return new GlobalResultDto("게시글 삭제 완료", HttpStatus.OK.value());
     }
 
+    private static void validateDeleteBoard(List<Reply> replies, List<PostLike> postLikes) throws NotFoundException {
+        if (isReplies(replies) || isPostLikes(postLikes)) {
+            throw new NotFoundException(UNABLE_DELETE_BOARD);
+        }
+    }
+
+    private static boolean isPostLikes(List<PostLike> postLikes) {
+        return postLikes.size() != 0;
+    }
+
+    private static boolean isReplies(List<Reply> replies) {
+        return replies.size() != 0;
+    }
+
+    private static boolean isAdmin(Role role) {
+        return role == Role.ROLE_ADMIN;
+    }
+
     //모집 구분 변경
     @Override
     public GlobalResultDto changeRecruit(BoardChangeRecruitRequestDto boardChangeRecruitRequestDto) {
-        Board board = boardRepository.findById(boardChangeRecruitRequestDto.getBoardId() ).orElseThrow(() -> new IllegalArgumentException("게시판이 없습니다."));
+        Board board = boardRepository.findById(boardChangeRecruitRequestDto.getBoardId() ).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
         board.changeRecuritBoard(boardChangeRecruitRequestDto);
         return new GlobalResultDto("모집 구분 변경 완료", HttpStatus.OK.value());
     }
