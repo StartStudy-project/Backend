@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "사용자 관심 글",description = "사용장 관심 글 기능 수정 및 삭제")
 public class PostLikeController {
 
-    private final JwtUtil jwtUtil;
     private final PostLikeService postLikeService;
 
     @Operation(summary = "관심글 등록", description = "사용자의 관심글 등록합니다.")
