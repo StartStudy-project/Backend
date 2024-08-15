@@ -4,9 +4,8 @@ import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.RefreshToken;
 import com.study.studyproject.entity.Role;
 import com.study.studyproject.global.GlobalResultDto;
-import com.study.studyproject.global.config.redis.RedisUtils;
+import com.study.studyproject.global.exception.ex.ErrorCode;
 import com.study.studyproject.global.exception.ex.NotFoundException;
-import com.study.studyproject.global.exception.ex.UserNotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.LoginRequest;
 import com.study.studyproject.login.dto.LoginResponseDto;
@@ -14,6 +13,7 @@ import com.study.studyproject.login.dto.SignRequest;
 import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.login.repository.RefreshRepository;
 import com.study.studyproject.member.repository.MemberRepository;
+import com.sun.jdi.request.DuplicateRequestException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -23,9 +23,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
+
+import static com.study.studyproject.global.exception.ex.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +33,7 @@ import java.util.Optional;
 @Slf4j
 public class LoginService {
 
+    public static final String REGEX = "@";
     private final RefreshRepository refreshRepository;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -40,12 +41,12 @@ public class LoginService {
 
 
 
-    public LoginResponseDto loginService(@Valid LoginRequest loginRequest, HttpServletResponse response) {
+    public LoginResponseDto loginService(@Valid LoginRequest loginRequest, HttpServletResponse response) throws NotFoundException {
 
-        Member member = memberRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new UserNotFoundException("사용자를 찾지 못했습니다."));
+        Member member = memberRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new NotFoundException(NOT_FOUND_MEMBER));
 
         if (!passwordEncoder.matches(loginRequest.getPwd(), member.getPassword())) {
-            throw new NotFoundException("비밀번호가 일치하지 않습니다.");
+            throw new NotFoundException(NOT_FOUND_PASSWORD);
         }
 
         TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail(),member.getId());
@@ -79,17 +80,17 @@ public class LoginService {
     //회원가입
     public GlobalResultDto sign(@Valid SignRequest signRequest) {
         if (!signRequest.getPwd().equals(signRequest.getCheckPwd())) {
-            throw new NotFoundException("비밀번호가 틀립니다.");
+            throw new NotFoundException(NOT_FOUND_PASSWORD);
         }
 
 
         //중복 확인
         if (memberRepository.findByEmail(signRequest.getEmail()).isPresent()) {
-            throw new IllegalStateException("이미 회원가입 하였습니다.");
+            throw new DuplicateRequestException();
         }
 
 
-        String[] splitEmail = signRequest.getEmail().split("@");
+        String[] splitEmail = signRequest.getEmail().split(REGEX);
 
         String encodePwd = passwordEncoder.encode(signRequest.getPwd());
         Member member = Member.builder().role(Role.ROLE_USER)
