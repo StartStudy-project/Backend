@@ -1,12 +1,6 @@
 package com.study.studyproject.login.repository;
 
-import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.RefreshToken;
-import com.study.studyproject.global.config.redis.RedisUtils;
-import com.study.studyproject.global.exception.ex.UserNotFoundException;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.JwtException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,9 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static com.study.studyproject.entity.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class RefreshRepositoryTest {
