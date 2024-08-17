@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+import static jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -28,11 +30,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          AuthenticationException authException) throws IOException {
         log.info("--JwtAuthenticationEntryPoint --");
         ExceptionResponse errorResponse = ExceptionResponse.builder()
-                .message(ErrorCode.TOKEN_EXPIRED.getMessage())
-                .status(ErrorCode.TOKEN_EXPIRED.getStatus().value())
+                .message(ErrorCode.UNABLE_ACCESS.getMessage())
+                .status(ErrorCode.UNABLE_ACCESS.getStatus().value())
                 .build();
         // Set response properties
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setStatus(SC_UNAUTHORIZED);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
