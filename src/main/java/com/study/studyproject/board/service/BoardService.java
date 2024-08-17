@@ -1,6 +1,5 @@
 package com.study.studyproject.board.service;
 
-import com.study.studyproject.board.dto.BoardChangeRecruitRequestDto;
 import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
@@ -20,6 +19,6 @@ public interface BoardService {
 
      GlobalResultDto boardDeleteOne(Long boardId, Role role);
 
-     GlobalResultDto changeRecruit(BoardChangeRecruitRequestDto boardChangeRecruitRequestDto);
+     GlobalResultDto changeRecruit(Long boardId);
 
 }
