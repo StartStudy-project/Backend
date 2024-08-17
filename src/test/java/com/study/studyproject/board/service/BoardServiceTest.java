@@ -1,6 +1,5 @@
 package com.study.studyproject.board.service;
 
-import com.study.studyproject.board.dto.BoardChangeRecruitRequestDto;
 import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
@@ -280,9 +279,8 @@ class BoardServiceTest {
         memberRepository.save(member1);
         boardRepository.save(board);
 
-        BoardChangeRecruitRequestDto boardChangeRecruitRequestDto = new BoardChangeRecruitRequestDto(board.getId(), Recruit.모집완료);
         //when
-        boardService.changeRecruit(boardChangeRecruitRequestDto);
+        boardService.changeRecruit(board.getId());
 
         //then
         Board board1 = boardRepository.findById(board.getId()).get();
