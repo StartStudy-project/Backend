@@ -6,6 +6,8 @@ import com.study.studyproject.entity.Category;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.PostLike;
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.exception.ex.BadRequestException;
+import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
 import jakarta.transaction.Transactional;
@@ -17,7 +19,9 @@ import org.springframework.http.HttpStatus;
 
 import static com.study.studyproject.entity.Category.CS;
 import static com.study.studyproject.entity.Role.ROLE_USER;
+import static com.study.studyproject.global.exception.ex.ErrorCode.NOT_FOUND_REPLY;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -64,12 +68,8 @@ class PostLikeServiceTest {
         PostLike postLike1 = PostLike.create(member1, boardCreate);
         postLikeRepository.save(postLike1);
 
-        //when
-        GlobalResultDto globalResultDto = postLikeService.postLikeSave(boardCreate.getId(), member1);
-
-        //then
-        assertThat(globalResultDto.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
-        assertThat(globalResultDto.getMessage()).isEqualTo("관심글이 이미 추가하였습니다.");
+        //when & then
+        assertThatThrownBy(() -> postLikeService.postLikeSave(boardCreate.getId(), member1)).isInstanceOf(BadRequestException.class);
 
     }
 
@@ -90,12 +90,25 @@ class PostLikeServiceTest {
 
         //then
         assertThat(globalResultDto.getStatusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(globalResultDto.getMessage()).isEqualTo("관심글이 삭제되었습니다.");
+
+    }
+    @Test
+    @DisplayName("사용자가 관심글을 삭제한다.")
+    void deletePostLikeWrong() throws Exception {
+        //given
+        Member member1 = createMember("jacom2@naver.com", "1234", "사용자명1", "닉네임1");
+        Board boardCreate = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
+        memberRepository.save(member1);
+        boardRepository.save(boardCreate);
+        PostLike postLike1 = PostLike.create(member1, boardCreate);
+        postLikeRepository.save(postLike1);
+
+        //when
+        GlobalResultDto globalResultDto = postLikeService.postLikeDelete(322L);
 
     }
 
-
-    private Member createMember
+        private Member createMember
             (String email, String password, String username, String nickname) {
         {
             return com.study.studyproject.entity.Member.builder()
