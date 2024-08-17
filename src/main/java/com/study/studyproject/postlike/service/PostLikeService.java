@@ -6,7 +6,9 @@ import com.study.studyproject.entity.Board;
 import com.study.studyproject.entity.Member;
 import com.study.studyproject.entity.PostLike;
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.exception.ex.BadRequestException;
 import com.study.studyproject.global.exception.ex.ErrorCode;
+import com.study.studyproject.global.exception.ex.ForbiddenException;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
@@ -32,10 +34,8 @@ public class PostLikeService {
         Board board = boardRepository.findById(boardId).orElseThrow(()-> new NotFoundException(NOT_FOUND_BOARD));
         Optional<PostLike> postLike = postLikeRepository.findByBoardAndMember(board, member);
         if (postLike.isPresent()) {
-            return new GlobalResultDto("관심글이 이미 추가하였습니다.", HttpStatus.FORBIDDEN.value());
+            throw new BadRequestException(POST_LIKE_DUPLICATED);
         }
-        
-
         postLikeRepository.save(PostLike.create(member, board));
         return new GlobalResultDto("관심글이 추가되었습니다.", HttpStatus.OK.value());
     }
