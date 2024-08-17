@@ -1,7 +1,6 @@
 
 package com.study.studyproject.board.controller;
 
-import com.study.studyproject.board.dto.BoardChangeRecruitRequestDto;
 import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
@@ -54,9 +53,9 @@ public class BoardController {
     }
 
     @Operation(summary = "모집구분 변경", description = "모집구분 변경")
-    @PatchMapping("/member/recruit")
-    public ResponseEntity<GlobalResultDto> changeRecruit(@RequestBody @Validated BoardChangeRecruitRequestDto boardChangeRecruitRequestDto) {
-        return ResponseEntity.ok(boardService.changeRecruit(boardChangeRecruitRequestDto));
+    @PatchMapping("/member/recruit/{boardId}")
+    public ResponseEntity<GlobalResultDto> changeRecruit(@PathVariable(name = "boardId") Long boardId ) {
+        return ResponseEntity.ok(boardService.changeRecruit(boardId));
     }
 
 
