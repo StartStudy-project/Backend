@@ -1,6 +1,7 @@
 package com.study.studyproject.global.auth;
 
 import com.study.studyproject.entity.Member;
+import com.study.studyproject.entity.Role;
 import com.study.studyproject.global.exception.ex.ErrorCode;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.member.repository.MemberRepository;
@@ -9,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static com.study.studyproject.global.exception.ex.ErrorCode.*;
 
@@ -20,13 +23,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Member member = null;
+        try {
+            member = memberRepository.findByEmail(email).orElseThrow(()->new NotFoundException(NOT_FOUND_MEMBER));
+        } catch (NotFoundException e) {
+            return new UserDetailsImpl(null, Role.ROLE_GUEST, 0L);
+        };
 
-        Member member = memberRepository.findByEmail(email).orElseThrow(
-                () -> new NotFoundException(NOT_FOUND_MEMBER)
-        );
-
-        UserDetailsImpl userDetails = new UserDetailsImpl(member);
-
-        return userDetails;
+        return new UserDetailsImpl(member,member.getRole(),member.getId());
     }
 }

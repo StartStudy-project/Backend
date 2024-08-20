@@ -47,12 +47,16 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return member != null ? member.getPassword():null;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return member != null ? member.getUsername():null;
+    }
+
+    public boolean isGuest(){
+        return member == null;
     }
 
 
