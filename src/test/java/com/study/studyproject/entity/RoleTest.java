@@ -16,7 +16,7 @@ class RoleTest {
     void containsRoleUser() {
         Role roleUser = Role.ROLE_USER;
 
-        boolean result = Role.containsRoleType(roleUser);
+        boolean result = Role.containsLoginRoleType(roleUser);
 
         assertThat(result).isTrue();
     }
@@ -27,7 +27,7 @@ class RoleTest {
     void containsAdminUser() {
         Role roleUser = Role.ROLE_ADMIN;
 
-        boolean result = Role.containsRoleType(roleUser);
+        boolean result = Role.containsLoginRoleType(roleUser);
 
         assertThat(result).isTrue();
     }
@@ -37,7 +37,7 @@ class RoleTest {
     @ParameterizedTest
     void containsRoleType(Role role,boolean excepted) {
 
-        boolean result = Role.containsRoleType(role);
+        boolean result = Role.containsLoginRoleType(role);
 
         assertThat(result).isEqualTo(excepted);
 
