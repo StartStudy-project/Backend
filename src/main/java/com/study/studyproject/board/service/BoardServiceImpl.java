@@ -4,7 +4,7 @@ import com.study.studyproject.board.dto.*;
 import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.entity.*;
 import com.study.studyproject.global.GlobalResultDto;
-import com.study.studyproject.global.exception.ex.ErrorCode;
+import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.repository.MemberRepository;
@@ -12,17 +12,12 @@ import com.study.studyproject.postlike.repository.PostLikeRepository;
 import com.study.studyproject.reply.dto.ReplyInfoResponseDto;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import com.study.studyproject.reply.repository.ReplyRepository;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static com.study.studyproject.global.exception.ex.ErrorCode.*;
@@ -33,7 +28,7 @@ import static com.study.studyproject.reply.dto.ReplyResponseDto.ReplyResponsetoD
 @RequiredArgsConstructor
 @Service
 @Slf4j
-public class BoardServiceImpl implements BoardService{
+public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
     private final ReplyRepository replyRepository;
@@ -41,11 +36,10 @@ public class BoardServiceImpl implements BoardService{
     private final PostLikeRepository postLikeRepository;
     private final JwtUtil jwtUtil;
 
-
     //작성
     @Override
     public GlobalResultDto boardSave(BoardWriteRequestDto boardWriteRequestDto, Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD)) ;
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
         Board entity = boardWriteRequestDto.toEntity(member);
         boardRepository.save(entity);
         return new GlobalResultDto("글 작성 완료", HttpStatus.OK.value());
@@ -61,50 +55,42 @@ public class BoardServiceImpl implements BoardService{
     }
 
 
-
     //글 1개만 가져오기
     @Override
-    public BoardOneResponseDto boardOne(Long boardId, String token, HttpServletRequest request, HttpServletResponse response) {
+    public BoardOneResponseDto boardOne(Long boardId, UserDetailsImpl userDetails) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
+        String postLike = getPostLike(userDetails,board);
+        ReplyResponseDto replies = findReplies(boardId,userDetails.getMemberId());
+        return BoardOneResponseDto.of(userDetails.getMemberId(), postLike, board, replies);
 
-        Board board = boardRepository.findById(boardId).orElseThrow(()->new NotFoundException(NOT_FOUND_BOARD));
+    }
 
-        Long currentMemberId = 0L;
-
-
-        String postLike = "";
-        if (token != null) {
-            currentMemberId = jwtUtil.getIdFromToken(token);
-            Member member = memberRepository.findById(currentMemberId).orElseThrow(()->new NotFoundException(NOT_FOUND_MEMBER));
-            Optional<PostLike> postLikeOne = postLikeRepository.findByBoardAndMember(board, member);
-            postLike = "관심";
-            if (postLikeOne.isPresent()) {
-                postLike = "관심완료";
-            }
-        };
-
-        ReplyResponseDto replies = findReplies(boardId,currentMemberId);
-
-        return BoardOneResponseDto.of(currentMemberId,postLike,board,replies);
+    private String getPostLike(UserDetailsImpl userDetails,  Board board) {
+        if (Role.containsLoginRoleType(userDetails.getAuthority())) { //토큰이  없는 경우
+            Optional<PostLike> byBoardAndMember = postLikeRepository.findByBoardAndMember(board, userDetails.getMember());
+            return byBoardAndMember.isPresent() ? PostLikeState.LIKING.getName() : PostLikeState.LIKE.getName();
+        }
+        return null;
 
     }
 
 
-
-    private ReplyResponseDto findReplies(Long boardId,Long currentMemberId) {
-           List<Reply> comments = replyRepository.findByBoardReply(boardId);
-           List<ReplyInfoResponseDto> commentResponseDTOList = getReplyInfoResponseDtos(comments,currentMemberId);
+    private ReplyResponseDto findReplies(Long boardId, Long currentMemberId) {
+        List<Reply> comments = replyRepository.findByBoardReply(boardId);
+        List<ReplyInfoResponseDto> commentResponseDTOList = getReplyInfoResponseDtos(comments, currentMemberId);
         return ReplyResponsetoDto(replyRepository.findBoardReplyCnt(boardId), commentResponseDTOList);
     }
 
-    private static List<ReplyInfoResponseDto> getReplyInfoResponseDtos(List<Reply> comments,Long currentMemberId) {
+    private static List<ReplyInfoResponseDto> getReplyInfoResponseDtos(List<Reply> comments, Long currentMemberId) {
 
         List<ReplyInfoResponseDto> commentResponseDTOList = new ArrayList<>();
         Map<Long, ReplyInfoResponseDto> commentDTOHashMap = new HashMap<>();
 
         comments.forEach(c -> {
-            ReplyInfoResponseDto commentResponseDTO = convertReplyToDto(c,currentMemberId);
+            ReplyInfoResponseDto commentResponseDTO = convertReplyToDto(c, currentMemberId);
             commentDTOHashMap.put(commentResponseDTO.getReplyId(), commentResponseDTO);
-            if (c.getParent() != null) commentDTOHashMap.get(c.getParent().getId()).getChildren().add(commentResponseDTO);
+            if (c.getParent() != null)
+                commentDTOHashMap.get(c.getParent().getId()).getChildren().add(commentResponseDTO);
             else commentResponseDTOList.add(commentResponseDTO);
         });
 
@@ -112,15 +98,16 @@ public class BoardServiceImpl implements BoardService{
     }
 
 
-
     //삭제
     @Override
     public GlobalResultDto boardDeleteOne(Long boardId, Role role) {
         if (isAdmin(role)) {
-            Board board = boardRepository.findById(boardId).orElseThrow(()->new NotFoundException(NOT_FOUND_BOARD) );
+            Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
             board.changeAdminDeleteBoard();
             return new GlobalResultDto("관리자 권한으로 게시글 삭제 완료", HttpStatus.OK.value());
         }
+
+
 
         //댓글
         List<Reply> replies = replyRepository.findByBoardReplies(boardId);
