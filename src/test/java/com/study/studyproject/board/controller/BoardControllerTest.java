@@ -79,7 +79,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(MockMvcRequestBuilders.post("/board/member/"+member1.getId())
+        mockMvc.perform(MockMvcRequestBuilders.post("/board/member")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -108,7 +108,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(MockMvcRequestBuilders.post("/board/member/"+member1.getId())
+        mockMvc.perform(MockMvcRequestBuilders.post("/board/member")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -222,7 +222,7 @@ class BoardControllerTest  {
 
 
     @Test
-    @DisplayName("게시글을 상세페이지를 조회한다.")
+    @DisplayName("비회원이 게시글을 상세페이지를 조회한다.")
     @WithMockUser
     void getBoard() throws Exception {
         //given
@@ -236,8 +236,6 @@ class BoardControllerTest  {
 
         //when then
         mockMvc.perform(get("/board/"+board.getId())
-                        .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
-                        .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .param("boardId", String.valueOf(board.getId()))
                 )
                 .andExpect(status().isOk())
