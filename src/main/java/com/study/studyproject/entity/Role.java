@@ -9,9 +9,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public enum Role {
     ROLE_USER,
-    ROLE_ADMIN;
+    ROLE_ADMIN
+    ,ROLE_GUEST;
 
-    public static boolean containsRoleType(Role type) {
+    public static boolean containsLoginRoleType(Role type) {
         return List.of(ROLE_USER, ROLE_ADMIN).contains(type);
     }
 

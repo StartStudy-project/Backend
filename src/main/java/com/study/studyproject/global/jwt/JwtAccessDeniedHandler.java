@@ -31,7 +31,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
                 .status(ErrorCode.UNABLE_ACCESS.getStatus().value())
                 .build();
         // Set response properties
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setStatus(ErrorCode.UNABLE_ACCESS.getStatus().value());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 

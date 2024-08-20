@@ -5,19 +5,29 @@ import com.study.studyproject.entity.Role;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
-@RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
 
-    private final Member member;
+    private Role authority;
+    private Long memberId;
+    private  Member member;
 
+
+    public UserDetailsImpl(Member member, Role authority, Long memberId) {
+        this.member = member;
+        this.authority = authority;
+        this.memberId = memberId;
+    }
+
+    public UserDetailsImpl guest() {
+        return new UserDetailsImpl(null,Role.ROLE_GUEST, 0L);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -26,7 +36,7 @@ public class UserDetailsImpl implements UserDetails {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() { //권한주는
-                return member.getRole().toString();
+                return authority.name();
             }
 
         })
@@ -35,21 +45,16 @@ public class UserDetailsImpl implements UserDetails {
         return collection;
     }
 
-
-
-    public Long getMemberId() {
-        return member.getId();
-    }
-
     @Override
     public String getPassword() {
-        return member.getPassword();
+        return null;
     }
 
     @Override
     public String getUsername() {
-        return member.getUsername();
+        return null;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

@@ -32,17 +32,17 @@ public class AdminController {
 
     @GetMapping("/user-all")
     @Operation(summary = "전체 사용자 조회", description = "사용자 검색 조회 및 사용자 전체 조회 가능")
-    public Page<UserInfoResponseDto> userAllInfo(
+    public ResponseEntity<Page<UserInfoResponseDto>> userAllInfo(
             @RequestParam(required = false,value = "username") String username,
             @PageableDefault(size = 10) Pageable pageable) {
-        return adminService.userInfoAll(username,pageable);
+        return ResponseEntity.ok(adminService.userInfoAll(username,pageable));
     }
 
     @GetMapping("/dash-board")
     @Operation(summary = "관리자 대시보드 ", description = "관리자 정보와 게시글 정보 조회")
-    public AdminDashBoardResponseDto adminDashInfo(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<AdminDashBoardResponseDto> adminDashInfo(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                    MemberListRequestDto memberListRequestDto, @PageableDefault(size = 10) Pageable pageable) {
-        return adminService.adminDashBoardInfo(userDetails.getMember(),memberListRequestDto,pageable);
+        return ResponseEntity.ok(adminService.adminDashBoardInfo(userDetails.getMember(), memberListRequestDto, pageable));
     }
 
     @DeleteMapping("/board/{boardId}")

@@ -1,7 +1,6 @@
 
 package com.study.studyproject.board.controller;
 
-import com.study.studyproject.board.dto.BoardChangeRecruitRequestDto;
 import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
@@ -9,6 +8,7 @@ import com.study.studyproject.board.service.BoardService;
 import com.study.studyproject.entity.Role;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
+import com.study.studyproject.global.auth.UserDetailsServiceImpl;
 import com.study.studyproject.global.jwt.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,8 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jmx.export.annotation.ManagedOperation;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,24 +48,24 @@ public class BoardController {
 
     }
 
-    @PostMapping("member/{memberId}")
+    @PostMapping("member")
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
-    public ResponseEntity<GlobalResultDto> writing(@RequestBody @Validated  BoardWriteRequestDto boardWriteRequestDto,@PathVariable(name = "memberId") Long memberId)  {
-        return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto,memberId));
+    public ResponseEntity<GlobalResultDto> writing(@RequestBody @Validated  BoardWriteRequestDto boardWriteRequestDto,@AuthenticationPrincipal UserDetailsImpl userDetails)  {
+        return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto,userDetails.getMemberId()));
 
     }
 
     @Operation(summary = "모집구분 변경", description = "모집구분 변경")
-    @PatchMapping("/member/recruit")
-    public ResponseEntity<GlobalResultDto> changeRecruit(@RequestBody @Validated BoardChangeRecruitRequestDto boardChangeRecruitRequestDto) {
-        return ResponseEntity.ok(boardService.changeRecruit(boardChangeRecruitRequestDto));
+    @PatchMapping("/member/recruit/{boardId}")
+    public ResponseEntity<GlobalResultDto> changeRecruit(@PathVariable(name = "boardId") Long boardId ) {
+        return ResponseEntity.ok(boardService.changeRecruit(boardId));
     }
 
 
     //삭제
     @DeleteMapping("member/{boardId}")
     @Operation(summary = "게시글 삭제 ", description = "해당 게시글 삭제")
-    public ResponseEntity<GlobalResultDto> deleteBoard(@PathVariable(name = "boardId") Long boardId) {
+    public ResponseEntity<GlobalResultDto> deleteBoard(@PathVariable(name = "boardId",required = true) Long boardId) {
         return ResponseEntity.ok(boardService.boardDeleteOne(boardId,null));
     }
 
@@ -71,10 +73,8 @@ public class BoardController {
     //글 조회 1개 -
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
-    public ResponseEntity<BoardOneResponseDto> getBoard(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId
-            ,@RequestHeader(value = "Access_Token",required = false) String token, HttpServletRequest request,HttpServletResponse response) {
-        String access_token = jwtUtil.resolveToken(token);
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, access_token,request,response);
+    public ResponseEntity<BoardOneResponseDto> getBoard(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId,userDetails);
         return ResponseEntity.ok(boardOneResponseDto);
 
     }

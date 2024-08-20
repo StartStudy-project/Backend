@@ -1,13 +1,12 @@
 package com.study.studyproject.board.service;
 
-import com.study.studyproject.board.dto.BoardChangeRecruitRequestDto;
 import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
 import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.entity.*;
 import com.study.studyproject.global.GlobalResultDto;
-import com.study.studyproject.global.exception.ex.ErrorCode;
+import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.TokenDtoResponse;
@@ -100,9 +99,9 @@ class BoardServiceTest {
         assertThat(board.getContent()).isEqualTo(boardReUpdateRequestDto.getContent());
         assertThat(board.getCategory()).isEqualTo(boardReUpdateRequestDto.getCategory());
 
-
-
     }
+
+
 
     @Test
     @DisplayName("댓글이 없는 게시글을 조회한다.")
@@ -120,8 +119,10 @@ class BoardServiceTest {
 
         TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
 
+        UserDetailsImpl userDetails = new UserDetailsImpl(null, Role.ROLE_GUEST, 0L);
         //when
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(),allToken.getAccessToken(),request, response);
+        String postLike = "";
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(), userDetails);
 
         //then
         assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
@@ -153,12 +154,15 @@ class BoardServiceTest {
         replyRepository.saveAll(replies);
 
 
+        UserDetailsImpl userDetails = new UserDetailsImpl(member1, ROLE_USER, member1.getId());
+
+
         //when
         List<Reply> byBoardReply = replyRepository.findByBoardReplies(board.getId());
 
         //when
         TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(), allToken.getAccessToken(), request, response);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(),  userDetails);
 
         assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(replies.size());
         assertThat(boardOneResponseDto.getReplyResponseDto().getReplies().get(0).getChildren()).hasSize(3);
@@ -193,11 +197,13 @@ class BoardServiceTest {
         replyRepository.saveAll(replies);
 
 
+
+        UserDetailsImpl userDetails = new UserDetailsImpl(member1, ROLE_ADMIN, member1.getId());
         //when
         List<Reply> byBoardReply = replyRepository.findByBoardReplies(board.getId());
 
         //when
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( board.getId(),null,request, response);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne( board.getId(), userDetails);
 
         assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(replies.size());
         assertThat(boardOneResponseDto.getReplyResponseDto().getReplies().get(0).getChildren()).hasSize(3);
@@ -249,7 +255,6 @@ class BoardServiceTest {
         Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
         boardRepository.save(board);
 
-
         Reply reply = createReply(null, member1, board);
 
         Reply reply1 = createReply(reply, member1, board);
@@ -258,6 +263,7 @@ class BoardServiceTest {
         replyRepository.saveAll(List.of(reply1, reply2));
 
         Role role = ROLE_ADMIN;
+
 
         //when
         GlobalResultDto globalResultDto = boardService.boardDeleteOne(board.getId(), role);
@@ -280,9 +286,8 @@ class BoardServiceTest {
         memberRepository.save(member1);
         boardRepository.save(board);
 
-        BoardChangeRecruitRequestDto boardChangeRecruitRequestDto = new BoardChangeRecruitRequestDto(board.getId(), Recruit.모집완료);
         //when
-        boardService.changeRecruit(boardChangeRecruitRequestDto);
+        boardService.changeRecruit(board.getId());
 
         //then
         Board board1 = boardRepository.findById(board.getId()).get();

@@ -1,5 +1,6 @@
 package com.study.studyproject.global.config;
 
+import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.jwt.JwtAccessDeniedHandler;
 import com.study.studyproject.global.jwt.JwtAuthenticationEntryPoint;
 import com.study.studyproject.global.jwt.JwtFilter;
@@ -71,10 +72,10 @@ public class SpringSecurity {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
-                        .requestMatchers("/board/member/**").authenticated()
-                        .requestMatchers("/user/**").authenticated()
-                        .requestMatchers("/reply/**").authenticated()
-                        .requestMatchers("/postLike/**").authenticated()
+                        .requestMatchers("/board/member/**").hasAnyRole("ADMIN","USER")
+                        .requestMatchers("/user/**").hasAnyRole("ADMIN","USER")
+                        .requestMatchers("/reply/**").hasAnyRole("ADMIN","USER")
+                        .requestMatchers("/postLike/**").hasAnyRole("ADMIN","USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
         );

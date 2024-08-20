@@ -2,7 +2,6 @@ package com.study.studyproject.board.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.studyproject.board.dto.BoardChangeRecruitRequestDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
 import com.study.studyproject.global.jwt.JwtUtil;
@@ -80,7 +79,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(MockMvcRequestBuilders.post("/board/member/"+member1.getId())
+        mockMvc.perform(MockMvcRequestBuilders.post("/board/member")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -109,7 +108,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(MockMvcRequestBuilders.post("/board/member/"+member1.getId())
+        mockMvc.perform(MockMvcRequestBuilders.post("/board/member")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -186,48 +185,18 @@ class BoardControllerTest  {
         memberRepository.save(member1);
         boardRepository.save(board);
         TokenDtoResponse allToken = jwtUtil.createAllToken(member1.getEmail(), member1.getId());
-        BoardChangeRecruitRequestDto requestDto = BoardChangeRecruitRequestDto.builder()
-                .boardId(board.getId())
-                .recruit(Recruit.모집완료)
-                .build();
 
 
         // when & then
-        mockMvc.perform(patch("/board/member/recruit")
+        mockMvc.perform(patch("/board/member/recruit/"+board.getId())
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
     }
 
-    @Test
-    @DisplayName("모집구분 변경할때, 게시글 번호와 모집구분은 필수입니다.")
-    void changeRecruitTestWithoutIdAndRecruit() throws Exception {
-        Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
-        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
-        memberRepository.save(member1);
-        boardRepository.save(board);
-        TokenDtoResponse allToken = jwtUtil.createAllToken(member1.getEmail(), member1.getId());
-        BoardChangeRecruitRequestDto requestDto = BoardChangeRecruitRequestDto.builder()
-                .build();
 
-
-        // when & then
-        mockMvc.perform(patch("/board/member/recruit")
-                        .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
-                        .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isBadRequest())
-                .andDo(print())
-                .andExpect(jsonPath("$.boardId").value("게시글 번호를 입력해주세요"))
-                .andExpect(jsonPath("$.recruit").value("모집구분을 입력해주세요"));
-
-    }
 
     @Test
     @DisplayName("게시글을 삭제합니다.")
@@ -253,7 +222,7 @@ class BoardControllerTest  {
 
 
     @Test
-    @DisplayName("게시글을 상세페이지를 조회한다.")
+    @DisplayName("비회원이 게시글을 상세페이지를 조회한다.")
     @WithMockUser
     void getBoard() throws Exception {
         //given
@@ -267,8 +236,6 @@ class BoardControllerTest  {
 
         //when then
         mockMvc.perform(get("/board/"+board.getId())
-                        .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
-                        .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .param("boardId", String.valueOf(board.getId()))
                 )
                 .andExpect(status().isOk())

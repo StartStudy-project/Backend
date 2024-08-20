@@ -214,10 +214,12 @@ class ReplyControllerTest {
 
         Reply one = createReply("댓글1", null, member1, board);
         replyRepository.save(one);
+        TokenDtoResponse allToken = jwtUtil.createAllToken(member1.getEmail(), member1.getId());
 
 
         //when
         mockMvc.perform(delete("/reply/"+one.getId())
+                        .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())

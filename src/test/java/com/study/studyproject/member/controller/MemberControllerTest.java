@@ -205,7 +205,7 @@ class MemberControllerTest {
         query_param.add("size","10");
 
         //when then
-        mockMvc.perform(get("/user/lists/"+member.getId())
+        mockMvc.perform(get("/user/lists")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .params(query_param)
@@ -238,7 +238,7 @@ class MemberControllerTest {
 
 
         //when then
-        mockMvc.perform(get("/user/lists/"+member.getId())
+        mockMvc.perform(get("/user/lists")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .params(query_param)
@@ -270,7 +270,7 @@ class MemberControllerTest {
         int size = 10;
 
         //when //then
-        mockMvc.perform(get("/user/lists/"+member.getId())
+        mockMvc.perform(get("/user/lists")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .param("page", String.valueOf(page))
                         .param("size", String.valueOf(size))

@@ -35,7 +35,6 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ExceptionResponse> exceptionHandler(BusinessException e) {
-        log.info("e : {}",e.getErrorCode().getStatus());
         return createErrorResponse(e.getErrorCode());
     }
 
@@ -43,15 +42,12 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
     //500
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> exceptionHandler(Exception e) {
-        log.info("500 에러");
         ExceptionResponse errorResponse = ExceptionResponse.builder()
                 .message(INTERNAL_SEVER_ERROR.getMessage())
                 .status(INTERNAL_SEVER_ERROR.getStatus().value())
                 .build();
         return ResponseEntity.internalServerError().body(errorResponse);
     }
-
-
 
     // Bean
     @Override
@@ -81,7 +77,4 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
                 .status(errorCode.getStatus())
                 .body(errorResponse);
     }
-
-
-
 }

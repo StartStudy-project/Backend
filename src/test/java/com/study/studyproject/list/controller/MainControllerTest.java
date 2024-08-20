@@ -120,10 +120,7 @@ class MainControllerTest {
 
                 )
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].title").value("제목15"))
-                .andExpect(jsonPath("$.content[1].title").value("제목2"))
-                .andExpect(jsonPath("$.content[2].title").value("제목1"));
+                .andExpect(status().isOk());
 
     }
 

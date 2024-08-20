@@ -1,7 +1,5 @@
 package com.study.studyproject.entity;
 
-import com.study.studyproject.board.dto.BoardChangeRecruitRequestDto;
-import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -11,6 +9,8 @@ import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
+
+import static com.study.studyproject.entity.Recruit.*;
 
 @Getter
 @Entity
@@ -72,7 +72,7 @@ public class Board extends BaseTimeEntity{
         this.content = content;
         this.nickname = nickname;
         this.category = category;
-        this.recruit = Recruit.모집중;
+        this.recruit = 모집중;
         this.isDeleted = false;
 
     }
@@ -84,8 +84,14 @@ public class Board extends BaseTimeEntity{
         return this;
     }
 
-    public Board changeRecuritBoard(BoardChangeRecruitRequestDto boardChangeRecruitRequestDto){
-        this.recruit = boardChangeRecruitRequestDto.getRecruit();
+    public void changeRecuritBoard(){
+        this.recruit = this.getRecruit().equals(모집중) ? 모집완료 : 모집중;
+    }
+
+
+    public Board changeAdminDeleteBoard(){
+        this.ChangeBoardIsDeleted(true);
+        this.deleteBoardContent("관리자로 의해 게시글 삭제","관리자로 의해 게시글 삭제되었습니다.");
         return this;
     }
 
