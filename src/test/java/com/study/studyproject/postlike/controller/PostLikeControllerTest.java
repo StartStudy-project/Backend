@@ -1,14 +1,13 @@
 package com.study.studyproject.postlike.controller;
 
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.entity.Board;
-import com.study.studyproject.entity.Category;
-import com.study.studyproject.entity.Member;
-import com.study.studyproject.entity.PostLike;
+import com.study.studyproject.domain.Board;
+import com.study.studyproject.domain.Category;
+import com.study.studyproject.domain.Member;
+import com.study.studyproject.domain.PostLike;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.member.repository.MemberRepository;
-import com.study.studyproject.member.service.MemberServiceImpl;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,10 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.study.studyproject.entity.Category.CS;
-import static com.study.studyproject.entity.Category.기타;
-import static com.study.studyproject.entity.Role.ROLE_USER;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.study.studyproject.domain.Category.CS;
+import static com.study.studyproject.domain.Role.ROLE_USER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

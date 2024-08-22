@@ -2,13 +2,11 @@ package com.study.studyproject.postlike.service;
 
 
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.entity.Board;
-import com.study.studyproject.entity.Member;
-import com.study.studyproject.entity.PostLike;
+import com.study.studyproject.domain.Board;
+import com.study.studyproject.domain.Member;
+import com.study.studyproject.domain.PostLike;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.BadRequestException;
-import com.study.studyproject.global.exception.ex.ErrorCode;
-import com.study.studyproject.global.exception.ex.ForbiddenException;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.postlike.repository.PostLikeRepository;

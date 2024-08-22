@@ -1,9 +1,9 @@
 package com.study.studyproject.board.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.study.studyproject.entity.Board;
-import com.study.studyproject.entity.Category;
-import com.study.studyproject.entity.Recruit;
+import com.study.studyproject.domain.Board;
+import com.study.studyproject.domain.Category;
+import com.study.studyproject.domain.Recruit;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;

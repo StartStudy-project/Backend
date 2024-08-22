@@ -1,10 +1,8 @@
 package com.study.studyproject.reply.service;
 
-import com.study.studyproject.entity.Member;
+import com.study.studyproject.domain.Member;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
-import com.study.studyproject.reply.dto.ReplyResponseDto;
 import com.study.studyproject.reply.dto.UpdateReplyRequest;
-import jakarta.servlet.http.HttpServletRequest;
 
 public interface ReplyService {
 

@@ -7,9 +7,9 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.study.studyproject.list.dto.ListResponseDto;
-import com.study.studyproject.entity.Board;
-import com.study.studyproject.entity.Category;
-import com.study.studyproject.entity.Recruit;
+import com.study.studyproject.domain.Board;
+import com.study.studyproject.domain.Category;
+import com.study.studyproject.domain.Recruit;
 import com.study.studyproject.list.dto.QListResponseDto;
 import com.study.studyproject.member.dto.MemberListRequestDto;
 import jakarta.persistence.EntityManager;
@@ -20,8 +20,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.study.studyproject.entity.QBoard.board;
-import static com.study.studyproject.entity.QReply.reply;
+import static com.study.studyproject.domain.QBoard.board;
+import static com.study.studyproject.domain.QReply.reply;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Repository

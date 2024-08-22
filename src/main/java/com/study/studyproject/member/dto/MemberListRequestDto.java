@@ -1,7 +1,7 @@
 package com.study.studyproject.member.dto;
 
-import com.study.studyproject.entity.Category;
-import com.study.studyproject.entity.Recruit;
+import com.study.studyproject.domain.Category;
+import com.study.studyproject.domain.Recruit;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

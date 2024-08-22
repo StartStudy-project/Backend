@@ -1,4 +1,4 @@
-package com.study.studyproject.entity;
+package com.study.studyproject.domain;
 
 import com.study.studyproject.member.dto.MemberUpdateResDto;
 import jakarta.persistence.*;

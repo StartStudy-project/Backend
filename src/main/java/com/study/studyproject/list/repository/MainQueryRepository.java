@@ -7,7 +7,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.list.dto.MainRequest;
-import com.study.studyproject.entity.*;
+import com.study.studyproject.domain.*;
 import com.study.studyproject.list.dto.QListResponseDto;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
@@ -18,8 +18,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.querydsl.jpa.JPAExpressions.select;
-import static com.study.studyproject.entity.QBoard.*;
-import static com.study.studyproject.entity.QReply.reply;
+import static com.study.studyproject.domain.QBoard.*;
+import static com.study.studyproject.domain.QReply.reply;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Repository

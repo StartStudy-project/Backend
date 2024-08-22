@@ -1,18 +1,15 @@
 package com.study.studyproject.member.service;
 
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.entity.*;
+import com.study.studyproject.domain.*;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.MemberUpdateResDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.member.repository.MemberRepository;
-import com.study.studyproject.member.repository.MyPageQueryRepository;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
 import jakarta.transaction.Transactional;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +17,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.study.studyproject.entity.Category.CS;
-import static com.study.studyproject.entity.Category.기타;
-import static com.study.studyproject.entity.Role.ROLE_USER;
+import static com.study.studyproject.domain.Category.CS;
+import static com.study.studyproject.domain.Category.기타;
+import static com.study.studyproject.domain.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

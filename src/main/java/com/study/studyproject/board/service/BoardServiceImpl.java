@@ -2,7 +2,7 @@ package com.study.studyproject.board.service;
 
 import com.study.studyproject.board.dto.*;
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.entity.*;
+import com.study.studyproject.domain.*;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.exception.ex.NotFoundException;

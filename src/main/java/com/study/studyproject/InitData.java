@@ -1,7 +1,7 @@
 package com.study.studyproject;
 
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.entity.*;
+import com.study.studyproject.domain.*;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
 import com.study.studyproject.reply.repository.ReplyRepository;

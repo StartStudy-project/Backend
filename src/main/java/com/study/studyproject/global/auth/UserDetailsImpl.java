@@ -1,9 +1,8 @@
 package com.study.studyproject.global.auth;
 
-import com.study.studyproject.entity.Member;
-import com.study.studyproject.entity.Role;
+import com.study.studyproject.domain.Member;
+import com.study.studyproject.domain.Role;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -47,12 +46,16 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return member != null ? member.getPassword():null;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return member != null ? member.getUsername():null;
+    }
+
+    public boolean isGuest(){
+        return member == null;
     }
 
 

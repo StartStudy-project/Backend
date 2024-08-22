@@ -2,14 +2,14 @@ package com.study.studyproject.reply.repository;
 
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.study.studyproject.entity.Reply;
+import com.study.studyproject.domain.Reply;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.study.studyproject.entity.QBoard.board;
-import static com.study.studyproject.entity.QReply.reply;
+import static com.study.studyproject.domain.QBoard.board;
+import static com.study.studyproject.domain.QReply.reply;
 
 public class ReplyRepositoryImpl implements ReplyRepositoryCustom{
 

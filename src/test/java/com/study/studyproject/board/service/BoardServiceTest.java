@@ -4,7 +4,7 @@ import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.entity.*;
+import com.study.studyproject.domain.*;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.exception.ex.NotFoundException;
@@ -23,10 +23,10 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static com.study.studyproject.entity.Category.CS;
-import static com.study.studyproject.entity.Category.기타;
-import static com.study.studyproject.entity.Role.ROLE_ADMIN;
-import static com.study.studyproject.entity.Role.ROLE_USER;
+import static com.study.studyproject.domain.Category.CS;
+import static com.study.studyproject.domain.Category.기타;
+import static com.study.studyproject.domain.Role.ROLE_ADMIN;
+import static com.study.studyproject.domain.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest

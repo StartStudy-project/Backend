@@ -1,12 +1,11 @@
 package com.study.studyproject.reply.repository;
 
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.entity.Board;
-import com.study.studyproject.entity.Category;
-import com.study.studyproject.entity.Member;
-import com.study.studyproject.entity.Reply;
+import com.study.studyproject.domain.Board;
+import com.study.studyproject.domain.Category;
+import com.study.studyproject.domain.Member;
+import com.study.studyproject.domain.Reply;
 import com.study.studyproject.member.repository.MemberRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.study.studyproject.entity.Category.CS;
-import static com.study.studyproject.entity.Role.ROLE_USER;
+import static com.study.studyproject.domain.Category.CS;
+import static com.study.studyproject.domain.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

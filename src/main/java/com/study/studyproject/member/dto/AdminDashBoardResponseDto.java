@@ -1,11 +1,10 @@
 package com.study.studyproject.member.dto;
 
-import com.study.studyproject.entity.Member;
-import com.study.studyproject.entity.Role;
+import com.study.studyproject.domain.Member;
+import com.study.studyproject.domain.Role;
 import com.study.studyproject.list.dto.ListResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;

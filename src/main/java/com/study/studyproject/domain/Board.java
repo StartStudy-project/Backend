@@ -1,4 +1,4 @@
-package com.study.studyproject.entity;
+package com.study.studyproject.domain;
 
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import jakarta.persistence.*;
@@ -10,7 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
-import static com.study.studyproject.entity.Recruit.*;
+import static com.study.studyproject.domain.Recruit.*;
 
 @Getter
 @Entity

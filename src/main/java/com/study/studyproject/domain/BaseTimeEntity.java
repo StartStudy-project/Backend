@@ -1,4 +1,4 @@
-package com.study.studyproject.entity;
+package com.study.studyproject.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;

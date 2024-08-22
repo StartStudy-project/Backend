@@ -1,6 +1,6 @@
 package com.study.studyproject.login.repository;
 
-import com.study.studyproject.entity.RefreshToken;
+import com.study.studyproject.domain.RefreshToken;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

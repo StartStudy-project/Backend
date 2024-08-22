@@ -1,7 +1,4 @@
-package com.study.studyproject.entity;
-
-import java.util.Optional;
-import java.util.function.Supplier;
+package com.study.studyproject.domain;
 
 public enum PostLikeState  {
     LIKE("관심"), LIKING("관심 완료");
