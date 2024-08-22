@@ -1,14 +1,11 @@
 package com.study.studyproject.list.dto;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.core.annotations.QueryProjection;
-import com.study.studyproject.entity.Recruit;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class ListResponseDto {

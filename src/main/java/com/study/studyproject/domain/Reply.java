@@ -1,6 +1,5 @@
-package com.study.studyproject.entity;
+package com.study.studyproject.domain;
 
-import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

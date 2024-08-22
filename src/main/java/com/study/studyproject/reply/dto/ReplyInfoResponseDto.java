@@ -1,6 +1,6 @@
 package com.study.studyproject.reply.dto;
 
-import com.study.studyproject.entity.Reply;
+import com.study.studyproject.domain.Reply;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -5,7 +5,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.study.studyproject.entity.*;
+import com.study.studyproject.domain.*;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.list.dto.QListResponseDto;
 import com.study.studyproject.member.dto.MemberListRequestDto;
@@ -17,9 +17,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.study.studyproject.entity.QBoard.board;
-import static com.study.studyproject.entity.QPostLike.postLike;
-import static com.study.studyproject.entity.QReply.reply;
+import static com.study.studyproject.domain.QBoard.board;
+import static com.study.studyproject.domain.QPostLike.postLike;
+import static com.study.studyproject.domain.QReply.reply;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Repository

@@ -1,4 +1,4 @@
-package com.study.studyproject.entity;
+package com.study.studyproject.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;

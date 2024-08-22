@@ -1,9 +1,8 @@
 package com.study.studyproject.global.auth;
 
-import com.study.studyproject.entity.Member;
-import com.study.studyproject.entity.Role;
+import com.study.studyproject.domain.Member;
+import com.study.studyproject.domain.Role;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

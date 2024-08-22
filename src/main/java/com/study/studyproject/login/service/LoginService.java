@@ -1,10 +1,9 @@
 package com.study.studyproject.login.service;
 
-import com.study.studyproject.entity.Member;
-import com.study.studyproject.entity.RefreshToken;
-import com.study.studyproject.entity.Role;
+import com.study.studyproject.domain.Member;
+import com.study.studyproject.domain.RefreshToken;
+import com.study.studyproject.domain.Role;
 import com.study.studyproject.global.GlobalResultDto;
-import com.study.studyproject.global.exception.ex.ErrorCode;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.LoginRequest;
@@ -13,7 +12,6 @@ import com.study.studyproject.login.dto.SignRequest;
 import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.login.repository.RefreshRepository;
 import com.study.studyproject.member.repository.MemberRepository;
-import com.sun.jdi.request.DuplicateRequestException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

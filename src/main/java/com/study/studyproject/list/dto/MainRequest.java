@@ -1,13 +1,9 @@
 package com.study.studyproject.list.dto;
 
-import com.study.studyproject.entity.Category;
-import com.study.studyproject.entity.Recruit;
-import jakarta.annotation.Nullable;
-import lombok.AllArgsConstructor;
+import com.study.studyproject.domain.Category;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Data
 @NoArgsConstructor

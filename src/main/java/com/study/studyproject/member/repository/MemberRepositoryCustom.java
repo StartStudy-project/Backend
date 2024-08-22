@@ -1,6 +1,6 @@
 package com.study.studyproject.member.repository;
 
-import com.study.studyproject.entity.Member;
+import com.study.studyproject.domain.Member;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

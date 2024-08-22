@@ -1,7 +1,7 @@
 package com.study.studyproject.login.service;
 
-import com.study.studyproject.entity.Member;
-import com.study.studyproject.entity.RefreshToken;
+import com.study.studyproject.domain.Member;
+import com.study.studyproject.domain.RefreshToken;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.TokenDtoResponse;
@@ -15,10 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
-import static com.study.studyproject.entity.Role.ROLE_USER;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.study.studyproject.domain.Role.ROLE_USER;
+
 @Transactional
 @SpringBootTest
 class LogoutServiceTest {

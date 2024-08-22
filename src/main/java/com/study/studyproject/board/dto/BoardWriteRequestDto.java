@@ -1,9 +1,8 @@
 package com.study.studyproject.board.dto;
 
-import com.study.studyproject.entity.Board;
-import com.study.studyproject.entity.Category;
-import com.study.studyproject.entity.Member;
-import com.study.studyproject.entity.Recruit;
+import com.study.studyproject.domain.Board;
+import com.study.studyproject.domain.Category;
+import com.study.studyproject.domain.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.boot.archive.scan.spi.ClassDescriptor;
 
 
 //Member member, String title, Long viewCount, String content, String nickname, Category category

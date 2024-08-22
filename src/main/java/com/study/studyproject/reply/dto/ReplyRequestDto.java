@@ -1,6 +1,5 @@
 package com.study.studyproject.reply.dto;
 
-import com.study.studyproject.entity.Reply;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

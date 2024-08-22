@@ -1,14 +1,11 @@
-package com.study.studyproject.entity;
+package com.study.studyproject.domain;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
-
-import java.util.UUID;
 
 @Getter
 @NoArgsConstructor

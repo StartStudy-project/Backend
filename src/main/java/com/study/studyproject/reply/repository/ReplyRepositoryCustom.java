@@ -1,6 +1,6 @@
 package com.study.studyproject.reply.repository;
 
-import com.study.studyproject.entity.Reply;
+import com.study.studyproject.domain.Reply;
 
 import java.util.List;
 import java.util.Optional;

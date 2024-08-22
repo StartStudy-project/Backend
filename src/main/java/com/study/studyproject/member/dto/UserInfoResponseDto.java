@@ -1,7 +1,6 @@
 package com.study.studyproject.member.dto;
 
-import com.study.studyproject.entity.Board;
-import com.study.studyproject.entity.Member;
+import com.study.studyproject.domain.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
