@@ -24,14 +24,14 @@ public class PostLikeController {
     private final PostLikeService postLikeService;
 
     @Operation(summary = "관심글 등록", description = "사용자의 관심글 등록합니다.")
-    @PostMapping("/{boardId}")
+    @PostMapping("{boardId}")
     public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok(postLikeService.postLikeSave(boardId,userDetails.getMember()));
     }
 
 
     @Operation(summary = "관심글 삭제", description = "사용자의 관심글 삭제합니다.")
-    @DeleteMapping("/{postLikeId}")
+    @DeleteMapping("{postLikeId}")
     public ResponseEntity<GlobalResultDto> postLikeDelete(@PathVariable(name = "postLikeId") Long postLikeId) {
         return ResponseEntity.ok(postLikeService.postLikeDelete(postLikeId));
     }

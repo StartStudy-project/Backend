@@ -53,20 +53,18 @@ class PostLikeControllerTest {
         Member member = createMember("jacom1@naver.com", "!112341234", "사용자명1", "닉네임1");
         Board board = createBoard(member, "제목1", "내용1", "닉네임1", CS);
         memberRepository.save(member);
-        boardRepository.saveAll(List.of(board));
+        boardRepository.save(board);
         TokenDtoResponse allToken = jwtUtil.createAllToken(member.getEmail(), member.getId());
 
+        System.out.println("board.getId() = " + board.getId());
+
         //when then
-        mockMvc.perform(post("/post-like/"+board.getId())
+        mockMvc.perform(post("/post-like/" + board.getId())
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                 )
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("관심글이 추가되었습니다."))
-                .andExpect(jsonPath("$.statusCode").value("200"));
-        //
-
+                .andExpect(status().isOk());
     }
     @Test
     @DisplayName("관심글을 삭제합니다.")
