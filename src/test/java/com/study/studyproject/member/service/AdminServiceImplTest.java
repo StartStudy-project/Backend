@@ -137,7 +137,7 @@ class AdminServiceImplTest {
         Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
         Board board1 = createBoard(member1, "제목2", "내용2", "닉네임1", CS);
         Board board2 = createBoard(member1, "제목3", "내용3", "닉네임1", 기타);
-        board2.updateViewCnt(board1.getViewCount());
+        board2.updateViewCnt();
 
         memberRepository.saveAll(List.of(adminOne,member1));
         boardRepository.saveAll(List.of(board, board1, board2));
