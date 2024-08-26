@@ -98,9 +98,8 @@ public class Board extends BaseTimeEntity{
 
 
     //조회수 증가
-    public Board updateViewCnt(Long viewCount){
-        this.viewCount = viewCount+1;
-        return this;
+    public void updateViewCnt(){
+        viewCount++;
     }
 
 

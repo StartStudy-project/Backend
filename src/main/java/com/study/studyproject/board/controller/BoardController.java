@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 public class BoardController {
 
     private final BoardService boardService;
-    private final JwtUtil jwtUtil;
 
     //글쓰기 수정
     @PatchMapping("member")

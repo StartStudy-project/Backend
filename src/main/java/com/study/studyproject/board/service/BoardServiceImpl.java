@@ -34,7 +34,6 @@ public class BoardServiceImpl implements BoardService {
     private final ReplyRepository replyRepository;
     private final MemberRepository memberRepository;
     private final PostLikeRepository postLikeRepository;
-    private final JwtUtil jwtUtil;
 
     //작성
     @Override
@@ -59,6 +58,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardOneResponseDto boardOne(Long boardId, UserDetailsImpl userDetails) {
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
+        board.updateViewCnt();
         String postLike = getPostLike(userDetails,board);
         ReplyResponseDto replies = findReplies(boardId,userDetails.getMemberId());
         return BoardOneResponseDto.of(userDetails.getMemberId(), postLike, board, replies);
