@@ -129,7 +129,7 @@ class ListServiceTest {
         Board board4 = createBoard(member1, "타이틀1", "내용3", "닉네임3", 코테);
 
         //조회수 증가
-        board0.updateViewCnt(0L);
+        board0.updateViewCnt();
 
 
         List<Board> products = List.of(board0, board1, board2,board3,board4);
