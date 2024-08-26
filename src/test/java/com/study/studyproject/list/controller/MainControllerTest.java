@@ -73,7 +73,7 @@ class MainControllerTest {
         boardRepository.save(board1);
         boardRepository.save(board2);
 
-        board1.updateViewCnt(board1.getViewCount());
+        board1.updateViewCnt();
 
 
         //when & then
@@ -105,7 +105,8 @@ class MainControllerTest {
         List<Board> products = List.of(board0, board1, board2,board3,board4);
         List<Board> boards = boardRepository.saveAll(products);
 
-        board1.updateViewCnt(board1.getViewCount());
+        board1.updateViewCnt();
+
         String title = "제목";
 
 
