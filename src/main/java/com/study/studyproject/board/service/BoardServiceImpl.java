@@ -56,21 +56,23 @@ public class BoardServiceImpl implements BoardService {
 
     //글 1개만 가져오기
     @Override
+    @Transactional
     public BoardOneResponseDto boardOne(Long boardId, UserDetailsImpl userDetails) {
-//        Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
-        Board board = boardRepository.findByIdForUpdate(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
-//        boardRepository.updateHits(boardId);
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
 //        board.updateViewCnt();
-        view(board);
+//        board.updateViewCnt();
         String postLike = getPostLike(userDetails, board);
         ReplyResponseDto replies = findReplies(boardId, userDetails.getMemberId());
         return BoardOneResponseDto.of(userDetails.getMemberId(), postLike, board, replies);
 
     }
 
-    public void view(Board board) {
-        board.updateViewCnt();
+    @Transactional
+    public void updateView(Long boardId){
+        boardRepository.updateHits(boardId);
     }
+
+
 
     private String getPostLike(UserDetailsImpl userDetails, Board board) {
         if (Role.containsLoginRoleType(userDetails.getAuthority())) { //토큰이  없는 경우

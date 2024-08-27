@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long>  {
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE Board b SET b.viewCount = b.viewCount + 1 WHERE b.id = :id")
     int updateHits(Long id);
     @Lock(LockModeType.PESSIMISTIC_WRITE)
