@@ -56,22 +56,22 @@ public class BoardServiceImpl implements BoardService {
 
     //글 1개만 가져오기
     @Override
-    @Transactional
     public BoardOneResponseDto boardOne(Long boardId, UserDetailsImpl userDetails) {
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
-//        board.updateViewCnt();
-//        board.updateViewCnt();
         String postLike = getPostLike(userDetails, board);
         ReplyResponseDto replies = findReplies(boardId, userDetails.getMemberId());
-        return BoardOneResponseDto.of(userDetails.getMemberId(), postLike, board, replies);
+        return BoardOneResponseDto.of(postLike, board, replies);
 
     }
 
     @Transactional
-    public void updateView(Long boardId){
+    public void updateView(
+    Long boardId){
+        if (!boardRepository.existsById(boardId)) {
+            throw new NotFoundException(NOT_FOUND_BOARD);
+        }
         boardRepository.updateHits(boardId);
     }
-
 
 
     private String getPostLike(UserDetailsImpl userDetails, Board board) {
