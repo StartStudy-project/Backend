@@ -57,15 +57,22 @@ public class BoardServiceImpl implements BoardService {
     //글 1개만 가져오기
     @Override
     public BoardOneResponseDto boardOne(Long boardId, UserDetailsImpl userDetails) {
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
-        board.updateViewCnt();
-        String postLike = getPostLike(userDetails,board);
-        ReplyResponseDto replies = findReplies(boardId,userDetails.getMemberId());
+//        Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
+        Board board = boardRepository.findByIdForUpdate(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
+//        boardRepository.updateHits(boardId);
+//        board.updateViewCnt();
+        view(board);
+        String postLike = getPostLike(userDetails, board);
+        ReplyResponseDto replies = findReplies(boardId, userDetails.getMemberId());
         return BoardOneResponseDto.of(userDetails.getMemberId(), postLike, board, replies);
 
     }
 
-    private String getPostLike(UserDetailsImpl userDetails,  Board board) {
+    public void view(Board board) {
+        board.updateViewCnt();
+    }
+
+    private String getPostLike(UserDetailsImpl userDetails, Board board) {
         if (Role.containsLoginRoleType(userDetails.getAuthority())) { //토큰이  없는 경우
             Optional<PostLike> byBoardAndMember = postLikeRepository.findByBoardAndMember(board, userDetails.getMember());
             return byBoardAndMember.isPresent() ? PostLikeState.LIKING.getName() : PostLikeState.LIKE.getName();
@@ -106,7 +113,6 @@ public class BoardServiceImpl implements BoardService {
             board.changeAdminDeleteBoard();
             return new GlobalResultDto("관리자 권한으로 게시글 삭제 완료", HttpStatus.OK.value());
         }
-
 
 
         //댓글
