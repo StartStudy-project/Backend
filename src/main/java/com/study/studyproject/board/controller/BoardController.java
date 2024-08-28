@@ -61,6 +61,7 @@ public class BoardController {
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
     public ResponseEntity<BoardOneResponseDto> getBoard(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        boardService.updateView(boardId);
         BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId,userDetails);
         return ResponseEntity.ok(boardOneResponseDto);
 

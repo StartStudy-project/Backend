@@ -58,14 +58,23 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardOneResponseDto boardOne(Long boardId, UserDetailsImpl userDetails) {
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
-        board.updateViewCnt();
-        String postLike = getPostLike(userDetails,board);
-        ReplyResponseDto replies = findReplies(boardId,userDetails.getMemberId());
-        return BoardOneResponseDto.of(userDetails.getMemberId(), postLike, board, replies);
+        String postLike = getPostLike(userDetails, board);
+        ReplyResponseDto replies = findReplies(boardId, userDetails.getMemberId());
+        return BoardOneResponseDto.of(postLike, board, replies);
 
     }
 
-    private String getPostLike(UserDetailsImpl userDetails,  Board board) {
+    @Transactional
+    public void updateView(
+    Long boardId){
+        if (!boardRepository.existsById(boardId)) {
+            throw new NotFoundException(NOT_FOUND_BOARD);
+        }
+        boardRepository.updateHits(boardId);
+    }
+
+
+    private String getPostLike(UserDetailsImpl userDetails, Board board) {
         if (Role.containsLoginRoleType(userDetails.getAuthority())) { //토큰이  없는 경우
             Optional<PostLike> byBoardAndMember = postLikeRepository.findByBoardAndMember(board, userDetails.getMember());
             return byBoardAndMember.isPresent() ? PostLikeState.LIKING.getName() : PostLikeState.LIKE.getName();
@@ -106,7 +115,6 @@ public class BoardServiceImpl implements BoardService {
             board.changeAdminDeleteBoard();
             return new GlobalResultDto("관리자 권한으로 게시글 삭제 완료", HttpStatus.OK.value());
         }
-
 
 
         //댓글

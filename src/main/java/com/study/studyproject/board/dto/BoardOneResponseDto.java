@@ -74,16 +74,9 @@ public class BoardOneResponseDto {
 
 
 
-    public static BoardOneResponseDto of(Long currentMemberId, String postLike, Board board, ReplyResponseDto replies) {
-
-        boolean myBoard = false;
-        if (board.getMember().getId().equals(currentMemberId)) {
-            myBoard = true;
-        }
-
+    public static BoardOneResponseDto of(String postLike, Board board, ReplyResponseDto replies) {
 
         return BoardOneResponseDto.builder()
-                .isMyBoard(myBoard)
                 .updateTime(board.getLastModifiedDate())
                 .createTime(board.getCreatedDate())
                 .title(board.getTitle())
