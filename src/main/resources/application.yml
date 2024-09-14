@@ -1,11 +1,14 @@
 spring:
   profiles:
     active: local
+
+
 ---
 spring:
   profiles:
     activate:
       on-profile: local
+
 
 
 ---
@@ -14,6 +17,11 @@ spring:
     activate:
       on-profile: prod
 
+---
+spring:
+  profiles:
+    activate:
+      on-profile: dev
 ---
 
 jwt:
