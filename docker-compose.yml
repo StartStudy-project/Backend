@@ -1,37 +1,40 @@
 services:
   db:
-    image: mysql
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    volumes:
-      -  ./mysql/mysql_data:/var/lib/mysql
-    platform: linux/x86_64
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
+    container_name: db
+    image: oscarfonts/h2:latest
+    restart: always
     ports:
-      - 3306:3306
+      - 1521:1521 # TCP 포트 : 데이터베이스 연결 포트
+      - 8081:81 # HTTP 포트 : 웹콘솔 연결 포트
+    environment:
+      H2_OPTIONS: -ifNotExists
     networks:
-      - springboot-mysql-net
+      - local-springboot-mysql-net
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - local-springboot-mysql-net
   backend:
     build:
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-dev
     restart: always
     depends_on:
       - db
+      - redis
     ports:
-      - "8080:8080"
+      - 8080:8080
     environment:
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      SPRING_DATASOURCE_DRIVER: com.mysql.cj.jdbc.Driver
+      SPRING_DATASOURCE_URL: jdbc:h2:tcp://db:1521/bookstore
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.H2Dialect
     container_name: app
     networks:
-      - springboot-mysql-net
+      - local-springboot-mysql-net
+
 
 networks:
-  springboot-mysql-net:
+  local-springboot-mysql-net:
     driver: bridge
