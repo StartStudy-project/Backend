@@ -57,13 +57,14 @@
 
 
 ### Infra
-![img_1.png](img_1.png)
+![image](https://github.com/user-attachments/assets/ce8d097f-5bae-4cf9-979d-df9869df3421)
 
 
 ## 프로젝트 아키텍처
 
 ### 백엔드
-![img.png](img.png)
+
+![image](https://github.com/user-attachments/assets/78e3ed17-4554-4302-90c9-e36792df0d31)
 
 
 ### CI/CD
