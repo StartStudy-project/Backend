@@ -54,11 +54,7 @@ public class LoginService {
         if (refreshToken.isPresent()) {
             refreshRepository.save(refreshToken.get().updateToken(tokensDto.getRefreshToken()));
         } else {
-            RefreshToken getRefreshToken = RefreshToken.builder()
-                    .accessToken(tokensDto.getAccessToken())
-                    .refreshToken(tokensDto.getRefreshToken())
-                    .email(loginRequest.getEmail())
-                    .build();
+            RefreshToken getRefreshToken = RefreshToken.toEntity(tokensDto, loginRequest);
             refreshRepository.save(getRefreshToken);
 
         }
