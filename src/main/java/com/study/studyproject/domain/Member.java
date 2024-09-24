@@ -1,5 +1,8 @@
 package com.study.studyproject.domain;
 
+import com.study.studyproject.login.dto.LoginRequest;
+import com.study.studyproject.login.dto.SignRequest;
+import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.member.dto.MemberUpdateResDto;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -51,6 +54,17 @@ public class Member extends BaseTimeEntity {
         this.nickname = nickname;
         this.role = role;
     }
+
+
+
+    public static Member toEntity(SignRequest signRequest, String encodePwd) {
+        return Member.builder().role(Role.ROLE_USER)
+                .username(signRequest.getName())
+                .nickname(signRequest.getNickname())
+                .password(encodePwd)
+                .email(signRequest.getEmail()).build();
+    }
+
 
     public Member updateMemberInfo(MemberUpdateResDto dto) {
         this.username = dto.getUsername();
