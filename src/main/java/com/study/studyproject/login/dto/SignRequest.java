@@ -32,7 +32,10 @@ public class SignRequest {
     }
 
     public boolean isNotEqualsCheckPwd(){
-        return !pwd.equals(checkPwd);
+        if(pwd != null || checkPwd != null){
+            return !pwd.equals(checkPwd);
+        }
+        return false;
     }
 
 
