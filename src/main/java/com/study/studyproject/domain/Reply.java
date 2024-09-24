@@ -97,6 +97,10 @@ public class Reply extends BaseTimeEntity{
     }
 
 
+    public boolean hasChildrenReplies() {
+        return this.getChildren().size() != 0;
+    }
+
 
 
 
