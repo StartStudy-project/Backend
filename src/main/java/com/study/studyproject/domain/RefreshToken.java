@@ -1,5 +1,8 @@
 package com.study.studyproject.domain;
 
+import com.study.studyproject.login.dto.LoginRequest;
+import com.study.studyproject.login.dto.TokenDtoResponse;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +29,15 @@ public class RefreshToken {
         this.accessToken = accessToken;
         this.email = email;
     }
+
+
+    public static RefreshToken toEntity(TokenDtoResponse tokensDto, LoginRequest loginRequest) {
+        return RefreshToken.builder()
+                .refreshToken(tokensDto.getRefreshToken())
+                .accessToken(tokensDto.getAccessToken())
+                .email(loginRequest.getEmail()).build();
+    }
+
 
     public RefreshToken updateToken(String token) {
         this.refreshToken = token;

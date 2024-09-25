@@ -30,7 +30,7 @@ public class ReplyServiceImpl implements ReplyService {
 
         Reply reply = Reply.toEntity(replyRequestDto, board, member);
 
-        if (isReplyParent(replyRequestDto)) { // 대댓글인 경우
+        if (replyRequestDto.isReplyParent()) { // 대댓글인 경우
             Reply replyParent = replyRepository.findById(replyRequestDto.getParentId())
                     .orElseThrow(() -> new NotFoundException(NOT_FOUND_REPLY));
             reply.updateParent(replyParent);
@@ -43,9 +43,7 @@ public class ReplyServiceImpl implements ReplyService {
         replyRepository.save(reply);
     }
 
-    private static boolean isReplyParent(ReplyRequestDto replyRequestDto) {
-        return replyRequestDto.getParentId() != null;
-    }
+
 
 
     @Override
@@ -59,7 +57,7 @@ public class ReplyServiceImpl implements ReplyService {
     public void deleteReply(Long num) { //댓글 num
         Reply reply = replyRepository.findCommentByIdWithParent(num)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_REPLY));
-        if (hasChildrenReplies(reply)) { //자식이 있는 상태
+        if (reply.hasChildrenReplies()) { //자식이 있는 상태
             reply.ChangeIsDeleted(true);
         } else { //삭제 가능한 조상 댓글
             replyRepository.delete(getDelete(reply));
@@ -67,16 +65,17 @@ public class ReplyServiceImpl implements ReplyService {
 
     }
 
-    private static boolean hasChildrenReplies(Reply reply) {
-        return reply.getChildren().size() != 0;
-    }
 
     private Reply getDelete(Reply reply) {
         Reply parent = reply.getParent();
-        if (parent != null && parent.getChildren().size() == 1 && parent.getIsDeleted()) {
+        if (isDeleteReply(parent)) {
             return getDelete(parent);
         }
         return reply;
+    }
+
+    private static boolean isDeleteReply(Reply parent) {
+        return parent != null && parent.getChildren().size() == 1 && parent.getIsDeleted();
     }
 
 

@@ -30,4 +30,18 @@ public class SignRequest {
         this.pwd = pwd;
         this.checkPwd = checkPwd;
     }
+
+    public boolean isNotEqualsCheckPwd(){
+        if(pwd != null || checkPwd != null){
+            return !pwd.equals(checkPwd);
+        }
+        return false;
+    }
+
+
+    public String getNickname(){
+        return email.split(" ")[0];
+    }
+
+
 }

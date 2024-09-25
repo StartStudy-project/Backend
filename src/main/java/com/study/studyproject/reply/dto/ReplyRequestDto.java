@@ -26,4 +26,8 @@ public class ReplyRequestDto {
         this.parentId = parentId;
         this.content = content;
     }
+
+    public boolean isReplyParent() {
+        return this.getParentId() != null;
+    }
 }

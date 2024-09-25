@@ -29,7 +29,6 @@ public class MemberController {
 
 
     private final MemberServiceImpl memberService;
-    private final JwtUtil jwtUtil;
 
     //사용자 정보 조회
     @Operation(summary = "사용자 정보 조회", description = "자신의 사용자 정보를 조회")

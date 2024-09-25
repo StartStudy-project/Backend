@@ -31,7 +31,6 @@ import static com.study.studyproject.global.exception.ex.ErrorCode.*;
 @Slf4j
 public class LoginService {
 
-    public static final String REGEX = "@";
     private final RefreshRepository refreshRepository;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -48,19 +47,12 @@ public class LoginService {
         }
 
         TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail(),member.getId());
-
         Optional<RefreshToken> refreshToken = refreshRepository.findByAccessToken(tokensDto.getAccessToken());
-
         if (refreshToken.isPresent()) {
             refreshRepository.save(refreshToken.get().updateToken(tokensDto.getRefreshToken()));
         } else {
-            RefreshToken getRefreshToken = RefreshToken.builder()
-                    .accessToken(tokensDto.getAccessToken())
-                    .refreshToken(tokensDto.getRefreshToken())
-                    .email(loginRequest.getEmail())
-                    .build();
+            RefreshToken getRefreshToken = RefreshToken.toEntity(tokensDto, loginRequest);
             refreshRepository.save(getRefreshToken);
-
         }
 
         setHeader(response, tokensDto);
@@ -77,29 +69,25 @@ public class LoginService {
 
     //회원가입
     public GlobalResultDto sign(@Valid SignRequest signRequest) {
-        if (!signRequest.getPwd().equals(signRequest.getCheckPwd())) {
-            throw new NotFoundException(NOT_FOUND_PASSWORD);
-        }
-
-
-        //중복 확인
-        if (memberRepository.findByEmail(signRequest.getEmail()).isPresent()) {
-            throw new NotFoundException(MEMBER_DUPLICATED);
-        }
-
-
-        String[] splitEmail = signRequest.getEmail().split(REGEX);
-
+        validate(signRequest);
         String encodePwd = passwordEncoder.encode(signRequest.getPwd());
-        Member member = Member.builder().role(Role.ROLE_USER)
-                .username(signRequest.getName())
-                .nickname(splitEmail[0])
-                .password(encodePwd)
-                .email(signRequest.getEmail()).build();
-
+        Member member = Member.toEntity(signRequest, encodePwd);
         memberRepository.save(member);
-        
         return new GlobalResultDto("회원가입 성공",HttpStatus.OK.value());
 
+    }
+
+    private void validate(SignRequest signRequest) {
+        if (signRequest.isNotEqualsCheckPwd()) {
+            throw new NotFoundException(NOT_FOUND_PASSWORD);
+        }
+        //중복 확인
+        if (isPresentEmail(signRequest)) {
+            throw new NotFoundException(MEMBER_DUPLICATED);
+        }
+    }
+
+    private boolean isPresentEmail(SignRequest signRequest) {
+        return memberRepository.findByEmail(signRequest.getEmail()).isPresent();
     }
 }
