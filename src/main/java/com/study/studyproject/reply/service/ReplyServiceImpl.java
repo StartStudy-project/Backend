@@ -5,15 +5,18 @@ import com.study.studyproject.domain.Board;
 import com.study.studyproject.domain.Member;
 import com.study.studyproject.domain.Reply;
 import com.study.studyproject.global.exception.ex.NotFoundException;
+import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
 import com.study.studyproject.reply.dto.UpdateReplyRequest;
 import com.study.studyproject.reply.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.study.studyproject.global.exception.ex.ErrorCode.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -22,11 +25,16 @@ public class ReplyServiceImpl implements ReplyService {
 
     private final BoardRepository boardRepository;
     private final ReplyRepository replyRepository;
+    private final MemberRepository memberRepository;
 
-    @Override
-    public void insert(Member member, ReplyRequestDto replyRequestDto) {
+    @Transactional
+    public void insert(Long memberId, ReplyRequestDto replyRequestDto) {
         Board board = boardRepository.findById(replyRequestDto.getBoardId())
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
+
+        Member member = memberRepository
+                .findById(memberId)
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_MEMBER));
 
         Reply reply = Reply.toEntity(replyRequestDto, board, member);
 
@@ -36,9 +44,10 @@ public class ReplyServiceImpl implements ReplyService {
             reply.updateParent(replyParent);
         }
 
-
-        reply.updateWriter(member);
+//문제
         reply.UpdateBoard(board);
+        reply.updateWriter(member);
+
 
         replyRepository.save(reply);
     }

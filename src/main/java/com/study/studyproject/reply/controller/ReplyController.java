@@ -22,13 +22,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/reply")
 public class ReplyController {
 
-    private final ReplyService replyService;
-
+    private final ReplyServiceImpl replyService;
+    private final JwtUtil jwtUtil;
     @PostMapping
     @Operation(summary = "댓글 추가", description = "댓글 추가")
-    public void insertReply(@AuthenticationPrincipal UserDetailsImpl userDetails
+    public void insertReply(@RequestHeader("Access_Token") String token
             , @RequestBody @Validated ReplyRequestDto replyRequestDto) {
-        replyService.insert(userDetails.getMember(), replyRequestDto);
+        Long idFromToken = jwtUtil.getIdFromToken(jwtUtil.resolveToken(token));
+        replyService.insert(idFromToken, replyRequestDto);
 
     }
 
