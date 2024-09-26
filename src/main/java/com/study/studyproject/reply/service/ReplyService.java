@@ -7,7 +7,7 @@ import com.study.studyproject.reply.dto.UpdateReplyRequest;
 public interface ReplyService {
 
 
-    void insert(Member member, ReplyRequestDto replyRequestDto);
+    void insert(Long memberId, ReplyRequestDto replyRequestDto);
 
     //수정
     void updateReply(UpdateReplyRequest updateReplyRequest);
