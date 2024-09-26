@@ -6,7 +6,6 @@ import com.study.studyproject.domain.*;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.exception.ex.NotFoundException;
-import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
 import com.study.studyproject.reply.dto.ReplyInfoResponseDto;
@@ -22,7 +21,7 @@ import java.util.*;
 
 import static com.study.studyproject.global.exception.ex.ErrorCode.*;
 import static com.study.studyproject.reply.dto.ReplyInfoResponseDto.convertReplyToDto;
-import static com.study.studyproject.reply.dto.ReplyResponseDto.ReplyResponsetoDto;
+import static com.study.studyproject.reply.dto.ReplyResponseDto.ReplyResponseToDto;
 
 @Transactional
 @RequiredArgsConstructor
@@ -59,9 +58,8 @@ public class BoardServiceImpl implements BoardService {
     public BoardOneResponseDto boardOne(Long boardId, UserDetailsImpl userDetails) {
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
         String postLike = getPostLike(userDetails, board);
-        ReplyResponseDto replies = findReplies(boardId, userDetails.getMemberId());
-        return BoardOneResponseDto.of(postLike, board, replies);
-
+        ReplyResponseDto replies = findReplies(boardId);
+        return BoardOneResponseDto.of(postLike, board, replies,userDetails.getNickname());
     }
 
     @Transactional
@@ -75,28 +73,27 @@ public class BoardServiceImpl implements BoardService {
 
 
     private String getPostLike(UserDetailsImpl userDetails, Board board) {
-        if (Role.containsLoginRoleType(userDetails.getAuthority())) { //토큰이  없는 경우
+        if (Role.containsLoginRoleType(userDetails.getAuthority())) {
             Optional<PostLike> byBoardAndMember = postLikeRepository.findByBoardAndMember(board, userDetails.getMember());
             return byBoardAndMember.isPresent() ? PostLikeState.LIKING.getName() : PostLikeState.LIKE.getName();
         }
         return null;
-
     }
 
 
-    private ReplyResponseDto findReplies(Long boardId, Long currentMemberId) {
+    private ReplyResponseDto findReplies(Long boardId) {
         List<Reply> comments = replyRepository.findByBoardReply(boardId);
-        List<ReplyInfoResponseDto> commentResponseDTOList = getReplyInfoResponseDtos(comments, currentMemberId);
-        return ReplyResponsetoDto(replyRepository.findBoardReplyCnt(boardId), commentResponseDTOList);
+        List<ReplyInfoResponseDto> commentResponseDTOList = getReplyInfoResponseDtos(comments);
+        return ReplyResponseToDto(replyRepository.findBoardReplyCnt(boardId), commentResponseDTOList);
     }
 
-    private static List<ReplyInfoResponseDto> getReplyInfoResponseDtos(List<Reply> comments, Long currentMemberId) {
+    private static List<ReplyInfoResponseDto> getReplyInfoResponseDtos(List<Reply> comments) {
 
         List<ReplyInfoResponseDto> commentResponseDTOList = new ArrayList<>();
         Map<Long, ReplyInfoResponseDto> commentDTOHashMap = new HashMap<>();
 
         comments.forEach(c -> {
-            ReplyInfoResponseDto commentResponseDTO = convertReplyToDto(c, currentMemberId);
+            ReplyInfoResponseDto commentResponseDTO = convertReplyToDto(c);
             commentDTOHashMap.put(commentResponseDTO.getReplyId(), commentResponseDTO);
             if (c.getParent() != null)
                 commentDTOHashMap.get(c.getParent().getId()).getChildren().add(commentResponseDTO);
