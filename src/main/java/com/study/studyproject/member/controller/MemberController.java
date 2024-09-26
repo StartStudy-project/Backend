@@ -9,6 +9,7 @@ import com.study.studyproject.member.dto.MemberUpdateResDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.member.service.MemberServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -33,14 +34,14 @@ public class MemberController {
     //사용자 정보 조회
     @Operation(summary = "사용자 정보 조회", description = "자신의 사용자 정보를 조회")
     @GetMapping("/info")
-    public ResponseEntity<UserInfoResponseDto> userInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<UserInfoResponseDto> userInfo(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok(memberService.userInfoService(userDetails.getMember()));
     }
 
     //수정
     @Operation(summary = "사용자 정보 수정", description = "사용자 정보 수정 기능")
     @PatchMapping("/info")
-    public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody @Validated MemberUpdateResDto memberUpdateResDto,@AuthenticationPrincipal UserDetailsImpl userDetails ) {
+    public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody @Validated MemberUpdateResDto memberUpdateResDto,@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails ) {
         return ResponseEntity.ok(memberService.userInfoUpdate(userDetails.getMember(), memberUpdateResDto));
     }
 
@@ -48,9 +49,9 @@ public class MemberController {
     @Operation(summary = "내가 작성한 게시글 조회", description = "사용자 스터디 게시글 조회")
     @GetMapping("/lists")
     public ResponseEntity<Page<ListResponseDto>> mainList(
-             @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
              MemberListRequestDto memberListRequestDto,
-            @PageableDefault(size = 10) Pageable pageable) {
+            @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable) {
 
         return ResponseEntity.ok(memberService.listMember(userDetails.getMemberId(), memberListRequestDto, pageable));
     }
@@ -60,9 +61,9 @@ public class MemberController {
     @Operation(summary = "관심 게시글 조회", description = "사용자 관심 게시글 조회")
     @GetMapping("/post-likes")
     public ResponseEntity<Page<ListResponseDto>> userPostLike(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
             MemberListRequestDto memberListRequestDto,
-            @PageableDefault(size = 10) Pageable pageable) {
+            @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable) {
 
         return ResponseEntity.ok(memberService.postLikeBoard(userDetails.getMemberId(), memberListRequestDto, pageable));
     }
