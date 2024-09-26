@@ -54,6 +54,10 @@ public class UserDetailsImpl implements UserDetails {
         return member != null ? member.getUsername():null;
     }
 
+    public String getNickname() {
+        return member != null ? member.getNickname():null;
+    }
+
     public boolean isGuest(){
         return member == null;
     }

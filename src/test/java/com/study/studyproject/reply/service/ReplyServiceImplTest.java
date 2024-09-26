@@ -60,7 +60,7 @@ class ReplyServiceImplTest {
         ReplyRequestDto replyOne = new ReplyRequestDto(boardCreate.getId(), null, "댓글 내용");
 
         //when
-        replyService.insert(member1, replyOne);
+        replyService.insert(member1.getId(), replyOne);
 
         //then
         List<Reply> all = replyRepository.findAll();
@@ -85,7 +85,7 @@ class ReplyServiceImplTest {
         ReplyRequestDto replyOne = new ReplyRequestDto(board.getId(), parentReply.getId(), "댓글 내용");
 
         //when
-        replyService.insert(member1, replyOne);
+        replyService.insert(member1.getId(), replyOne);
 
         //then
         List<Reply> all = replyRepository.findAll();

@@ -17,16 +17,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardOneResponseDto {
 
-    @Schema(description = "게시글 내용", defaultValue = "내요내용")
-    boolean isMyBoard;
-
     Recruit recruit;
+    @Schema(description = "현재 닉네임", defaultValue = "jacom!!")
+    String currentNickname;
 
     @Schema(description = "제목", defaultValue = "제목제목")
     String title;
 
-    @Schema(description = "아이디", defaultValue = "jacom!!!")
-    String userId;
+    @Schema(description = "게시글 작성자", defaultValue = "jacom!!!")
+    String boardWriteNickname;
+
 
     @Schema(description = "수정 시간", defaultValue = "2023-10-05T12:34:56")
     LocalDateTime updateTime;
@@ -54,19 +54,19 @@ public class BoardOneResponseDto {
     ReplyResponseDto replyResponseDto;
 
     @Builder
-    public BoardOneResponseDto(Long PostLikeId,String postLike, Category category,String title, String userId, LocalDateTime updateTime, String content, boolean isMyBoard, int viewCnt, ReplyResponseDto replyResponseDto,LocalDateTime createTime,Recruit recruit) {
+    public BoardOneResponseDto(Recruit recruit, String currentNickname, String title, String boardWriteNickname, LocalDateTime updateTime, LocalDateTime createTime, String content, Category category, int viewCnt, String postLike, Long postLikeId, ReplyResponseDto replyResponseDto) {
         this.recruit = recruit;
+        this.currentNickname = currentNickname;
         this.title = title;
-        this.userId = userId;
+        this.boardWriteNickname = boardWriteNickname;
         this.updateTime = updateTime;
-        this.content = content;
-        this.postLikeId = PostLikeId;
-        this.postLike = postLike;
-        this.category = category;
-        this.isMyBoard = isMyBoard;
-        this.viewCnt = viewCnt;
-        this.replyResponseDto = replyResponseDto;
         this.createTime = createTime;
+        this.content = content;
+        this.category = category;
+        this.viewCnt = viewCnt;
+        this.postLike = postLike;
+        this.postLikeId = postLikeId;
+        this.replyResponseDto = replyResponseDto;
     }
 
 
@@ -74,7 +74,9 @@ public class BoardOneResponseDto {
 
 
 
-    public static BoardOneResponseDto of(String postLike, Board board, ReplyResponseDto replies) {
+
+
+    public static BoardOneResponseDto of(String postLike, Board board, ReplyResponseDto replies, String nickname) {
 
         return BoardOneResponseDto.builder()
                 .updateTime(board.getLastModifiedDate())
@@ -84,11 +86,12 @@ public class BoardOneResponseDto {
                 .content(board.getContent())
                 .postLike(postLike)
                 .viewCnt(Math.toIntExact(board.getViewCount()))
-                .userId(board.getNickname())
+                .boardWriteNickname(board.getNickname())
+                .currentNickname(nickname)
                 .category(board.getCategory())
                 .replyResponseDto(replies)
                 .build();
     }
-
+    
 }
 

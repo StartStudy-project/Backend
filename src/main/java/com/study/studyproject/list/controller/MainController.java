@@ -4,6 +4,7 @@ import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.list.dto.MainRequest;
 import com.study.studyproject.list.service.ListService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class MainController {
     public ResponseEntity<Page<ListResponseDto>> mainList(
             @RequestParam(value = "title",required = false) String title,
             MainRequest mainRequestDto,
-            @PageableDefault(size = 10) Pageable pageable) {
+            @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable) {
 
         Page<ListResponseDto> list = listService.list(title, mainRequestDto, pageable);
         return ResponseEntity.ok(list);

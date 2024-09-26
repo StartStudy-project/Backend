@@ -7,6 +7,7 @@ import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.postlike.service.PostLikeService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class PostLikeController {
 
     @Operation(summary = "관심글 등록", description = "사용자의 관심글 등록합니다.")
     @PostMapping("{boardId}")
-    public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable Long boardId, @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok(postLikeService.postLikeSave(boardId,userDetails.getMember()));
     }
 

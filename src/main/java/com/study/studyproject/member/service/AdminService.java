@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface AdminService {
 
-    Page<UserInfoResponseDto> userInfoAll(String usernam,Pageable pageable);
+    Page<UserInfoResponseDto> userInfoAll(String username,Pageable pageable);
 }

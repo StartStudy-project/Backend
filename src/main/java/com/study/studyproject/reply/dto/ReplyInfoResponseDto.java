@@ -16,36 +16,27 @@ import java.util.List;
 public class ReplyInfoResponseDto {
     private Long replyId;
     private Long parentId;
-    private boolean isMyReply;
     private String nickname;
     private String content;
     private LocalDateTime updateTime;
     private List<ReplyInfoResponseDto> children = new ArrayList<>();
 
-    public ReplyInfoResponseDto(Reply reply, boolean isMyReply, String content) {
+    public ReplyInfoResponseDto(Reply reply, String content) {
         this.replyId = reply.getId();
         this.updateTime = reply.getLastModifiedDate();
         this.nickname = reply.getNickname();
         this.parentId = (reply.getParent() != null) ? reply.getParent().getId() : null;
         this.content = content;
-        this.isMyReply = isMyReply;
     }
 
 
 
-    public static ReplyInfoResponseDto convertReplyToDto(Reply reply, Long currentMemberId) {
-
-        Long replyMemberId = reply.getMember().getId();
-        boolean isMyReply = false;
-        if (currentMemberId.equals(replyMemberId)) {
-            isMyReply = true;
-        }
-
+    public static ReplyInfoResponseDto convertReplyToDto(Reply reply) {
 
 
         return reply.getIsDeleted() ?
-                new ReplyInfoResponseDto(reply, isMyReply, "삭제된 댓글입니다.") :
-                new ReplyInfoResponseDto(reply, isMyReply,reply.getContent());
+                new ReplyInfoResponseDto(reply, "삭제된 댓글입니다.") :
+                new ReplyInfoResponseDto(reply,reply.getContent());
 
     }
 

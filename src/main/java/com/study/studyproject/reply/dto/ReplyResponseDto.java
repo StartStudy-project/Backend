@@ -20,7 +20,7 @@ public class ReplyResponseDto {
         this.replies = replies;
     }
 
-    public static ReplyResponseDto ReplyResponsetoDto(long getTotal, List<ReplyInfoResponseDto> replies) {
+    public static ReplyResponseDto ReplyResponseToDto(long getTotal, List<ReplyInfoResponseDto> replies) {
         return builder()
                 .getTotal(getTotal)
                 .replies(replies)

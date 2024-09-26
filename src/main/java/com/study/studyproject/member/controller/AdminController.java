@@ -9,6 +9,7 @@ import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import com.study.studyproject.member.service.AdminServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,14 +33,14 @@ public class AdminController {
     @Operation(summary = "전체 사용자 조회", description = "사용자 검색 조회 및 사용자 전체 조회 가능")
     public ResponseEntity<Page<UserInfoResponseDto>> userAllInfo(
             @RequestParam(required = false,value = "username") String username,
-            @PageableDefault(size = 10) Pageable pageable) {
+            @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.ok(adminService.userInfoAll(username,pageable));
     }
 
     @GetMapping("/dash-board")
     @Operation(summary = "관리자 대시보드 ", description = "관리자 정보와 게시글 정보 조회")
-    public ResponseEntity<AdminDashBoardResponseDto> adminDashInfo(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                   MemberListRequestDto memberListRequestDto, @PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity<AdminDashBoardResponseDto> adminDashInfo(            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                   MemberListRequestDto memberListRequestDto, @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.ok(adminService.adminDashBoardInfo(userDetails.getMember(), memberListRequestDto, pageable));
     }
 
