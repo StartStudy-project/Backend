@@ -58,8 +58,18 @@ public class BoardServiceImpl implements BoardService {
     public BoardOneResponseDto boardOne(Long boardId, UserDetailsImpl userDetails) {
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
         String postLike = getPostLike(userDetails, board);
+        Long postLikeId = getPostLikeId(userDetails, board);
         ReplyResponseDto replies = findReplies(boardId);
-        return BoardOneResponseDto.of(postLike, board, replies,userDetails.getNickname());
+        return BoardOneResponseDto.of(postLikeId,postLike, board, replies,userDetails.getNickname());
+    }
+
+    private Long getPostLikeId(UserDetailsImpl userDetails, Board board) {
+        Optional<PostLike> findByPostLike = postLikeRepository.findByBoardAndMember(board, userDetails.getMember());
+        if (findByPostLike.isPresent()) {
+            return findByPostLike.get().getId();
+        }
+        return 0L;
+
     }
 
     @Transactional
