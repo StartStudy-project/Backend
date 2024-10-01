@@ -30,9 +30,6 @@ public class BoardWriteRequestDto {
     @NotBlank(message = "제목을 입력해주세요")
     String title;
 
-    @Schema(description = "김유역", defaultValue = "닉네임")
-    @NotBlank(message = "닉네임 입력해주세요")
-    String nickname;
 
 
 
@@ -42,16 +39,14 @@ public class BoardWriteRequestDto {
                 .title(title)
                 .content(content)
                 .category(category)
-                .nickname(nickname)
                 .build();
     }
 
     @Builder
-    public BoardWriteRequestDto(String content, Category category, String title, String nickname) {
+    public BoardWriteRequestDto(String content, Category category, String title) {
         this.content = content;
         this.category = category;
         this.title = title;
-        this.nickname = nickname;
     }
 
 

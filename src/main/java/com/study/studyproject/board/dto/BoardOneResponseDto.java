@@ -78,6 +78,8 @@ public class BoardOneResponseDto {
 
     public static BoardOneResponseDto of(Long postLikeId, String postLike, Board board, ReplyResponseDto replies, String nickname) {
 
+        String nickname1 = board.getMember().getNickname();
+        System.out.println("nickname1 = " + nickname1);
         return BoardOneResponseDto.builder()
                 .updateTime(board.getLastModifiedDate())
                 .createTime(board.getCreatedDate())
@@ -87,7 +89,7 @@ public class BoardOneResponseDto {
                 .postLike(postLike)
                 .postLikeId(postLikeId)
                 .viewCnt(Math.toIntExact(board.getViewCount()))
-                .boardWriteNickname(board.getNickname())
+                .boardWriteNickname(nickname1)
                 .currentNickname(nickname)
                 .category(board.getCategory())
                 .replyResponseDto(replies)

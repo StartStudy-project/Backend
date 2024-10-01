@@ -33,7 +33,6 @@ public class Board extends BaseTimeEntity{
     private Long viewCount;
 
     private String content;
-    private String nickname;
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -65,12 +64,11 @@ public class Board extends BaseTimeEntity{
 
 
     @Builder
-    public Board(Member member, String title, String content, String nickname, Category category) {
+    public Board(Member member, String title, String content,  Category category) {
         this.member = member;
         this.title = title;
         this.viewCount = 0L;
         this.content = content;
-        this.nickname = nickname;
         this.category = category;
         this.recruit = 모집중;
         this.isDeleted = false;
