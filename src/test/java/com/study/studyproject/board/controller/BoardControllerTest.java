@@ -60,7 +60,6 @@ class BoardControllerTest  {
         BoardWriteRequestDto requestDto = BoardWriteRequestDto.builder()
                 .title("제목1")
                 .category(Category.CS)
-                .nickname("닉네임")
                 .content("내용")
                 .build();
 
@@ -252,7 +251,6 @@ class BoardControllerTest  {
                 .member(member)
                 .title(title)
                 .content("내용")
-                .nickname(nickname)
                 .category(category)
                 .build();
     }
