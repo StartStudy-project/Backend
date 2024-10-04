@@ -15,7 +15,7 @@ import static com.study.studyproject.domain.Recruit.*;
 @Getter
 @Entity
 @NoArgsConstructor
-@ToString(of = {"id", "title", "nickname","viewCount","content","category","recruit"})
+@ToString(of = {"id", "title", "viewCount","content","category","recruit"})
 public class Board extends BaseTimeEntity{
 
     @Id @GeneratedValue
