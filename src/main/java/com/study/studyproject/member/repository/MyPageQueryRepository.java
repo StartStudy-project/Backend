@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.study.studyproject.domain.QBoard.board;
+import static com.study.studyproject.domain.QMember.member;
 import static com.study.studyproject.domain.QReply.reply;
 import static org.springframework.util.StringUtils.isEmpty;
 
@@ -47,7 +48,7 @@ public class MyPageQueryRepository {
         return queryFactory
                 .select(
                         new QListResponseDto(
-                                board.nickname,
+                                member.nickname,
                                 board.id.intValue(),
                                 board.recruit.stringValue(),
                                 board.category.stringValue(),
@@ -62,6 +63,7 @@ public class MyPageQueryRepository {
                                                 .and(reply.board.id.eq(board.id)))
                         ))
                 .from(board)
+                .join(board.member, member)
                 .where(
                         getType(condition.getRecruit()), //모집여부
                         getUser(memeberId), //사용자 아이디 유무

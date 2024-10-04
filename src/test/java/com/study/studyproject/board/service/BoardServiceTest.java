@@ -342,7 +342,6 @@ class BoardServiceTest {
                 .member(member)
                 .title(title)
                 .content("내용")
-                .nickname(nickname)
                 .category(category)
                 .build();
     }
@@ -363,10 +362,8 @@ class BoardServiceTest {
     ) {
         return BoardWriteRequestDto.builder()
                 .category(category)
-                .nickname(nickname)
                 .title("title")
                 .content("내용")
-                .nickname(nickname)
                 .build();
     }
 }

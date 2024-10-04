@@ -44,7 +44,7 @@ public class MainQueryRepository  {
         return queryFactory
                 .select(
                         new QListResponseDto(
-                                board.nickname,
+                                board.member.nickname,
                                 board.id.intValue(),
                                 board.recruit.stringValue(),
                                 board.category.stringValue(),

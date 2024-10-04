@@ -85,7 +85,6 @@ public class InitData {
             int val = (int) (Math.random() * 3);
             Board build = Board.builder()
                     .content("같이 " + arr[val] + " 같이해요")
-                    .nickname(member.getNickname())
                     .category(arr[val])
                     .title("같이 하실 " + arr[val] + " 하실 분?")
                     .member(member)
@@ -99,7 +98,6 @@ public class InitData {
             int val = (int) (Math.random() * 3);
             Board build = Board.builder()
                     .content(regin[val] + "에서 " + arr[val] + "같이해요")
-                    .nickname(member.getNickname())
                     .category(arr[val])
                     .title(regin[val] + "에서 같이 " + arr[val] + "하실 분? ")
                     .member(member)

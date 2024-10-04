@@ -8,6 +8,7 @@ import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.list.dto.MainRequest;
 import com.study.studyproject.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,14 @@ class ListServiceTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @AfterEach
+    void tearDown() {
+        boardRepository.deleteAll();
+        memberRepository.deleteAll();
+
+    }
+
     @Test
     @DisplayName("타이틀 검색을 입력하지 않고 카테코리가 CS인 게시글을 최신순으로 조회한다.")
     void mainListService() throws Exception {
@@ -46,11 +55,8 @@ class ListServiceTest {
         Board board4 = createBoard(member1, "타이틀1", "내용3", "닉네임3", CS);
 
          boardRepository.save(board);
-        Thread.sleep(1000);
         boardRepository.save(board1);
-        Thread.sleep(1000);
         boardRepository.save(board2);
-        Thread.sleep(1000);
         boardRepository.save(board4);
 
         MainRequest mainRequest = new MainRequest(CS, 0);
@@ -62,11 +68,11 @@ class ListServiceTest {
         //then
         List<ListResponseDto> boardList = list.getContent();
         assertThat(boardList).hasSize(3)
-                .extracting("title","content", "nickname","type")
+                .extracting("title","content","type")
                 .containsExactly(
-                        tuple("타이틀1", "내용3","닉네임3","CS"),
-                        tuple("제목2", "내용2","닉네임2","CS"),
-                        tuple("제목1", "내용1","닉네임1","CS")
+                        tuple("타이틀1", "내용3","CS"),
+                        tuple("제목2", "내용2","CS"),
+                        tuple("제목1", "내용1","CS")
                 );
 
     }
@@ -88,10 +94,7 @@ class ListServiceTest {
         List<Board> products = List.of( board2,board3,board4);
 
         boardRepository.save(board);
-        Thread.sleep(1000);
-
         boardRepository.save(board1);
-        Thread.sleep(1000);
 
         List<Board> boards = boardRepository.saveAll(products);
 
@@ -105,11 +108,12 @@ class ListServiceTest {
 
         //then
         List<ListResponseDto> boardList = list.getContent();
+        System.out.println("boardList = " + boardList);
         assertThat(boardList).hasSize(2)
-                .extracting("title","content", "nickname","type")
+                .extracting("title","content","type")
                 .containsExactly(
-                        tuple("제목2", "내용2","닉네임2","CS"),
-                        tuple("제목1", "내용1","닉네임1","CS")
+                        tuple("제목2", "내용2","CS"),
+                        tuple("제목1", "내용1","CS")
                 );
 
     }
@@ -145,11 +149,11 @@ class ListServiceTest {
         //then
         List<ListResponseDto> boardList = list.getContent();
         assertThat(boardList).hasSize(3)
-                .extracting("title","content", "nickname","type")
+                .extracting("title","content","type")
                 .containsExactly(
-                        tuple("제목1", "내용1","닉네임1","CS"),
-                        tuple("제목2", "내용2","닉네임2","CS"),
-                        tuple("제목15", "내용3","닉네임3","코테")
+                        tuple("제목1", "내용1","CS"),
+                        tuple("제목2", "내용2","CS"),
+                        tuple("제목15", "내용3","코테")
                 );
 
     }
@@ -176,7 +180,6 @@ class ListServiceTest {
                 .member(member)
                 .title(title)
                 .content(content)
-                .nickname(nickname)
                 .category(category)
                 .build();
     }

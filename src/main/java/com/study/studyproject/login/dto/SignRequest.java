@@ -40,7 +40,7 @@ public class SignRequest {
 
 
     public String getNickname(){
-        return email.split(" ")[0];
+        return email.split("@")[0];
     }
 
 

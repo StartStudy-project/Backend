@@ -86,6 +86,7 @@ class LoginServiceTest {
         //then
 
         Member member = memberRepository.findByEmail(signRequest.getEmail()).get();
+        System.out.println("member = " + member);
 
         assertThat(member)
                 .extracting("username", "email", "nickname")

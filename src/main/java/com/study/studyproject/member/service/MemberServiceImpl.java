@@ -1,5 +1,6 @@
 package com.study.studyproject.member.service;
 
+import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.domain.Member;
 import com.study.studyproject.global.GlobalResultDto;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.study.studyproject.global.exception.ex.ErrorCode.NOT_FOUND_MEMBER;
 
 @RequiredArgsConstructor
 @Service
@@ -38,7 +41,11 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public GlobalResultDto userInfoUpdate(Member member , MemberUpdateResDto memberUpdateResDto) {
-        member.updateMemberInfo(memberUpdateResDto);
+        Member getMember = memberRepository
+                .findById(member.getId())
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_MEMBER));
+
+        getMember.updateMemberInfo(memberUpdateResDto);
         return new GlobalResultDto("사용자 수정 성공", HttpStatus.OK.value());
 
 

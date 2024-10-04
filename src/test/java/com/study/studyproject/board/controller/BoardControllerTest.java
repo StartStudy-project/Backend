@@ -60,7 +60,6 @@ class BoardControllerTest  {
         BoardWriteRequestDto requestDto = BoardWriteRequestDto.builder()
                 .title("제목1")
                 .category(Category.CS)
-                .nickname("닉네임")
                 .content("내용")
                 .build();
 
@@ -105,7 +104,6 @@ class BoardControllerTest  {
                 .andExpect(jsonPath("$.category").value("카테고리를 입력해주세요"))
                 .andExpect(jsonPath("$.content").value("내용을 입력해주세요"))
                 .andExpect(jsonPath("$.title").value("제목을 입력해주세요"))
-                .andExpect(jsonPath("$.nickname").value("닉네임 입력해주세요"))
                 .andDo(print());
     }
 
@@ -252,7 +250,6 @@ class BoardControllerTest  {
                 .member(member)
                 .title(title)
                 .content("내용")
-                .nickname(nickname)
                 .category(category)
                 .build();
     }
