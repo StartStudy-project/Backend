@@ -168,7 +168,6 @@ class AdminServiceImplTest {
                 .member(member)
                 .title(title)
                 .content("내용")
-                .nickname(nickname)
                 .category(category)
                 .build();
     }

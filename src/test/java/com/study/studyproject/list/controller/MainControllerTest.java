@@ -83,7 +83,6 @@ class MainControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].nickname").value("닉네임2"))
                 .andExpect(jsonPath("$.pageable.pageSize").value("10"))
                 .andExpect(jsonPath("$.totalElements").value("3"));
 
@@ -178,7 +177,6 @@ class MainControllerTest {
                 .member(member)
                 .title(title)
                 .content("내용")
-                .nickname(nickname)
                 .category(category)
                 .build();
     }

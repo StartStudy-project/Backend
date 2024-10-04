@@ -80,9 +80,9 @@ class MemberServiceImplTest {
     void listMember() {
         //given
         Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
-        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
-        Board board1 = createBoard(member1, "제목2", "내용2", "닉네임1", CS);
-        Board board2 = createBoard(member1, "제목3", "내용3", "닉네임1", 기타);
+        Board board = createBoard(member1, "제목1", "내용1",  CS);
+        Board board1 = createBoard(member1, "제목2", "내용2",  CS);
+        Board board2 = createBoard(member1, "제목3", "내용3", 기타);
         memberRepository.save(member1);
         boardRepository.save(board);
         boardRepository.save(board1);
@@ -112,9 +112,9 @@ class MemberServiceImplTest {
     void getCsCategoryListMember() throws InterruptedException {
         //given
         Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
-        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
-        Board board1 = createBoard(member1, "제목2", "내용2", "닉네임1", CS);
-        Board board2 = createBoard(member1, "제목3", "내용3", "닉네임1", 기타);
+        Board board = createBoard(member1, "제목1", "내용1",  CS);
+        Board board1 = createBoard(member1, "제목2", "내용2",  CS);
+        Board board2 = createBoard(member1, "제목3", "내용3", 기타);
         memberRepository.save(member1);
         boardRepository.save(board);
         Thread.sleep(1000);
@@ -145,9 +145,9 @@ class MemberServiceImplTest {
     void postLikeBoard() throws Exception {
         //given
         Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
-        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
-        Board board1 = createBoard(member1, "제목2", "내용2", "닉네임1", CS);
-        Board board2 = createBoard(member1, "제목3", "내용3", "닉네임1", 기타);
+        Board board = createBoard(member1, "제목1", "내용1",  CS);
+        Board board1 = createBoard(member1, "제목2", "내용2",  CS);
+        Board board2 = createBoard(member1, "제목3", "내용3", 기타);
         memberRepository.save(member1);
         boardRepository.save(board);
         boardRepository.save(board1);
@@ -192,13 +192,12 @@ class MemberServiceImplTest {
         }
     }
     private Board createBoard(
-            Member member, String title, String content, String nickname, Category category
+            Member member, String title, String content, Category category
     ) {
         return Board.builder()
                 .member(member)
                 .title(title)
                 .content("내용")
-                .nickname(nickname)
                 .category(category)
                 .build();
     }

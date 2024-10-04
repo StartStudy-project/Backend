@@ -104,7 +104,6 @@ class BoardControllerTest  {
                 .andExpect(jsonPath("$.category").value("카테고리를 입력해주세요"))
                 .andExpect(jsonPath("$.content").value("내용을 입력해주세요"))
                 .andExpect(jsonPath("$.title").value("제목을 입력해주세요"))
-                .andExpect(jsonPath("$.nickname").value("닉네임 입력해주세요"))
                 .andDo(print());
     }
 
