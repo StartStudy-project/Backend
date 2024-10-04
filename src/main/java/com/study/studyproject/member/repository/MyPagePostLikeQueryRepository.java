@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.study.studyproject.domain.QBoard.board;
+import static com.study.studyproject.domain.QMember.member;
 import static com.study.studyproject.domain.QPostLike.postLike;
 import static com.study.studyproject.domain.QReply.reply;
 import static org.springframework.util.StringUtils.isEmpty;
@@ -44,7 +45,7 @@ public class  MyPagePostLikeQueryRepository{
         return queryFactory
                 .select(
                         new QListResponseDto(
-                                board.nickname,
+                                board.member.nickname,
                                 board.id.intValue(),
                                 board.recruit.stringValue(),
                                 board.category.stringValue(),
