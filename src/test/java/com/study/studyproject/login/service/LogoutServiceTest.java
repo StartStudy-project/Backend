@@ -1,7 +1,7 @@
 package com.study.studyproject.login.service;
 
-import com.study.studyproject.domain.Member;
-import com.study.studyproject.domain.RefreshToken;
+import com.study.studyproject.member.domain.Member;
+import com.study.studyproject.login.domain.RefreshToken;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.TokenDtoResponse;
@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static com.study.studyproject.domain.Role.ROLE_USER;
+import static com.study.studyproject.login.domain.Role.ROLE_USER;
 
 @Transactional
 @SpringBootTest

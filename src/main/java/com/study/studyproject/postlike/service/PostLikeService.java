@@ -2,9 +2,9 @@ package com.study.studyproject.postlike.service;
 
 
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.domain.Board;
-import com.study.studyproject.domain.Member;
-import com.study.studyproject.domain.PostLike;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.member.domain.Member;
+import com.study.studyproject.postlike.domain.PostLike;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.BadRequestException;
 import com.study.studyproject.global.exception.ex.NotFoundException;

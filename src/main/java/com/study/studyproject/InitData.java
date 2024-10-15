@@ -1,24 +1,22 @@
 package com.study.studyproject;
 
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.board.domain.Category;
+import com.study.studyproject.board.domain.ConnectionType;
+import com.study.studyproject.board.domain.OfflineLocation;
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.domain.*;
+import com.study.studyproject.login.domain.Role;
+import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.member.repository.MemberRepository;
+import com.study.studyproject.postlike.domain.PostLike;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
+import com.study.studyproject.reply.domain.Reply;
 import com.study.studyproject.reply.repository.ReplyRepository;
 import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Random;
 
 
 @Component
@@ -88,17 +86,20 @@ public class InitData {
                     .category(arr[val])
                     .title("같이 하실 " + arr[val] + " 하실 분?")
                     .member(member)
+                    .connectionType(ConnectionType.ONLINE)
                     .build();
+
             boardRepository.save(build);
         }
 
         String[] regin = {"서울", "인천", "경기"};
-
         for (int i = 1; i <= 15; i++) {
             int val = (int) (Math.random() * 3);
             Board build = Board.builder()
                     .content(regin[val] + "에서 " + arr[val] + "같이해요")
                     .category(arr[val])
+                    .connectionType(ConnectionType.OFFLINE)
+                    .offlineLocation(new OfflineLocation(123,1231.2))
                     .title(regin[val] + "에서 같이 " + arr[val] + "하실 분? ")
                     .member(member)
                     .build();

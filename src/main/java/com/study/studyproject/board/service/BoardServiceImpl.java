@@ -1,13 +1,18 @@
 package com.study.studyproject.board.service;
 
+import com.study.studyproject.board.domain.Board;
 import com.study.studyproject.board.dto.*;
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.domain.*;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.exception.ex.NotFoundException;
+import com.study.studyproject.login.domain.Role;
+import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.member.repository.MemberRepository;
+import com.study.studyproject.postlike.domain.PostLike;
+import com.study.studyproject.postlike.domain.PostLikeState;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
+import com.study.studyproject.reply.domain.Reply;
 import com.study.studyproject.reply.dto.ReplyInfoResponseDto;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import com.study.studyproject.reply.repository.ReplyRepository;
@@ -94,20 +99,20 @@ public class BoardServiceImpl implements BoardService {
     private ReplyResponseDto findReplies(Long boardId) {
         List<Reply> comments = replyRepository.findByBoardReply(boardId);
         List<ReplyInfoResponseDto> commentResponseDTOList = getReplyInfoResponseDtos(comments);
-        return ReplyResponseToDto(replyRepository.findBoardReplyCnt(boardId), commentResponseDTOList);
+        return ReplyResponseToDto(comments.size(), commentResponseDTOList);
     }
 
     private static List<ReplyInfoResponseDto> getReplyInfoResponseDtos(List<Reply> comments) {
 
-        List<ReplyInfoResponseDto> commentResponseDTOList = new ArrayList<>();
+       List<ReplyInfoResponseDto> commentResponseDTOList = new ArrayList<>();
         Map<Long, ReplyInfoResponseDto> commentDTOHashMap = new HashMap<>();
 
         comments.forEach(c -> {
             ReplyInfoResponseDto commentResponseDTO = convertReplyToDto(c);
             commentDTOHashMap.put(commentResponseDTO.getReplyId(), commentResponseDTO);
-            if (c.getParent() != null)
+            if (c.getParent() != null) // 자식일 경우
                 commentDTOHashMap.get(c.getParent().getId()).getChildren().add(commentResponseDTO);
-            else commentResponseDTOList.add(commentResponseDTO);
+            else commentResponseDTOList.add(commentResponseDTO); // 부모일 경우
         });
 
         return commentResponseDTOList;

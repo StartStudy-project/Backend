@@ -1,13 +1,17 @@
 package com.study.studyproject.list.repository;
 
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.board.domain.Category;
+import com.study.studyproject.board.domain.ConnectionType;
+import com.study.studyproject.board.domain.Recruit;
 import com.study.studyproject.list.dto.ListResponseDto;
-import com.study.studyproject.list.dto.MainRequest;
-import com.study.studyproject.domain.*;
+import com.study.studyproject.list.dto.MainRequestDto;
 import com.study.studyproject.list.dto.QListResponseDto;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
@@ -17,9 +21,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.querydsl.jpa.JPAExpressions.select;
-import static com.study.studyproject.domain.QBoard.*;
-import static com.study.studyproject.domain.QReply.reply;
+import static com.study.studyproject.board.domain.ConnectionType.OFFLINE;
+import static com.study.studyproject.board.domain.ConnectionType.ONLINE;
+import static com.study.studyproject.board.domain.QBoard.board;
+import static com.study.studyproject.reply.domain.QReply.reply;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Repository
@@ -31,7 +36,7 @@ public class MainQueryRepository  {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public Page<ListResponseDto> getBoardListPage(String findContent, MainRequest condition, Pageable pageable) {
+    public Page<ListResponseDto> getBoardListPage(String findContent, MainRequestDto condition, Pageable pageable) {
 
         List<ListResponseDto> content = getContent(findContent,condition, pageable);
         JPAQuery<Board> countQuery = getTotal(findContent,condition);
@@ -39,7 +44,7 @@ public class MainQueryRepository  {
         return PageableExecutionUtils.getPage(content,pageable, countQuery::fetchCount);
     }
 
-    public List<ListResponseDto> getContent(String findContent,MainRequest condition, Pageable pageable) {
+    public List<ListResponseDto> getContent(String findContent, MainRequestDto condition, Pageable pageable) {
 
         return queryFactory
                 .select(
@@ -48,6 +53,7 @@ public class MainQueryRepository  {
                                 board.id.intValue(),
                                 board.recruit.stringValue(),
                                 board.category.stringValue(),
+                                board.connectionType.stringValue(),
                                 board.content,
                                 board.title,
                                 board.createdDate,
@@ -64,6 +70,7 @@ public class MainQueryRepository  {
                         board.recruit.eq(Recruit.모집중),
                         getCategory(condition.getCategory()),
                         getFindContent(findContent),
+                        getConnectionType(condition.getConnectionType()),
                         board.isDeleted.eq(false)
                 )
                 .orderBy(
@@ -75,8 +82,15 @@ public class MainQueryRepository  {
                 .fetch();
     }
 
+    private Predicate getConnectionType(ConnectionType connectionType) {
+        if (isEmpty(connectionType)) {
+            return null;
+        }
+        return  connectionType.equals(ONLINE) ? board.connectionType.eq(ONLINE) :board.connectionType.eq(OFFLINE);
+    }
+
     //cs
-    private BooleanExpression getCategory(Category category) {
+    private Predicate getCategory(Category category) {
         if(isEmpty(category)){
             return null;
         }
@@ -84,7 +98,7 @@ public class MainQueryRepository  {
         return category.equals(Category.전체) ? null : board.category.eq(category);
     }
 
-    public JPAQuery<Board> getTotal(String findContent,MainRequest condition) {
+    public JPAQuery<Board> getTotal(String findContent, MainRequestDto condition) {
         return queryFactory
                 .select(
                         board
@@ -94,6 +108,7 @@ public class MainQueryRepository  {
                         board.recruit.eq(Recruit.모집중),
                         getCategory(condition.getCategory()),
                         getFindContent(findContent),
+                        getConnectionType(condition.getConnectionType()),
                         board.isDeleted.eq(false)
                 );
     }

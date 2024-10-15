@@ -1,4 +1,4 @@
-package com.study.studyproject.domain;
+package com.study.studyproject.postlike.domain;
 
 public enum PostLikeState  {
     LIKE("관심"), LIKING("관심 완료");

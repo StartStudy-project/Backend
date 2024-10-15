@@ -1,6 +1,10 @@
-package com.study.studyproject.domain;
+package com.study.studyproject.board.domain;
 
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
+import com.study.studyproject.global.config.BaseTimeEntity;
+import com.study.studyproject.member.domain.Member;
+import com.study.studyproject.postlike.domain.PostLike;
+import com.study.studyproject.reply.domain.Reply;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,13 +14,13 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
-import static com.study.studyproject.domain.Recruit.*;
+import static com.study.studyproject.board.domain.Recruit.*;
 
 @Getter
 @Entity
 @NoArgsConstructor
 @ToString(of = {"id", "title", "viewCount","content","category","recruit"})
-public class Board extends BaseTimeEntity{
+public class Board extends BaseTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "board_id")
@@ -33,6 +37,13 @@ public class Board extends BaseTimeEntity{
     private Long viewCount;
 
     private String content;
+
+
+    @Enumerated(EnumType.STRING)
+    private ConnectionType connectionType;
+
+    @Embedded
+    private OfflineLocation offlineLocation;
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -64,12 +75,14 @@ public class Board extends BaseTimeEntity{
 
 
     @Builder
-    public Board(Member member, String title, String content,  Category category) {
+    public Board(Member member, String title, String content, Category category, ConnectionType connectionType, OfflineLocation offlineLocation) {
         this.member = member;
         this.title = title;
         this.viewCount = 0L;
         this.content = content;
         this.category = category;
+        this.connectionType = connectionType;
+        this.offlineLocation = offlineLocation;
         this.recruit = 모집중;
         this.isDeleted = false;
 
@@ -79,6 +92,8 @@ public class Board extends BaseTimeEntity{
         this.title = boardReUpdateRequestDto.getTitle();
         this.content = boardReUpdateRequestDto.getContent();
         this.category = boardReUpdateRequestDto.getCategory();
+        this.offlineLocation = boardReUpdateRequestDto.getOfflineLocation();
+        this.connectionType = boardReUpdateRequestDto.getType();
         return this;
     }
 

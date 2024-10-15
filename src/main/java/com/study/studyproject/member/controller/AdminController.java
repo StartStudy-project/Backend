@@ -1,7 +1,7 @@
 package com.study.studyproject.member.controller;
 
 import com.study.studyproject.board.service.BoardService;
-import com.study.studyproject.domain.Role;
+import com.study.studyproject.login.domain.Role;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.member.dto.AdminDashBoardResponseDto;

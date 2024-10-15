@@ -3,7 +3,7 @@ package com.study.studyproject.member.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.study.studyproject.domain.Member;
+import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
@@ -12,7 +12,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 
-import static com.study.studyproject.domain.QMember.*;
+import static com.study.studyproject.member.domain.QMember.member;
 import static org.springframework.util.StringUtils.isEmpty;
 
 public class MemberRepositoryImpl implements MemberRepositoryCustom{
