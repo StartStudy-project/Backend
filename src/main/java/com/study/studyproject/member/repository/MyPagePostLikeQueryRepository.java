@@ -1,11 +1,15 @@
 package com.study.studyproject.member.repository;
 
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.study.studyproject.domain.*;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.board.domain.Category;
+import com.study.studyproject.board.domain.ConnectionType;
+import com.study.studyproject.board.domain.Recruit;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.list.dto.QListResponseDto;
 import com.study.studyproject.member.dto.MemberListRequestDto;
@@ -17,10 +21,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.study.studyproject.domain.QBoard.board;
-import static com.study.studyproject.domain.QMember.member;
-import static com.study.studyproject.domain.QPostLike.postLike;
-import static com.study.studyproject.domain.QReply.reply;
+import static com.study.studyproject.board.domain.ConnectionType.OFFLINE;
+import static com.study.studyproject.board.domain.ConnectionType.ONLINE;
+import static com.study.studyproject.board.domain.QBoard.board;
+import static com.study.studyproject.postlike.domain.QPostLike.postLike;
+import static com.study.studyproject.reply.domain.QReply.reply;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Repository
@@ -49,6 +54,7 @@ public class  MyPagePostLikeQueryRepository{
                                 board.id.intValue(),
                                 board.recruit.stringValue(),
                                 board.category.stringValue(),
+                                board.connectionType.stringValue(),
                                 board.content,
                                 board.title,
                                 board.createdDate,
@@ -66,6 +72,7 @@ public class  MyPagePostLikeQueryRepository{
                         getType(condition.getRecruit()), //모집여부
                         getPostLikeMember(memeberId), //사용자 아이디 유무
                         getCategory(condition.getCategory()),
+                        getConnectionType(condition.getConnectionType()),
                         board.isDeleted.eq(false)
                 )
                 .orderBy(
@@ -76,6 +83,7 @@ public class  MyPagePostLikeQueryRepository{
                 .limit(pageable.getPageSize())
                 .fetch();
     }
+
 
     //cs
     private BooleanExpression getCategory(Category category) {
@@ -96,10 +104,17 @@ public class  MyPagePostLikeQueryRepository{
                         getType(condition.getRecruit()), //모집여부
                         getPostLikeMember(memeberId), //사용자 이메일
                         getCategory(condition.getCategory()),
+                        getConnectionType(condition.getConnectionType()),
                         board.isDeleted.eq(false)
                 );
     }
 
+    private Predicate getConnectionType(ConnectionType connectionType) {
+        if (isEmpty(connectionType)) {
+            return null;
+        }
+        return  connectionType.equals(ONLINE) ? board.connectionType.eq(ONLINE) :board.connectionType.eq(OFFLINE);
+    }
 
     private BooleanExpression getType(Recruit type) {
 
