@@ -1,6 +1,8 @@
 package com.study.studyproject.board.dto;
 
-import com.study.studyproject.domain.Category;
+import com.study.studyproject.board.domain.Category;
+import com.study.studyproject.board.domain.ConnectionType;
+import com.study.studyproject.board.domain.OfflineLocation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,6 +31,10 @@ public class BoardReUpdateRequestDto {
     @NotBlank(message = "제목을 입력해주세요")
     String title;
 
+    @Schema(description = "타입", defaultValue = "오프라인")
+    ConnectionType type;
+
+    OfflineLocation offlineLocation;
 
     @Builder
     public BoardReUpdateRequestDto(Long boardId, String content, Category category, String title) {

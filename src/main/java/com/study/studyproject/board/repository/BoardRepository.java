@@ -1,6 +1,6 @@
 package com.study.studyproject.board.repository;
 
-import com.study.studyproject.domain.Board;
+import com.study.studyproject.board.domain.Board;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
