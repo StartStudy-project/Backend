@@ -1,7 +1,7 @@
 package com.study.studyproject.global.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.studyproject.domain.RefreshToken;
+import com.study.studyproject.login.domain.RefreshToken;
 import com.study.studyproject.global.auth.UserDetailsServiceImpl;
 import com.study.studyproject.global.exception.ex.TokenNotValidationException;
 import com.study.studyproject.login.dto.TokenDtoResponse;
