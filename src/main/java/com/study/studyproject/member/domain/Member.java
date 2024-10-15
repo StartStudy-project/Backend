@@ -1,8 +1,11 @@
-package com.study.studyproject.domain;
+package com.study.studyproject.member.domain;
 
-import com.study.studyproject.login.dto.LoginRequest;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.postlike.domain.PostLike;
+import com.study.studyproject.reply.domain.Reply;
+import com.study.studyproject.login.domain.Role;
+import com.study.studyproject.global.config.BaseTimeEntity;
 import com.study.studyproject.login.dto.SignRequest;
-import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.member.dto.MemberUpdateResDto;
 import jakarta.persistence.*;
 import lombok.Builder;
