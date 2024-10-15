@@ -1,6 +1,6 @@
 package com.study.studyproject.login.service;
 
-import com.study.studyproject.domain.Member;
+import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.login.dto.LoginRequest;
 import com.study.studyproject.login.dto.LoginResponseDto;
@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static com.study.studyproject.domain.Role.ROLE_USER;
+import static com.study.studyproject.login.domain.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest

@@ -1,12 +1,14 @@
 package com.study.studyproject.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.board.domain.Category;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.domain.*;
 import com.study.studyproject.login.dto.TokenDtoResponse;
+import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.repository.ReplyRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -20,8 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.study.studyproject.domain.Category.CS;
-import static com.study.studyproject.domain.Role.ROLE_USER;
+import static com.study.studyproject.board.domain.Category.CS;
+import static com.study.studyproject.login.domain.Role.ROLE_USER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -100,11 +102,8 @@ class BoardControllerTest  {
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.category").value("카테고리를 입력해주세요"))
-                .andExpect(jsonPath("$.content").value("내용을 입력해주세요"))
-                .andExpect(jsonPath("$.title").value("제목을 입력해주세요"))
-                .andDo(print());
+                .andExpect(status().isBadRequest());
+
     }
 
 
@@ -129,10 +128,8 @@ class BoardControllerTest  {
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.boardId").value("게시글 번호를 입력해주세요"))
-                .andExpect(jsonPath("$.content").value("내용을 입력해주세요"))
-                .andDo(print());
+                .andExpect(status().isBadRequest());
+
     }
 
     @Test

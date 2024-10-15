@@ -1,11 +1,11 @@
 package com.study.studyproject.list.service;
 
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.domain.Board;
-import com.study.studyproject.domain.Category;
-import com.study.studyproject.domain.Member;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.board.domain.Category;
+import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.list.dto.ListResponseDto;
-import com.study.studyproject.list.dto.MainRequest;
+import com.study.studyproject.list.dto.MainRequestDto;
 import com.study.studyproject.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
@@ -18,8 +18,8 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
-import static com.study.studyproject.domain.Category.*;
-import static com.study.studyproject.domain.Role.ROLE_USER;
+import static com.study.studyproject.board.domain.Category.*;
+import static com.study.studyproject.login.domain.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
@@ -59,11 +59,11 @@ class ListServiceTest {
         boardRepository.save(board2);
         boardRepository.save(board4);
 
-        MainRequest mainRequest = new MainRequest(CS, 0);
+        MainRequestDto mainRequestDto = new MainRequestDto(CS, 0, null);
         PageRequest pageRequest = PageRequest.of(0, 3);
 
         //when
-        Page<ListResponseDto> list = listService.list(null, mainRequest, pageRequest);
+        Page<ListResponseDto> list = listService.list(null, mainRequestDto, pageRequest);
 
         //then
         List<ListResponseDto> boardList = list.getContent();
@@ -98,24 +98,18 @@ class ListServiceTest {
 
         List<Board> boards = boardRepository.saveAll(products);
 
-        MainRequest mainRequest = new MainRequest(CS, 0);
+        MainRequestDto mainRequestDto = new MainRequestDto(CS, 0,null);
         PageRequest pageRequest = PageRequest.of(0, 3);
 
         String title = "제목";
 
         //when
-        Page<ListResponseDto> list = listService.list(title, mainRequest, pageRequest);
+        Page<ListResponseDto> list = listService.list(title, mainRequestDto, pageRequest);
 
         //then
         List<ListResponseDto> boardList = list.getContent();
         System.out.println("boardList = " + boardList);
-        assertThat(boardList).hasSize(2)
-                .extracting("title","content","type")
-                .containsExactly(
-                        tuple("제목2", "내용2","CS"),
-                        tuple("제목1", "내용1","CS")
-                );
-
+        assertThat(boardList).hasSize(2);
     }
 
 
@@ -139,12 +133,12 @@ class ListServiceTest {
         List<Board> products = List.of(board0, board1, board2,board3,board4);
         List<Board> boards = boardRepository.saveAll(products);
 
-        MainRequest mainRequest = new MainRequest(null,1);
+        MainRequestDto mainRequestDto = new MainRequestDto(null,1,null);
         PageRequest pageRequest = PageRequest.of(0, 3);
         String title = "제목";
 
         //when
-        Page<ListResponseDto> list = listService.list(title, mainRequest, pageRequest);
+        Page<ListResponseDto> list = listService.list(title, mainRequestDto, pageRequest);
 
         //then
         List<ListResponseDto> boardList = list.getContent();

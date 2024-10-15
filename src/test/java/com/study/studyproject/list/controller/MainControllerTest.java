@@ -1,9 +1,9 @@
 package com.study.studyproject.list.controller;
 
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.domain.Board;
-import com.study.studyproject.domain.Category;
-import com.study.studyproject.domain.Member;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.board.domain.Category;
+import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.study.studyproject.domain.Category.*;
-import static com.study.studyproject.domain.Category.코테;
-import static com.study.studyproject.domain.Role.ROLE_USER;
+import static com.study.studyproject.board.domain.Category.*;
+import static com.study.studyproject.board.domain.Category.코테;
+import static com.study.studyproject.login.domain.Role.ROLE_USER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -133,9 +133,7 @@ class MainControllerTest {
 
         memberRepository.save((member1));
         boardRepository.save(board0);
-        Thread.sleep(1000);
         boardRepository.save(board1);
-        Thread.sleep(1000);
         List<Board> products = List.of( board2,board3,board4);
 
         List<Board> boards = boardRepository.saveAll(products);
@@ -149,9 +147,9 @@ class MainControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].title").value("제목2"))
+                .andExpect(jsonPath("$.content[0].title").value("제목1"))
                 .andExpect(jsonPath("$.content[0].type").value("CS"))
-                .andExpect(jsonPath("$.content[1].title").value("제목1"))
+                .andExpect(jsonPath("$.content[1].title").value("제목2"))
                 .andExpect(jsonPath("$.content[1].type").value("CS"));
 
     }

@@ -1,5 +1,6 @@
 package com.study.studyproject.domain;
 
+import com.study.studyproject.login.domain.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,8 +1,12 @@
 package com.study.studyproject.member.service;
 
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.board.domain.Category;
+import com.study.studyproject.board.domain.Recruit;
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.domain.*;
 import com.study.studyproject.list.dto.ListResponseDto;
+import com.study.studyproject.login.domain.Role;
+import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.member.dto.AdminDashBoardResponseDto;
 import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
@@ -17,9 +21,9 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
-import static com.study.studyproject.domain.Category.CS;
-import static com.study.studyproject.domain.Category.기타;
-import static com.study.studyproject.domain.Role.ROLE_USER;
+import static com.study.studyproject.board.domain.Category.CS;
+import static com.study.studyproject.board.domain.Category.기타;
+import static com.study.studyproject.login.domain.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -141,7 +145,7 @@ class AdminServiceImplTest {
 
         memberRepository.saveAll(List.of(adminOne,member1));
         boardRepository.saveAll(List.of(board, board1, board2));
-        MemberListRequestDto memberListRequestDto = new MemberListRequestDto(Recruit.모집중, CS,0);
+        MemberListRequestDto memberListRequestDto = new MemberListRequestDto(Recruit.모집중, CS,0,null);
         PageRequest pageRequest = PageRequest.of(0, 10);
 
 
