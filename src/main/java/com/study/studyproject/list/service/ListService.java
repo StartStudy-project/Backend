@@ -1,7 +1,7 @@
 package com.study.studyproject.list.service;
 
 import com.study.studyproject.list.dto.ListResponseDto;
-import com.study.studyproject.list.dto.MainRequest;
+import com.study.studyproject.list.dto.MainRequestDto;
 import com.study.studyproject.list.repository.MainQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,7 +17,7 @@ public class ListService {
     private final MainQueryRepository mainQueryRepository;
 
     //조회
-    public Page<ListResponseDto> list(String title, MainRequest boardListPage, Pageable pageable) {
+    public Page<ListResponseDto> list(String title, MainRequestDto boardListPage, Pageable pageable) {
         return mainQueryRepository.getBoardListPage(title,boardListPage, pageable);
     }
 
