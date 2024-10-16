@@ -1,9 +1,9 @@
 package com.study.studyproject.reply.service;
 
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.domain.Board;
-import com.study.studyproject.domain.Member;
-import com.study.studyproject.domain.Reply;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.member.domain.Member;
+import com.study.studyproject.reply.domain.Reply;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.reply.dto.ReplyRequestDto;

@@ -1,6 +1,6 @@
 package com.study.studyproject.member.service;
 
-import com.study.studyproject.domain.Member;
+import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.member.dto.AdminDashBoardResponseDto;
 import com.study.studyproject.member.dto.MemberListRequestDto;

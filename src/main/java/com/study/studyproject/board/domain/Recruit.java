@@ -1,4 +1,4 @@
-package com.study.studyproject.domain;
+package com.study.studyproject.board.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

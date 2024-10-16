@@ -1,8 +1,10 @@
 package com.study.studyproject.board.dto;
 
-import com.study.studyproject.domain.Board;
-import com.study.studyproject.domain.Category;
-import com.study.studyproject.domain.Member;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.board.domain.Category;
+import com.study.studyproject.board.domain.ConnectionType;
+import com.study.studyproject.board.domain.OfflineLocation;
+import com.study.studyproject.member.domain.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,6 +32,12 @@ public class BoardWriteRequestDto {
     @NotBlank(message = "제목을 입력해주세요")
     String title;
 
+    @Schema(description = "타입", defaultValue = "OFFLINE")
+    ConnectionType connectionType;
+
+    OfflineLocation offlineLocation;
+
+
 
 
 
@@ -39,6 +47,8 @@ public class BoardWriteRequestDto {
                 .title(title)
                 .content(content)
                 .category(category)
+                .connectionType(connectionType)
+                .offlineLocation(offlineLocation)
                 .build();
     }
 

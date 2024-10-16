@@ -2,14 +2,15 @@ package com.study.studyproject.reply.repository;
 
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.study.studyproject.domain.Reply;
+import com.study.studyproject.reply.domain.Reply;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.study.studyproject.domain.QBoard.board;
-import static com.study.studyproject.domain.QReply.reply;
+import static com.study.studyproject.board.domain.QBoard.board;
+import static com.study.studyproject.reply.domain.QReply.reply;
+
 
 public class ReplyRepositoryImpl implements ReplyRepositoryCustom{
 
@@ -23,8 +24,6 @@ public class ReplyRepositoryImpl implements ReplyRepositoryCustom{
     public List<Reply> findByBoardReply(Long boardId) {
 
         List<Reply> comments = queryFactory.selectFrom(reply)
-                .leftJoin(reply.parent).fetchJoin()
-                .leftJoin(reply.member).fetchJoin()
                 .where(reply.board.id.eq(boardId))
                 .orderBy(reply.parent.id.asc().nullsFirst(),
                         reply.createdDate.asc())

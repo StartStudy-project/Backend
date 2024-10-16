@@ -1,4 +1,4 @@
-package com.study.studyproject.domain;
+package com.study.studyproject.global.config;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;

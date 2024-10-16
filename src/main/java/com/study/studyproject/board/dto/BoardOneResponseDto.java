@@ -1,9 +1,7 @@
 package com.study.studyproject.board.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.study.studyproject.domain.Board;
-import com.study.studyproject.domain.Category;
-import com.study.studyproject.domain.Recruit;
+import com.study.studyproject.board.domain.*;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -53,8 +51,13 @@ public class BoardOneResponseDto {
     @Schema(description = "댓글")
     ReplyResponseDto replyResponseDto;
 
+    @Schema(description = "타입", defaultValue = "오프라인")
+    ConnectionType connectionType;
+
+    OfflineLocation offlineLocation;
+
     @Builder
-    public BoardOneResponseDto(Recruit recruit, String currentNickname, String title, String boardWriteNickname, LocalDateTime updateTime, LocalDateTime createTime, String content, Category category, int viewCnt, String postLike, Long postLikeId, ReplyResponseDto replyResponseDto) {
+    public BoardOneResponseDto(Recruit recruit, String currentNickname, String title, String boardWriteNickname, LocalDateTime updateTime, LocalDateTime createTime, String content, Category category, int viewCnt, String postLike, Long postLikeId, ReplyResponseDto replyResponseDto, ConnectionType type, OfflineLocation offlineLocation) {
         this.recruit = recruit;
         this.currentNickname = currentNickname;
         this.title = title;
@@ -67,19 +70,15 @@ public class BoardOneResponseDto {
         this.postLike = postLike;
         this.postLikeId = postLikeId;
         this.replyResponseDto = replyResponseDto;
+        this.connectionType = type;
+        this.offlineLocation = offlineLocation;
     }
-
-
-
-
-
 
 
 
     public static BoardOneResponseDto of(Long postLikeId, String postLike, Board board, ReplyResponseDto replies, String nickname) {
 
         String nickname1 = board.getMember().getNickname();
-        System.out.println("nickname1 = " + nickname1);
         return BoardOneResponseDto.builder()
                 .updateTime(board.getLastModifiedDate())
                 .createTime(board.getCreatedDate())
@@ -91,6 +90,8 @@ public class BoardOneResponseDto {
                 .viewCnt(Math.toIntExact(board.getViewCount()))
                 .boardWriteNickname(nickname1)
                 .currentNickname(nickname)
+                .type(board.getConnectionType())
+                .offlineLocation(board.getOfflineLocation())
                 .category(board.getCategory())
                 .replyResponseDto(replies)
                 .build();

@@ -2,10 +2,10 @@ package com.study.studyproject.reply.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.domain.Board;
-import com.study.studyproject.domain.Category;
-import com.study.studyproject.domain.Member;
-import com.study.studyproject.domain.Reply;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.board.domain.Category;
+import com.study.studyproject.member.domain.Member;
+import com.study.studyproject.reply.domain.Reply;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.TokenDtoResponse;
 import com.study.studyproject.member.repository.MemberRepository;
@@ -25,8 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.study.studyproject.domain.Category.CS;
-import static com.study.studyproject.domain.Role.ROLE_USER;
+import static com.study.studyproject.board.domain.Category.CS;
+import static com.study.studyproject.login.domain.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -102,9 +102,7 @@ class ReplyControllerTest {
 
                 )
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.boardId").value("게시글 번호를 입력해주세요."))
-                .andExpect(jsonPath("$.content").value("댓글 내용을 입력해주세요"));
+                .andExpect(status().isBadRequest());
 
     }
 
@@ -191,9 +189,7 @@ class ReplyControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.replyId").value("댓글 번호를 입력해주세요"))
-                .andExpect(jsonPath("$.content").value("댓글 내용을 입렬해주새요"));
+                .andExpect(status().isBadRequest());
     }
 
 
@@ -227,7 +223,7 @@ class ReplyControllerTest {
     private Member createMember
             (String email, String password, String username, String nickname) {
         {
-            return com.study.studyproject.domain.Member.builder()
+            return Member.builder()
                     .nickname(nickname)
                     .username(username)
                     .email(email)

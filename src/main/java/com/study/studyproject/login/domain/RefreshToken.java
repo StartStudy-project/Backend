@@ -1,8 +1,7 @@
-package com.study.studyproject.domain;
+package com.study.studyproject.login.domain;
 
 import com.study.studyproject.login.dto.LoginRequest;
 import com.study.studyproject.login.dto.TokenDtoResponse;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

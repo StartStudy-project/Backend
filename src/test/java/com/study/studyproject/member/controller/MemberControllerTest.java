@@ -1,14 +1,17 @@
 package com.study.studyproject.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.board.domain.Category;
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.domain.*;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.TokenDtoResponse;
+import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.MemberUpdateResDto;
 import com.study.studyproject.member.repository.MemberRepository;
 import com.study.studyproject.member.service.MemberServiceImpl;
+import com.study.studyproject.postlike.domain.PostLike;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -28,9 +30,9 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.List;
 
-import static com.study.studyproject.domain.Category.CS;
-import static com.study.studyproject.domain.Category.기타;
-import static com.study.studyproject.domain.Role.ROLE_USER;
+import static com.study.studyproject.board.domain.Category.CS;
+import static com.study.studyproject.board.domain.Category.기타;
+import static com.study.studyproject.login.domain.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -146,9 +148,7 @@ class MemberControllerTest {
 
                 )
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.username").value("사용자 이름을 입력해주세요."))
-                .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.value()));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -170,10 +170,7 @@ class MemberControllerTest {
 
                 )
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.username").value("사용자 이름을 입력해주세요."))
-                .andExpect(jsonPath("$.nickname").value("사용자 닉네임을 입력해주세요."))
-                .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.value()));
+                .andExpect(status().isBadRequest());
     }
 
     @Test

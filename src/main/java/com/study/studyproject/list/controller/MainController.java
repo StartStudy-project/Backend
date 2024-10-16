@@ -1,8 +1,7 @@
 package com.study.studyproject.list.controller;
 
-import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.list.dto.ListResponseDto;
-import com.study.studyproject.list.dto.MainRequest;
+import com.study.studyproject.list.dto.MainRequestDto;
 import com.study.studyproject.list.service.ListService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,9 +24,8 @@ public class MainController {
     @GetMapping("/")
     public ResponseEntity<Page<ListResponseDto>> mainList(
             @RequestParam(value = "title",required = false) String title,
-            MainRequest mainRequestDto,
+             MainRequestDto mainRequestDto,
             @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable) {
-
         Page<ListResponseDto> list = listService.list(title, mainRequestDto, pageable);
         return ResponseEntity.ok(list);
     }

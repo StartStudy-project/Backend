@@ -1,6 +1,6 @@
 package com.study.studyproject.login.service;
 
-import com.study.studyproject.domain.RefreshToken;
+import com.study.studyproject.login.domain.RefreshToken;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.login.repository.RefreshRepository;
 import jakarta.transaction.Transactional;

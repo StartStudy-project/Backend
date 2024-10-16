@@ -1,5 +1,8 @@
-package com.study.studyproject.domain;
+package com.study.studyproject.postlike.domain;
 
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.global.config.BaseTimeEntity;
+import com.study.studyproject.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +15,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @Getter
 @Table(name = "postLike")
-public class PostLike extends BaseTimeEntity{
+public class PostLike extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "postLike_id")

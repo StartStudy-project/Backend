@@ -1,7 +1,7 @@
 package com.study.studyproject.global.auth;
 
-import com.study.studyproject.domain.Member;
-import com.study.studyproject.domain.Role;
+import com.study.studyproject.member.domain.Member;
+import com.study.studyproject.login.domain.Role;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

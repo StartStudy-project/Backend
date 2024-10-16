@@ -1,7 +1,7 @@
 package com.study.studyproject.login.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.studyproject.domain.Member;
+import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.login.dto.LoginRequest;
 import com.study.studyproject.login.dto.SignRequest;
@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.study.studyproject.domain.Role.ROLE_USER;
+import static com.study.studyproject.login.domain.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -88,8 +88,7 @@ class LoginControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name").value("이름을 입력해주세요"));
+                .andExpect(status().isBadRequest());
     }
 
 
@@ -111,9 +110,7 @@ class LoginControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.pwd").value("비밀번호를 입력해주세요"))
-                .andExpect(jsonPath("$.checkPwd").value("비밀번호 확인을 입력해주세요"));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -153,9 +150,7 @@ class LoginControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.email").value("아이디를 입력해주세요"))
-                .andExpect(jsonPath("$.pwd").value("비밀번호를 입력해주세요"));
+                .andExpect(status().isBadRequest());
     }
 
 

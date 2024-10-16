@@ -1,6 +1,5 @@
 package com.study.studyproject.reply.service;
 
-import com.study.studyproject.domain.Member;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
 import com.study.studyproject.reply.dto.UpdateReplyRequest;
 

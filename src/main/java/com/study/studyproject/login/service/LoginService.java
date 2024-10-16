@@ -1,8 +1,7 @@
 package com.study.studyproject.login.service;
 
-import com.study.studyproject.domain.Member;
-import com.study.studyproject.domain.RefreshToken;
-import com.study.studyproject.domain.Role;
+import com.study.studyproject.member.domain.Member;
+import com.study.studyproject.login.domain.RefreshToken;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.global.jwt.JwtUtil;

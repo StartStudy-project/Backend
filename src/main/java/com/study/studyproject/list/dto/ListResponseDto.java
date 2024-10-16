@@ -18,8 +18,11 @@ public class ListResponseDto {
     @Schema(description = "모집여부", defaultValue = "모집중")
     String recurit; //모집중
 
-    @Schema(description = "모집여부", defaultValue = "코테")
+    @Schema(description = "카테고리", defaultValue = "코테")
     String type; // cs
+
+    @Schema(description = "온/오프라인인지", defaultValue = "OFFLINE")
+    String connectionType;
 
     @Schema(description = "내용", defaultValue = "코테 모집합니다!!!!!!")
     String content;
@@ -35,13 +38,13 @@ public class ListResponseDto {
 
     @Schema(description = "댓글 수 ", defaultValue = "3")
     Long replyCnt; //
-
     @QueryProjection
-    public ListResponseDto(String nickname, int boardId, String recurit, String type, String content, String title, LocalDateTime time, int hitCnt, Long replyCnt ) {
+    public ListResponseDto(String nickname, int boardId, String recurit, String type, String connectionType, String content, String title, LocalDateTime time, int hitCnt, Long replyCnt) {
         this.nickname = nickname;
         this.boardId = boardId;
         this.recurit = recurit;
         this.type = type;
+        this.connectionType = connectionType;
         this.content = content;
         this.title = title;
         this.time = time;

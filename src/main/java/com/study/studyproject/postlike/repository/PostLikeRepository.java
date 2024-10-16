@@ -1,8 +1,8 @@
 package com.study.studyproject.postlike.repository;
 
-import com.study.studyproject.domain.Board;
-import com.study.studyproject.domain.Member;
-import com.study.studyproject.domain.PostLike;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.member.domain.Member;
+import com.study.studyproject.postlike.domain.PostLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

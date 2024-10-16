@@ -3,7 +3,7 @@ package com.study.studyproject.board.service;
 import com.study.studyproject.board.dto.BoardOneResponseDto;
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
-import com.study.studyproject.domain.Role;
+import com.study.studyproject.login.domain.Role;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
 

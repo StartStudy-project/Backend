@@ -1,5 +1,8 @@
-package com.study.studyproject.domain;
+package com.study.studyproject.reply.domain;
 
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.global.config.BaseTimeEntity;
+import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -15,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @ToString(of = {"id","content","isDeleted"})
-public class Reply extends BaseTimeEntity{
+public class Reply extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,10 +1,10 @@
 package com.study.studyproject.postlike.service;
 
 import com.study.studyproject.board.repository.BoardRepository;
-import com.study.studyproject.domain.Board;
-import com.study.studyproject.domain.Category;
-import com.study.studyproject.domain.Member;
-import com.study.studyproject.domain.PostLike;
+import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.board.domain.Category;
+import com.study.studyproject.member.domain.Member;
+import com.study.studyproject.postlike.domain.PostLike;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.BadRequestException;
 import com.study.studyproject.member.repository.MemberRepository;
@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
-import static com.study.studyproject.domain.Category.CS;
-import static com.study.studyproject.domain.Role.ROLE_USER;
+import static com.study.studyproject.board.domain.Category.CS;
+import static com.study.studyproject.login.domain.Role.ROLE_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -108,7 +108,7 @@ class PostLikeServiceTest {
         private Member createMember
             (String email, String password, String username, String nickname) {
         {
-            return com.study.studyproject.domain.Member.builder()
+            return Member.builder()
                     .nickname(nickname)
                     .username(username)
                     .email(email)

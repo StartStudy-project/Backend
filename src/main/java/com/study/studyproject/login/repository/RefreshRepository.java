@@ -1,7 +1,7 @@
 package com.study.studyproject.login.repository;
 
 
-import com.study.studyproject.domain.RefreshToken;
+import com.study.studyproject.login.domain.RefreshToken;
 import org.springframework.data.repository.CrudRepository;
 
 
