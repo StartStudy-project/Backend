@@ -32,15 +32,17 @@ public class BoardReUpdateRequestDto {
     String title;
 
     @Schema(description = "타입", defaultValue = "오프라인")
-    ConnectionType type;
+    ConnectionType connectionType;
 
     OfflineLocation offlineLocation;
 
     @Builder
-    public BoardReUpdateRequestDto(Long boardId, String content, Category category, String title) {
+    public BoardReUpdateRequestDto(Long boardId, String content, Category category, String title, ConnectionType connectionType, OfflineLocation offlineLocation) {
         this.boardId = boardId;
         this.content = content;
         this.category = category;
         this.title = title;
+        this.connectionType = connectionType;
+        this.offlineLocation = offlineLocation;
     }
 }

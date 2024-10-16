@@ -4,20 +4,14 @@ import com.study.studyproject.global.exception.ExceptionResponse;
 import com.study.studyproject.global.exception.ex.BusinessException;
 import com.study.studyproject.global.exception.ex.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
@@ -25,9 +19,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.study.studyproject.global.exception.ex.ErrorCode.INTERNAL_SEVER_ERROR;
-import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @RestControllerAdvice
