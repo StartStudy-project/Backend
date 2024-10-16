@@ -19,4 +19,17 @@ public enum ConnectionType {
         return description;
     }
 
+
+    @JsonCreator
+    public static ConnectionType fromValue(String value) {
+        if ("ONLINE".equalsIgnoreCase(value)) {
+            return ONLINE;
+        } else if ("OFFLINE".equalsIgnoreCase(value)) {
+            return OFFLINE;
+        } else {
+            throw new IllegalArgumentException("Unknown value: " + value);
+        }
+    }
+
+
 }
