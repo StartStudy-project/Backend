@@ -93,7 +93,7 @@ public class Board extends BaseTimeEntity {
         this.content = boardReUpdateRequestDto.getContent();
         this.category = boardReUpdateRequestDto.getCategory();
         this.offlineLocation = boardReUpdateRequestDto.getOfflineLocation();
-        this.connectionType = boardReUpdateRequestDto.getType();
+        this.connectionType = boardReUpdateRequestDto.getConnectionType();
         return this;
     }
 
