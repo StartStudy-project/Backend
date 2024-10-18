@@ -1,5 +1,6 @@
 package com.study.studyproject.login.service;
 
+import com.study.studyproject.global.exception.ex.DuplicateException;
 import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.login.domain.RefreshToken;
 import com.study.studyproject.global.GlobalResultDto;
@@ -82,7 +83,7 @@ public class LoginService {
         }
         //중복 확인
         if (isPresentEmail(signRequest)) {
-            throw new NotFoundException(MEMBER_DUPLICATED);
+            throw new DuplicateException(MEMBER_DUPLICATED);
         }
     }
 
