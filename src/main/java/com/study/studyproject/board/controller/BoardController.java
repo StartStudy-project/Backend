@@ -7,10 +7,11 @@ import com.study.studyproject.board.dto.BoardWriteRequestDto;
 import com.study.studyproject.board.service.BoardService;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
-import com.study.studyproject.global.jwt.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -60,8 +61,12 @@ public class BoardController {
     //글 조회 1개 -
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
-    public ResponseEntity<BoardOneResponseDto> getBoard(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId,	@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        boardService.updateView(boardId);
+    public ResponseEntity<BoardOneResponseDto> getBoard(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId,	@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails
+,HttpServletRequest request,
+    HttpServletResponse response
+
+    ) {
+        boardService.updateView(boardId,  request,  response);
         BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId,userDetails);
         return ResponseEntity.ok(boardOneResponseDto);
 

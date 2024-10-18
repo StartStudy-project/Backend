@@ -1,7 +1,9 @@
 package com.study.studyproject.board.service;
 
 import com.study.studyproject.board.domain.Board;
-import com.study.studyproject.board.dto.*;
+import com.study.studyproject.board.dto.BoardOneResponseDto;
+import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
+import com.study.studyproject.board.dto.BoardWriteRequestDto;
 import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
@@ -16,15 +18,21 @@ import com.study.studyproject.reply.domain.Reply;
 import com.study.studyproject.reply.dto.ReplyInfoResponseDto;
 import com.study.studyproject.reply.dto.ReplyResponseDto;
 import com.study.studyproject.reply.repository.ReplyRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-import static com.study.studyproject.global.exception.ex.ErrorCode.*;
+import static com.study.studyproject.global.exception.ex.ErrorCode.NOT_FOUND_BOARD;
+import static com.study.studyproject.global.exception.ex.ErrorCode.UNABLE_DELETE_BOARD;
 import static com.study.studyproject.reply.dto.ReplyInfoResponseDto.convertReplyToDto;
 import static com.study.studyproject.reply.dto.ReplyResponseDto.ReplyResponseToDto;
 
@@ -38,6 +46,7 @@ public class BoardServiceImpl implements BoardService {
     private final ReplyRepository replyRepository;
     private final MemberRepository memberRepository;
     private final PostLikeRepository postLikeRepository;
+    private final static String VIEWCOOKIENAME = "alreadyViewCookie";
 
     //작성
     @Override
@@ -78,12 +87,41 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Transactional
-    public void updateView(
-    Long boardId){
+    public void updateView(Long boardId,HttpServletRequest request, HttpServletResponse response){
         if (!boardRepository.existsById(boardId)) {
             throw new NotFoundException(NOT_FOUND_BOARD);
         }
-        boardRepository.updateHits(boardId);
+        if(!checkCookie(boardId, request)){
+            Cookie newCookie = createCookieForForNotOverlap(boardId);
+            response.addCookie(newCookie);
+            boardRepository.updateHits(boardId);
+        }
+    }
+
+    private boolean checkCookie(Long boardId, HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(VIEWCOOKIENAME + boardId)) {
+                    return true;  // 이미 조회한 경우
+                }
+            }
+        }
+        return false;  // 조회하지 않은 경우
+
+    }
+
+    private Cookie createCookieForForNotOverlap(Long postId) {
+        Cookie cookie = new Cookie(VIEWCOOKIENAME + postId, String.valueOf(postId));
+        cookie.setMaxAge(getRemainSecondForTommorow());
+        cookie.setHttpOnly(true);
+        return cookie;
+    }
+
+    private int getRemainSecondForTommorow() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tommorow = LocalDateTime.now().plusDays(1L).truncatedTo(ChronoUnit.DAYS);
+        return (int) now.until(tommorow, ChronoUnit.SECONDS);
     }
 
 
@@ -146,6 +184,10 @@ public class BoardServiceImpl implements BoardService {
             throw new NotFoundException(UNABLE_DELETE_BOARD);
         }
     }
+
+
+
+
 
     private static boolean isPostLikes(List<PostLike> postLikes) {
         return postLikes.size() != 0;
