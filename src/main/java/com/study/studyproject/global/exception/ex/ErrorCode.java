@@ -3,7 +3,6 @@ package com.study.studyproject.global.exception.ex;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import static jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.*;
 
 @Getter
@@ -11,6 +10,9 @@ public enum ErrorCode {
     MEMBER_DUPLICATED("이미 회원가입 하였습니다.", CONFLICT),
     NOT_FOUND_MEMBER("사용자를 찾지 못했습니다.", NOT_FOUND),
     NOT_FOUND_PASSWORD("비밀번호가 틀립니다.", CONFLICT),
+
+    NICKNAME_DUPLICATED("이미 닉네임이 존재합니다. 다른 닉네임으로 변경해주세요.", CONFLICT),
+
 
     NOT_FOUND_BOARD("게시글이 없습니다.", NOT_FOUND),
     UNABLE_DELETE_BOARD("게시글을 삭제 할 수 없습니다.", CONFLICT),

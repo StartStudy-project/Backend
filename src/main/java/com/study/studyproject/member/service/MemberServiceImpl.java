@@ -1,5 +1,6 @@
 package com.study.studyproject.member.service;
 
+import com.study.studyproject.global.exception.ex.DuplicateException;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.member.domain.Member;
@@ -18,7 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.study.studyproject.global.exception.ex.ErrorCode.NOT_FOUND_MEMBER;
+import static com.study.studyproject.global.exception.ex.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Service
@@ -41,6 +42,13 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public GlobalResultDto userInfoUpdate(Member member , MemberUpdateResDto memberUpdateResDto) {
+
+        if (memberRepository.existsByNickname(memberUpdateResDto.getNickname())) {
+            throw new DuplicateException(NICKNAME_DUPLICATED);
+
+        }
+
+
         Member getMember = memberRepository
                 .findById(member.getId())
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_MEMBER));
