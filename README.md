@@ -61,7 +61,7 @@
 
 
 ## 프로젝트 아키텍처
-![starstudy drawio](https://github.com/user-attachments/assets/76677f0e-1862-43ae-a999-d6cdbbc0ee3f)
+![starstudy drawio (1)](https://github.com/user-attachments/assets/16b4b2b4-79ce-4f0b-ac80-03b21c19a94d)
 
 
 
