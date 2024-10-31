@@ -61,10 +61,9 @@
 
 
 ## 프로젝트 아키텍처
+![starstudy drawio](https://github.com/user-attachments/assets/76677f0e-1862-43ae-a999-d6cdbbc0ee3f)
 
-### 백엔드
 
-![image](https://github.com/user-attachments/assets/78e3ed17-4554-4302-90c9-e36792df0d31)
 
 
 ### CI/CD
