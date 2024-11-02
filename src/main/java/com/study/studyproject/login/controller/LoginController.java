@@ -54,7 +54,7 @@ public class LoginController {
 
 
     @Operation(summary = "토큰 재발급", description = "토큰 재발급")
-    @PostMapping("/renew_token")
+    @PostMapping("/renew-token")
     public ResponseEntity<AccessTokenResponse> renewAccessToken(
             @RequestHeader("Access_Token") String access_token,
             @RequestHeader("Refresh_Token") String refresh_token,

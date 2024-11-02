@@ -73,6 +73,7 @@ public class SpringSecurity {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
         );
+
         http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
 

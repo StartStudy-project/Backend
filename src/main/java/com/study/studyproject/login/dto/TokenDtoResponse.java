@@ -1,13 +1,24 @@
 package com.study.studyproject.login.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class TokenDtoResponse {
 
     private String accessToken;
     private String refreshToken;
 
+    @Builder
+    public TokenDtoResponse(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
+
+    public static TokenDtoResponse of(String accessToken, String refreshToken){
+        return TokenDtoResponse.builder().accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
 }

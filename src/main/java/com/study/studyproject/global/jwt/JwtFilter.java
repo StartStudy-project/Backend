@@ -33,6 +33,12 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("로그인");
 
+        String path = request.getRequestURI();
+        if (path.equals("/renew-token")) {
+            filterChain.doFilter(request, response); // 다음 필터로 이동
+            return;
+        }
+
         String accessToken = jwtUtil.getHeaderToken(request, JwtUtil.ACCESS_TOKEN);
         log.info("accessToken : {}", accessToken);
 
@@ -48,7 +54,6 @@ public class JwtFilter extends OncePerRequestFilter {
                 setAuthentication(emailFromToken);
             } else {
                 jwtExceptionHandler(response, ErrorCode.TOKEN_EXPIRED.getMessage(), HttpStatus.UNAUTHORIZED);
-                log.error("JWTFilter에서 만료");
                 return;
             }
         }
