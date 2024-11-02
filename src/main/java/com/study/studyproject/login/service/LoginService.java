@@ -1,6 +1,7 @@
 package com.study.studyproject.login.service;
 
 import com.study.studyproject.global.exception.ex.DuplicateException;
+import com.study.studyproject.global.exception.ex.TokenNotValidationException;
 import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.login.domain.RefreshToken;
 import com.study.studyproject.global.GlobalResultDto;
@@ -21,8 +22,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 import static com.study.studyproject.global.exception.ex.ErrorCode.*;
 
 @Service
@@ -35,7 +34,7 @@ public class LoginService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-
+    public static final String ACCESS_TOKEN = "Access_Token";
 
 
     public LoginResponseDto loginService(@Valid LoginRequest loginRequest, HttpServletResponse response) throws NotFoundException {
@@ -46,24 +45,23 @@ public class LoginService {
             throw new NotFoundException(NOT_FOUND_PASSWORD);
         }
 
-        TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail(),member.getId());
-        Optional<RefreshToken> refreshToken = refreshRepository.findByAccessToken(tokensDto.getAccessToken());
-        if (refreshToken.isPresent()) {
-            refreshRepository.save(refreshToken.get().updateToken(tokensDto.getRefreshToken()));
-        } else {
-            RefreshToken getRefreshToken = RefreshToken.toEntity(tokensDto, loginRequest);
-            refreshRepository.save(getRefreshToken);
-        }
+        TokenDtoResponse tokensDto = jwtUtil.createAllToken(loginRequest.getEmail(), member.getId());
+        refreshRepository.findByAccessToken(tokensDto.getAccessToken())
+                .ifPresentOrElse(
+                        token -> refreshRepository.save(token.updateToken(tokensDto.getRefreshToken())), // 존재한다면
+                        () -> refreshRepository.save(RefreshToken.toEntity(tokensDto, loginRequest)) //존재하지 않으면
+                );
+
 
         setHeader(response, tokensDto);
 
-        return new LoginResponseDto("로그인 되었습니다.", HttpStatus.OK.value(),member.getNickname());
+        return new LoginResponseDto("로그인 되었습니다.", HttpStatus.OK.value(), member.getNickname());
 
     }
-    private void setHeader(HttpServletResponse response, TokenDtoResponse tokensDto) {
-        response.addHeader(JwtUtil.ACCESS_TOKEN, JwtUtil.BEARER+tokensDto.getAccessToken());
-        response.addHeader(JwtUtil.REFRESH_TOKEN, JwtUtil.BEARER+tokensDto.getRefreshToken());
 
+    private void setHeader(HttpServletResponse response, TokenDtoResponse tokensDto) {
+        response.addHeader(JwtUtil.ACCESS_TOKEN, JwtUtil.BEARER + tokensDto.getAccessToken());
+        response.addHeader(JwtUtil.REFRESH_TOKEN, JwtUtil.BEARER + tokensDto.getRefreshToken());
     }
 
 
@@ -73,7 +71,7 @@ public class LoginService {
         String encodePwd = passwordEncoder.encode(signRequest.getPwd());
         Member member = Member.toEntity(signRequest, encodePwd);
         memberRepository.save(member);
-        return new GlobalResultDto("회원가입 성공",HttpStatus.OK.value());
+        return new GlobalResultDto("회원가입 성공", HttpStatus.OK.value());
 
     }
 
@@ -90,4 +88,38 @@ public class LoginService {
     private boolean isPresentEmail(SignRequest signRequest) {
         return memberRepository.findByEmail(signRequest.getEmail()).isPresent();
     }
+
+    //토큰 엑세스 토큰 재발급
+    public String renewalAccessToken(String accessTokenRequest, String refreshTokenRequest, HttpServletResponse response ) {
+        String accessToken = jwtUtil.resolveToken(accessTokenRequest);
+        String refreshToken = jwtUtil.resolveToken(refreshTokenRequest);
+
+        // 기존 AT와 RT일치하는지 확인
+        if (jwtUtil.isValidRefreshAndInValidAccess(accessToken, refreshToken)) { //accessToken에 문제가 있는경우
+            log.info("AccessToken 재발급 문제 ");
+
+            String emailFromToken = jwtUtil.getEmailFromToken(refreshToken);
+            Long idFromToken = jwtUtil.getIdFromToken(refreshToken);
+
+            //재발급
+            RefreshToken getRefreshToken = refreshRepository.findById(emailFromToken).orElseThrow(() -> new TokenNotValidationException(INVALID_REFRESH_TOKEN));
+            String renewAccessToken = jwtUtil.createToken(emailFromToken, idFromToken, ACCESS_TOKEN); //엑세스 토큰 재생성
+            getRefreshToken.updateAccessToken(renewAccessToken); // 갱신
+            return renewAccessToken;
+
+        }
+
+        //AT 문제가 둘다 없는 경우
+        if (jwtUtil.isValidRefreshAndValidAccess(accessToken, refreshToken)) {
+            log.info("둘다 문제 없는 경우");
+            return accessToken;
+        }
+
+
+        //일치하지 않다면, 401
+        throw new TokenNotValidationException(EXPIRED_PERIOD_TOKEN);
+
+    }
+
+
 }

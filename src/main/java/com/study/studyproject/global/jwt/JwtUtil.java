@@ -1,7 +1,5 @@
 package com.study.studyproject.global.jwt;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.studyproject.login.domain.RefreshToken;
 import com.study.studyproject.global.auth.UserDetailsServiceImpl;
 import com.study.studyproject.global.exception.ex.TokenNotValidationException;
 import com.study.studyproject.login.dto.TokenDtoResponse;
@@ -24,15 +22,18 @@ import java.io.IOException;
 import java.security.Key;
 import java.util.*;
 
+import static com.study.studyproject.global.exception.ex.ErrorCode.EXPIRED_PERIOD_TOKEN;
+import static com.study.studyproject.global.exception.ex.ErrorCode.INVALID_REFRESH_TOKEN;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
 
     public static final String BEARER = "Bearer ";
+    public static final String ID = "id";
     private final UserDetailsServiceImpl userDetailsService;
     private final RefreshRepository refreshTokenRepository;
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private static final long ACCESS_TIME = 30 * 60 * 1000L;
     private static final long REFRESH_TIME =  24 * 60 * 60 * 1000L;
     public static final String ACCESS_TOKEN = "Access_Token";
@@ -57,6 +58,7 @@ public class JwtUtil {
     public String getHeaderToken(HttpServletRequest request, String type) {
         return type.equals(ACCESS_TOKEN) ? request.getHeader(ACCESS_TOKEN) : request.getHeader(REFRESH_TOKEN);
     }
+
 
     private void setTokenResponse(HttpServletResponse response, String accessToken, String refreshToken) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
@@ -85,44 +87,17 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .setSubject(email)
-                .claim("id", id)
+                .claim(ID, id)
                 .setExpiration(new Date(date.getTime() + time))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
                 .compact();
     }
 
-
-
-    public String creatAccessToken(String email) {
-        Date date = new Date();
-        long time =  ACCESS_TIME;
-
-        return Jwts.builder()
-                .setSubject(email)
-                .setExpiration(new Date(date.getTime() + time))
-                .setIssuedAt(date)
-                .signWith(key, signatureAlgorithm)
-                .compact();
-
-    }
-
-    public String createRefreshToken(String email,Long id) {
-        Date date = new Date();
-        long time =  REFRESH_TIME;
-        return  Jwts.builder()
-                .setSubject(email)
-                .claim("id", id)
-                .setExpiration(new Date(date.getTime() + time))
-                .setIssuedAt(date)
-                .signWith(key, signatureAlgorithm)
-                .compact();
-
-    }
 
 
     // 토큰 검증
-    public Boolean tokenValidation(String token) throws ExpiredJwtException, TokenNotValidationException {
+    public Boolean AccessTokenValidation(String token) throws ExpiredJwtException, TokenNotValidationException {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
@@ -139,15 +114,23 @@ public class JwtUtil {
     }
 
 
-    public Boolean refreshTokenValidation(String token) throws TokenNotValidationException {
-
-        if (!tokenValidation(token)) return false;
-
-        // DB에 저장한 토큰 비교
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccessToken(token);
-
-        return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
+    private void validateRefreshToken(final String refreshToken) throws TokenNotValidationException {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(refreshToken);
+        } catch (final ExpiredJwtException | SecurityException | MalformedJwtException | UnsupportedJwtException e) {
+            throw new TokenNotValidationException(EXPIRED_PERIOD_TOKEN);
+        } catch (final JwtException | IllegalArgumentException e) {
+            throw new TokenNotValidationException(INVALID_REFRESH_TOKEN);
+        }
     }
+
+    public boolean isValidRefreshAndInValidAccess(String accessToken, String refreshToken) {
+        validateRefreshToken(refreshToken);
+        if(!AccessTokenValidation(accessToken)) return true;
+        return false;
+    }
+
+
 
     // 인증 객체 생성
     public Authentication createAuthentication(String email) {
@@ -162,7 +145,7 @@ public class JwtUtil {
 
     // 토큰에서 id 가져오는 기능
     public Long getIdFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("id",Long.class);
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get(ID,Long.class);
     }
 
 
@@ -187,4 +170,14 @@ public class JwtUtil {
         return null;
     }
 
+
+    public boolean isValidRefreshAndValidAccess(String accessToken, String refreshToken) {
+        try {
+            validateRefreshToken(refreshToken);
+            AccessTokenValidation(accessToken);
+            return true;
+        } catch (final JwtException e) {
+            return false;
+        }
+    }
 }

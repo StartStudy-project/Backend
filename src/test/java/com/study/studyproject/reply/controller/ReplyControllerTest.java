@@ -102,7 +102,9 @@ class ReplyControllerTest {
 
                 )
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.boardId").value("게시글 번호를 입력해주세요."))
+                .andExpect(jsonPath("$.content").value("댓글 내용을 입력해주세요"));
 
     }
 
