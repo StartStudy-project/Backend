@@ -43,4 +43,9 @@ public class RefreshToken {
         return this;
     }
 
+    public RefreshToken updateAccessToken(String token) {
+        this.accessToken= token;
+        return this;
+    }
+
 }

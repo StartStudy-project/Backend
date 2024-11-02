@@ -5,17 +5,18 @@ import com.study.studyproject.global.exception.ex.BusinessException;
 import com.study.studyproject.global.exception.ex.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.study.studyproject.global.exception.ex.ErrorCode.INTERNAL_SEVER_ERROR;
@@ -40,23 +41,27 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.internalServerError().body(errorResponse);
     }
 
-    // Bean
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(
+            MissingServletRequestParameterException exception,
+            HttpHeaders headers, HttpStatusCode status, WebRequest request
+    ) {
+        log.error("error :{}" ,exception.getParameterName());
+        return ResponseEntity.badRequest().body(ExceptionResponse.of(HttpStatus.BAD_REQUEST.value(),exception.getParameterName() + "은 NULL일 수 없습니다."));
+    }
+
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("status", status.value());
 
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            body.put(fieldName, errorMessage);
-        });
+        ex.getBindingResult().getAllErrors()
+                .forEach(c -> errors.put(((FieldError) c).getField(), c.getDefaultMessage()));
+        log.error("error :{}" ,errors);
 
-
-
-        return new ResponseEntity<>(body, headers, status);
+        return ResponseEntity.status(status.value()).body(errors);
     }
 
     private ResponseEntity<ExceptionResponse> createErrorResponse(ErrorCode errorCode) {

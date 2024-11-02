@@ -1,10 +1,15 @@
 package com.study.studyproject.list.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.study.studyproject.board.domain.ConnectionType;
+import com.study.studyproject.board.domain.OfflineLocation;
 import com.study.studyproject.board.repository.BoardRepository;
 import com.study.studyproject.board.domain.Board;
 import com.study.studyproject.board.domain.Category;
+import com.study.studyproject.list.dto.MainRequestDto;
 import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.member.repository.MemberRepository;
+import com.study.studyproject.reply.dto.ReplyRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +19,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.study.studyproject.board.domain.Category.*;
 import static com.study.studyproject.board.domain.Category.코테;
+import static com.study.studyproject.board.domain.ConnectionType.OFFLINE;
+import static com.study.studyproject.board.domain.ConnectionType.ONLINE;
 import static com.study.studyproject.login.domain.Role.ROLE_USER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -35,6 +43,8 @@ class MainControllerTest {
 
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
 
 
     @Test
@@ -42,9 +52,9 @@ class MainControllerTest {
     void mainListAllTestCreateDateDesc() throws Exception {
         //given
         Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
-        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
-        Board board1 = createBoard(member1, "제목2", "내용2", "닉네임2", CS);
-        Board board2 = createBoard(member1, "제목3", "내용3", "닉네임3", 기타);
+        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS,ONLINE);
+        Board board1 = createBoard(member1, "제목2", "내용2", "닉네임2", CS,ONLINE);
+        Board board2 = createBoard(member1, "제목3", "내용3", "닉네임3", 기타,ONLINE);
 
         memberRepository.save(member1);
         boardRepository.save(board);
@@ -64,9 +74,9 @@ class MainControllerTest {
     void mainListAllTestAsc() throws Exception {
         //given
         Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
-        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
-        Board board1 = createBoard(member1, "제목2", "내용2", "닉네임2", CS);
-        Board board2 = createBoard(member1, "제목3", "내용3", "닉네임3", 기타);
+        Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS,ONLINE);
+        Board board1 = createBoard(member1, "제목2", "내용2", "닉네임2", CS,ONLINE);
+        Board board2 = createBoard(member1, "제목3", "내용3", "닉네임3", 기타,OFFLINE);
 
         memberRepository.saveAll(List.of(member1));
         boardRepository.save(board);
@@ -75,11 +85,8 @@ class MainControllerTest {
 
         board1.updateViewCnt();
 
-
         //when & then
         mockMvc.perform(get("/")
-                        .param("order","1")
-
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -94,11 +101,11 @@ class MainControllerTest {
     void mainListAlltarget() throws Exception {
         //given
         Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
-        Board board0 = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
-        Board board1 = createBoard(member1, "제목2", "내용2", "닉네임2", CS);
-        Board board2 = createBoard(member1, "자바공부 풀 사람1", "내용3", "닉네임3", 기타);
-        Board board3 = createBoard(member1, "제목15", "내용3", "닉네임3", 코테);
-        Board board4 = createBoard(member1, "타이틀1", "내용3", "닉네임3", 코테);
+        Board board0 = createBoard(member1, "제목1", "내용1", "닉네임1", CS, ONLINE);
+        Board board1 = createBoard(member1, "제목2", "내용2", "닉네임2", CS,ONLINE);
+        Board board2 = createBoard(member1, "자바공부 풀 사람1", "내용3", "닉네임3", 기타,ONLINE);
+        Board board3 = createBoard(member1, "제목15", "내용3", "닉네임3", 코테,ONLINE);
+        Board board4 = createBoard(member1, "타이틀1", "내용3", "닉네임3", 코테,ONLINE);
 
         memberRepository.save((member1));
         List<Board> products = List.of(board0, board1, board2,board3,board4);
@@ -121,15 +128,15 @@ class MainControllerTest {
 
 
     @Test
-    @DisplayName("CS 카테고리의 게시글만 최신순으로 조회한다.")
+    @DisplayName("오프라인과  CS 카테고리의 게시글만 최신순으로 조회한다.")
     void mainListAllWithCS() throws Exception {
         //given
         Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
-        Board board0 = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
-        Board board1 = createBoard(member1, "제목2", "내용2", "닉네임2", CS);
-        Board board2 = createBoard(member1, "자바공부 풀 사람1", "내용3", "닉네임3", 기타);
-        Board board3 = createBoard(member1, "제목15", "내용3", "닉네임3", 코테);
-        Board board4 = createBoard(member1, "타이틀1", "내용3", "닉네임3", 코테);
+        Board board0 = createBoard(member1, "제목1", "내용1", "닉네임1", CS,ONLINE);
+        Board board1 = createBoard(member1, "제목2", "내용2", "닉네임2", CS,ONLINE);
+        Board board2 = createBoard(member1, "자바공부 풀 사람1", "내용3", "닉네임3", 기타,OFFLINE);
+        Board board3 = createBoard(member1, "제목15", "내용3", "닉네임3", CS,OFFLINE);
+        Board board4 = createBoard(member1, "타이틀1", "내용3", "닉네임3", 코테,OFFLINE);
 
         memberRepository.save((member1));
         boardRepository.save(board0);
@@ -139,18 +146,18 @@ class MainControllerTest {
         List<Board> boards = boardRepository.saveAll(products);
 
 
-
-
         //when & then
         mockMvc.perform(get("/")
                         .param("Category", "CS")
+                        .param("connectionType", "OFFLINE")
+
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].title").value("제목1"))
+                .andExpect(jsonPath("$.content[0].title").value("제목15"))
                 .andExpect(jsonPath("$.content[0].type").value("CS"))
-                .andExpect(jsonPath("$.content[1].title").value("제목2"))
-                .andExpect(jsonPath("$.content[1].type").value("CS"));
+                .andExpect(jsonPath("$.totalPages").value("1"));
+
 
     }
 
@@ -169,13 +176,14 @@ class MainControllerTest {
     }
 
     private Board createBoard(
-            Member member, String title, String content, String nickname, Category category
+            Member member, String title, String content, String nickname, Category category, ConnectionType connectionType
     ) {
         return Board.builder()
                 .member(member)
                 .title(title)
                 .content("내용")
                 .category(category)
+                .connectionType(connectionType)
                 .build();
     }
 

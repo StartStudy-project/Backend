@@ -1,5 +1,6 @@
 package com.study.studyproject.login.service;
 
+import com.study.studyproject.global.exception.ex.DuplicateException;
 import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.login.dto.LoginRequest;
@@ -120,7 +121,7 @@ class LoginServiceTest {
 
         //when & then
         assertThatThrownBy(() -> loginService.sign(signRequest))
-                .isInstanceOf(NotFoundException.class);
+                .isInstanceOf(DuplicateException.class);
 
     }
     

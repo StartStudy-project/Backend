@@ -20,6 +20,7 @@ import java.io.IOException;
 @Component
 @Slf4j
 @RequiredArgsConstructor
+//403
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     private final ObjectMapper objectMapper; // For JSON serialization
 
@@ -27,11 +28,11 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
 
         ExceptionResponse errorResponse = ExceptionResponse.builder()
-                .message(ErrorCode.UNABLE_ACCESS.getMessage())
-                .status(ErrorCode.UNABLE_ACCESS.getStatus().value())
+                .message(ErrorCode.INVALID_REFRESH_TOKEN.getMessage())
+                .status(ErrorCode.INVALID_REFRESH_TOKEN.getStatus().value())
                 .build();
         // Set response properties
-        response.setStatus(ErrorCode.UNABLE_ACCESS.getStatus().value());
+        response.setStatus(ErrorCode.INVALID_REFRESH_TOKEN.getStatus().value());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 

@@ -1,8 +1,7 @@
 package com.study.studyproject.login.controller;
 
 import com.study.studyproject.global.GlobalResultDto;
-import com.study.studyproject.global.auth.UserDetailsImpl;
-import com.study.studyproject.global.jwt.JwtUtil;
+import com.study.studyproject.login.dto.AccessTokenResponse;
 import com.study.studyproject.login.dto.LoginRequest;
 import com.study.studyproject.login.dto.LoginResponseDto;
 import com.study.studyproject.login.dto.SignRequest;
@@ -14,24 +13,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import java.net.http.HttpResponse;
+
+import static org.springframework.http.HttpStatus.CREATED;
 
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "로그인/로그아웃/회원가입 기능",description = "사용자의 로그인과 로그아웃 회원가입 기능")
+@Tag(name = "로그인/로그아웃/회원가입 기능", description = "사용자의 로그인과 로그아웃 회원가입 기능")
 @Slf4j
 public class LoginController {
 
     private final LoginService loginService;
     private final LogoutService logoutService;
-    private final JwtUtil jwtUtil;
 
     //회원가입
     @Operation(summary = "회원가입", description = "사용자 회원가입")
@@ -54,5 +51,20 @@ public class LoginController {
     public ResponseEntity<GlobalResultDto> logout(@RequestHeader("Access_Token") String token) {
         return ResponseEntity.ok(logoutService.logoutService(token));
     }
+
+
+    @Operation(summary = "토큰 재발급", description = "토큰 재발급")
+    @PostMapping("/renew_token")
+    public ResponseEntity<AccessTokenResponse> renewAccessToken(
+            @RequestHeader("Access_Token") String access_token,
+            @RequestHeader("Refresh_Token") String refresh_token,
+            HttpServletResponse response
+    ) {
+
+        String renewAccessToken = loginService.renewalAccessToken(access_token, refresh_token, response);
+        return ResponseEntity.status(CREATED).body(new AccessTokenResponse(renewAccessToken));
+
+    }
+
 
 }
