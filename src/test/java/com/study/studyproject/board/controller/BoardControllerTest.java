@@ -159,6 +159,7 @@ class BoardControllerTest  {
                 .andDo(print());
     }
 
+
     @Test
     @DisplayName("모집구분 변경한다.")
     void changeRecruitTest() throws Exception {
@@ -212,10 +213,6 @@ class BoardControllerTest  {
         Board board = createBoard(member1, "제목1", "내용1", "닉네임1", CS);
         memberRepository.save(member1);
         boardRepository.save(board);
-        TokenDtoResponse allToken = jwtUtil.createAllToken(member1.getEmail(), member1.getId());
-        System.out.println("allToken.getAccessToken() = " + allToken.getAccessToken());
-        System.out.println("allToken.getAccessToken() = " + allToken.getRefreshToken());
-
         //when then
         mockMvc.perform(get("/board/"+board.getId())
                         .param("boardId", String.valueOf(board.getId()))
