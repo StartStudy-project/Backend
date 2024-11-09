@@ -5,6 +5,9 @@ import com.study.studyproject.global.jwt.JwtAccessDeniedHandler;
 import com.study.studyproject.global.jwt.JwtAuthenticationEntryPoint;
 import com.study.studyproject.global.jwt.JwtFilter;
 import com.study.studyproject.global.jwt.JwtUtil;
+import com.study.studyproject.global.oauth.CustomOAuth2UserService;
+import com.study.studyproject.global.oauth.handler.OAuth2LoginFailureHandler;
+import com.study.studyproject.global.oauth.handler.OAuth2LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +21,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
@@ -28,7 +32,7 @@ public class SpringSecurity {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -50,6 +54,23 @@ public class SpringSecurity {
     private final CorsFilter filter;
     private final JwtUtil jwtUtil;
 
+    /**
+     * 로그인 성공 시 호출되는 LoginSuccessJWTProviderHandler 빈 등록
+     */
+    @Bean
+    public OAuth2LoginSuccessHandler  loginSuccessHandler() {
+        return new OAuth2LoginSuccessHandler(jwtUtil);
+    }
+
+    /**
+     * 로그인 실패 시 호출되는 LoginFailureHandler 빈 등록
+     */
+    @Bean
+    public OAuth2LoginFailureHandler loginFailureHandler() {
+        return new OAuth2LoginFailureHandler();
+    }
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.addFilter(filter);
@@ -61,7 +82,14 @@ public class SpringSecurity {
                         .accessDeniedHandler(jwtAccessDeniedHandler)
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 )
-        ;
+                .oauth2Login(
+                        oauth2 ->
+                                oauth2.loginPage("/login")
+                                        .userInfoEndpoint(userInfoEndpointConfig ->
+                                                userInfoEndpointConfig.userService(customOAuth2UserService))
+                                        .successHandler(loginSuccessHandler())
+                                        .failureHandler(loginFailureHandler()));
+
 
 
         http.authorizeHttpRequests(authorize ->
@@ -74,12 +102,15 @@ public class SpringSecurity {
                         .anyRequest().permitAll()
         );
 
+
         http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();
 
     }
+
+
 
 
 
