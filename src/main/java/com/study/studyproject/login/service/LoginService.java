@@ -53,16 +53,12 @@ public class LoginService {
                 );
 
 
-        setHeader(response, tokensDto);
+        jwtUtil.setHeader(response, tokensDto);
 
         return new LoginResponseDto("로그인 되었습니다.", HttpStatus.OK.value(), member.getNickname());
 
     }
 
-    private void setHeader(HttpServletResponse response, TokenDtoResponse tokensDto) {
-        response.addHeader(JwtUtil.ACCESS_TOKEN, JwtUtil.BEARER + tokensDto.getAccessToken());
-        response.addHeader(JwtUtil.REFRESH_TOKEN, JwtUtil.BEARER + tokensDto.getRefreshToken());
-    }
 
 
     //회원가입
@@ -105,7 +101,7 @@ public class LoginService {
             RefreshToken getRefreshToken = refreshRepository.findById(emailFromToken).orElseThrow(() -> new TokenNotValidationException(INVALID_REFRESH_TOKEN));
             String renewAccessToken = jwtUtil.createToken(emailFromToken, idFromToken, ACCESS_TOKEN); //엑세스 토큰 재생성
             getRefreshToken.updateAccessToken(renewAccessToken); // 갱신
-            setHeader(response, TokenDtoResponse.of(renewAccessToken, refreshToken));
+            jwtUtil.setHeader(response, TokenDtoResponse.of(renewAccessToken, refreshToken));
             return renewAccessToken;
 
         }
