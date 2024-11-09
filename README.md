@@ -5,7 +5,7 @@
 
 </div>
 
-![example branch parameter](https://github.com/github/docs/actions/workflows/CICD.yml/badge.svg?branch=develop)
+![example branch parameter](https://github.com/StartStudy-project/Backend/actions/workflows/CICD.yml/badge.svg?branch=develop)
 
 
 
