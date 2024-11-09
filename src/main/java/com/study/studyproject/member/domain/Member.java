@@ -34,10 +34,12 @@ public class Member extends BaseTimeEntity {
     private String username;
     private String nickname;
 
-
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
+    private String socialId;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostLike> postLikes = new ArrayList<>();
@@ -50,13 +52,18 @@ public class Member extends BaseTimeEntity {
 
 
     @Builder
-    public Member(String email, String password, String username, String nickname, Role role) {
+    public Member(String email, String password, String username, String nickname, Role role, SocialType socialType, String socialId) {
         this.email = email;
         this.password = password;
         this.username = username;
         this.nickname = nickname;
         this.role = role;
+        this.socialType = socialType;
+        this.socialId = socialId;
     }
+
+
+
 
 
 
