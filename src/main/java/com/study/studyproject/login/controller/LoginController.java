@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +48,22 @@ public class LoginController {
         return ResponseEntity.ok(loginService.loginService(loginRequest, response));
 
     }
+
+    @GetMapping("/OAuth/test/login")
+    @ResponseBody
+    public String loginOatuhTest(Authentication authentication, @AuthenticationPrincipal OAuth2User auth2User) { //DI
+        System.out.println("/test/login-----------------");
+        //방법 1 - 다운 케스팅 : OAuth로그인 일시
+        OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
+        System.out.println("oAuth2User.getAttributes() = " + oAuth2User.getAttributes());
+
+        //방법2
+        System.out.println("auth2User.getAttributes() = " + auth2User.getAttributes());
+
+        return "OAuth 세션 정보 확인";
+    }
+
+
 
     @Operation(summary = "로그아웃", description = "사용자 로그아웃")
     @PostMapping("/service-logout")
