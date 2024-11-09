@@ -2,6 +2,7 @@ package com.study.studyproject.member.repository;
 
 
 import com.study.studyproject.member.domain.Member;
+import com.study.studyproject.member.domain.SocialType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,5 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 
     boolean existsByNickname(String nickname);
 
+    Optional<Member> findBySocialTypeAndSocialId(SocialType socialType, String socialId);
 }
