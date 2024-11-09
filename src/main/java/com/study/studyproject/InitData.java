@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-
+//(33.450701, 126.570667)
 @Component
 @Profile({"local","prod","dev"})
 public class InitData {
@@ -99,7 +99,7 @@ public class InitData {
                     .content(regin[val] + "에서 " + arr[val] + "같이해요")
                     .category(arr[val])
                     .connectionType(ConnectionType.OFFLINE)
-                    .offlineLocation(new OfflineLocation(123,1231.2))
+                    .offlineLocation(new OfflineLocation(33.450701,126.570667))
                     .title(regin[val] + "에서 같이 " + arr[val] + "하실 분? ")
                     .member(member)
                     .build();
