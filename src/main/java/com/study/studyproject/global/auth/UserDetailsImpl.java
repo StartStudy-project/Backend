@@ -5,17 +5,21 @@ import com.study.studyproject.login.domain.Role;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 @Getter
-public class UserDetailsImpl implements UserDetails {
+public class UserDetailsImpl implements UserDetails, OAuth2User {
 
 
     private Role authority;
     private Long memberId;
     private  Member member;
+    private Map<String, Object> attributes;
+    private String email;
 
 
     public UserDetailsImpl(Member member, Role authority, Long memberId) {
@@ -24,9 +28,24 @@ public class UserDetailsImpl implements UserDetails {
         this.memberId = memberId;
     }
 
+    //oAuth 로그인
+    public UserDetailsImpl(Member user, Long memberId, Role authority, String email) {
+        this.member = user;
+        this.memberId = memberId;
+        this.authority = authority;
+        this.email = email;
+    }
+
+
     public UserDetailsImpl guest() {
         return new UserDetailsImpl(null,Role.ROLE_GUEST, 0L);
     }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return null;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -58,6 +77,11 @@ public class UserDetailsImpl implements UserDetails {
         return member != null ? member.getNickname():null;
     }
 
+    public String getEmail() {
+        return member != null ? member.getEmail():null;
+    }
+
+
     public boolean isGuest(){
         return member == null;
     }
@@ -81,5 +105,10 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 }
