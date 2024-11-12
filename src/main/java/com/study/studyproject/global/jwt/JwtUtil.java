@@ -70,6 +70,12 @@ public class JwtUtil {
 
     }
 
+     public void setHeader(HttpServletResponse response, TokenDtoResponse tokensDto) {
+        response.addHeader(JwtUtil.ACCESS_TOKEN, JwtUtil.BEARER + tokensDto.getAccessToken());
+        response.addHeader(JwtUtil.REFRESH_TOKEN, JwtUtil.BEARER + tokensDto.getRefreshToken());
+    }
+
+
 
 
     // 토큰 생성

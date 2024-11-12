@@ -12,13 +12,17 @@ import com.study.studyproject.postlike.domain.PostLike;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
 import com.study.studyproject.reply.domain.Reply;
 import com.study.studyproject.reply.repository.ReplyRepository;
+import com.zaxxer.hikari.HikariDataSource;
+import io.lettuce.core.RedisClient;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-
+//(33.450701, 126.570667)
 @Component
 @Profile({"local","prod","dev"})
 public class InitData {
@@ -43,13 +47,15 @@ public class InitData {
     @PostConstruct
     void init() {
 
-        String encode = passwordEncoder.encode("1234");
+        String encode1 = passwordEncoder.encode("Y@3r9o$7k");
+        String encode2 = passwordEncoder.encode("Y@3r9o$7aaak");
+        String encode3 = passwordEncoder.encode("Y@3r9o$7kff");
         Member memberOne = Member.builder()
                 .role(Role.ROLE_USER)
                 .username("김하임")
                 .email("kimSky@naver.com")
                 .nickname("kimSky")
-                .password(encode)
+                .password(passwordEncoder.encode("Y@3r9o$7k"))
                 .build();
 
         memberRepository.save(memberOne);
@@ -59,7 +65,7 @@ public class InitData {
                 .username("김일우")
                 .email("admin@naver.com")
                 .nickname("admin")
-                .password(encode)
+                .password(encode2)
                 .build();
         memberRepository.save(membertwo);
 
@@ -69,7 +75,7 @@ public class InitData {
                 .username("김지우")
                 .email("huj@naver.com")
                 .nickname("huj")
-                .password(encode)
+                .password(encode3)
                 .build();
 
         memberRepository.save(membertree);
@@ -99,7 +105,7 @@ public class InitData {
                     .content(regin[val] + "에서 " + arr[val] + "같이해요")
                     .category(arr[val])
                     .connectionType(ConnectionType.OFFLINE)
-                    .offlineLocation(new OfflineLocation(123,1231.2))
+                    .offlineLocation(new OfflineLocation(33.450701,126.570667))
                     .title(regin[val] + "에서 같이 " + arr[val] + "하실 분? ")
                     .member(member)
                     .build();
@@ -140,6 +146,9 @@ public class InitData {
 
 
     }
+
+
+
 
     private static Reply getReply(Member memberOne, Reply reply, Board board, String content) {
         return Reply.builder()
