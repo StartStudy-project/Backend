@@ -22,10 +22,11 @@ spring:
       on-profile: dev
 ---
 jwt:
-  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LDWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  secret: ${JWT_SECRET}
   token-validity-in-seconds: 86400
+
+
 spring :
- config:
   output:
     ansi:
       enabled: always
