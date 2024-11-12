@@ -24,8 +24,6 @@ spring:
 
 spring :
  config:
-  import:
-    - optional:file:./.env
   output:
     ansi:
       enabled: always
@@ -33,6 +31,4 @@ spring :
 dotenv:
   enabled: true
 
-jwt:
-  secret: ${JWT_SECRET}
-  token-validity-in-seconds: 86400
+

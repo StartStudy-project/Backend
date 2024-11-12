@@ -56,7 +56,9 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
-
+jwt:
+  secret: ${JWT_SECRET}
+  token-validity-in-seconds: 86400
 logging:
   level:
     org:
