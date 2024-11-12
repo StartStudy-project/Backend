@@ -5,6 +5,11 @@ import com.study.studyproject.global.jwt.JwtAccessDeniedHandler;
 import com.study.studyproject.global.jwt.JwtAuthenticationEntryPoint;
 import com.study.studyproject.global.jwt.JwtFilter;
 import com.study.studyproject.global.jwt.JwtUtil;
+import com.study.studyproject.global.oauth.CustomOAuth2UserService;
+import com.study.studyproject.global.oauth.handler.OAuth2LoginFailureHandler;
+import com.study.studyproject.global.oauth.handler.OAuth2LoginSuccessHandler;
+import com.study.studyproject.login.repository.RefreshRepository;
+import com.study.studyproject.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +23,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
@@ -28,7 +34,9 @@ public class SpringSecurity {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final MemberRepository memberRepository;
+    private final RefreshRepository refreshRepository;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -50,6 +58,23 @@ public class SpringSecurity {
     private final CorsFilter filter;
     private final JwtUtil jwtUtil;
 
+    /**
+     * 로그인 성공 시 호출되는 LoginSuccessJWTProviderHandler 빈 등록
+     */
+    @Bean
+    public OAuth2LoginSuccessHandler loginSuccessHandler() {
+        return new OAuth2LoginSuccessHandler(jwtUtil,memberRepository,refreshRepository);
+    }
+
+    /**
+     * 로그인 실패 시 호출되는 LoginFailureHandler 빈 등록
+     */
+    @Bean
+    public OAuth2LoginFailureHandler loginFailureHandler() {
+        return new OAuth2LoginFailureHandler();
+    }
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.addFilter(filter);
@@ -60,19 +85,25 @@ public class SpringSecurity {
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler(jwtAccessDeniedHandler)
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                )
-        ;
+                );
+
+        http.oauth2Login(
+                        oauth2 -> oauth2.userInfoEndpoint(userInfoEndpointConfig ->
+                                        userInfoEndpointConfig.userService(customOAuth2UserService))
+                                .successHandler(loginSuccessHandler())
+                                .failureHandler(loginFailureHandler()));
 
 
         http.authorizeHttpRequests(authorize ->
                 authorize
-                        .requestMatchers("/board/member/**").hasAnyRole("ADMIN","USER")
-                        .requestMatchers("/user/**").hasAnyRole("ADMIN","USER")
-                        .requestMatchers("/reply/**").hasAnyRole("ADMIN","USER")
-                        .requestMatchers("/postLike/**").hasAnyRole("ADMIN","USER")
+                        .requestMatchers("/board/member/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/reply/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/postLike/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
         );
+
 
         http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -80,7 +111,6 @@ public class SpringSecurity {
         return http.build();
 
     }
-
 
 
 }

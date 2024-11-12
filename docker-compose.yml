@@ -20,6 +20,8 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile-dev
+    env_file:
+      - .env  # .env 파일을 로드
     restart: always
     depends_on:
       - db
