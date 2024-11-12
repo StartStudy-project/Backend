@@ -32,6 +32,7 @@ jobs:
       - name: Build secrets
         run: |
           pwd
+          touch ./env 
           echo ${{ secrets.ENV }} | base64 --decode > ./.env
           
           cd ./src/main/resources
@@ -73,6 +74,7 @@ jobs:
             docker rm  backend || true
             
             echo ${{ secrets.APPLICATION_SECRET }} | base64 --decode > ./src/main/resources/application-prod.yml
+            echo ${{ secrets.ENV }} | base64 --decode > ./.env
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
             docker run -d --name backend -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/study_project:latest
             sudo docker image prune -f
