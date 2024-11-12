@@ -9,8 +9,6 @@ spring:
     activate:
       on-profile: local
 
-
-
 ---
 spring:
   profiles:
@@ -24,13 +22,17 @@ spring:
       on-profile: dev
 ---
 
-jwt:
-  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-  token-validity-in-seconds: 86400
-
-
-
-spring:
+spring :
+ config:
+  import:
+    - optional:file:./.env
   output:
     ansi:
       enabled: always
+
+dotenv:
+  enabled: true
+
+jwt:
+  secret: ${JWT_SECRET}
+  token-validity-in-seconds: 86400
