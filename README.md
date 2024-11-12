@@ -5,6 +5,10 @@
 
 </div>
 
+![example branch parameter](https://github.com/StartStudy-project/Backend/actions/workflows/CICD.yml/badge.svg?branch=develop)
+
+
+
 ## 프로젝트 소개
 
 온라인 스터디 플랫폼으로 스터디 그룹을 쉽게 생성하고 참여할 수 있도록 하며, 사용자가 스터디를 개최하고 참여함으로써 지속적인 학습과 커뮤니티 형성을 지원하다.
