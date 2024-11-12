@@ -9,6 +9,7 @@ import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.member.domain.SocialType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.UUID;
@@ -17,9 +18,10 @@ import static com.study.studyproject.member.domain.SocialType.KAKAO;
 import static com.study.studyproject.member.domain.SocialType.NAVER;
 
 @Getter
+@Slf4j
 public class OAuthAttributes {
-    private String nameAttributeKey; // OAuth2 로그인 진행 시 키가 되는 필드 값, PK와 같은 의미
-    private OAuth2UserInfo oauth2UserInfo; // 소셜 타입별 로그인 유저 정보(닉네임, 이메일, 프로필 사진 등등)
+    private String nameAttributeKey;
+    private OAuth2UserInfo oauth2UserInfo;
 
     @Builder
     public OAuthAttributes(String nameAttributeKey, OAuth2UserInfo oauth2UserInfo) {
@@ -30,8 +32,10 @@ public class OAuthAttributes {
     public static OAuthAttributes of(SocialType socialType,
                                      String userNameAttributeName, Map<String, Object> attributes) {
 
+
         if (socialType == NAVER) {
-            return ofNaver(userNameAttributeName, attributes);
+
+            return ofNaver(userNameAttributeName, (Map<String, Object>)attributes.get(userNameAttributeName));
         }
         if (socialType == KAKAO) {
             return ofKakao(userNameAttributeName, attributes);

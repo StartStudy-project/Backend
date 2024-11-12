@@ -49,22 +49,6 @@ public class LoginController {
 
     }
 
-    @GetMapping("/OAuth/test/login")
-    @ResponseBody
-    public String loginOatuhTest(Authentication authentication, @AuthenticationPrincipal OAuth2User auth2User) { //DI
-        System.out.println("/test/login-----------------");
-        //방법 1 - 다운 케스팅 : OAuth로그인 일시
-        OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
-        System.out.println("oAuth2User.getAttributes() = " + oAuth2User.getAttributes());
-
-        //방법2
-        System.out.println("auth2User.getAttributes() = " + auth2User.getAttributes());
-
-        return "OAuth 세션 정보 확인";
-    }
-
-
-
     @Operation(summary = "로그아웃", description = "사용자 로그아웃")
     @PostMapping("/service-logout")
     public ResponseEntity<GlobalResultDto> logout(@RequestHeader("Access_Token") String token) {
