@@ -37,6 +37,9 @@ public class SpringSecurity {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final MemberRepository memberRepository;
     private final RefreshRepository refreshRepository;
+    private final CorsFilter filter;
+    private final JwtUtil jwtUtil;
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -55,8 +58,6 @@ public class SpringSecurity {
     }
 
 
-    private final CorsFilter filter;
-    private final JwtUtil jwtUtil;
 
     /**
      * 로그인 성공 시 호출되는 LoginSuccessJWTProviderHandler 빈 등록
