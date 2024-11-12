@@ -1,7 +1,10 @@
 package com.study.studyproject.global.oauth.provider;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Map;
 
+@Slf4j
 public class NaverOAuth2UserInfo extends OAuth2UserInfo {
 
 
@@ -11,21 +14,21 @@ public class NaverOAuth2UserInfo extends OAuth2UserInfo {
 
     @Override
     public String getId() {
-        return null;
+        return  (String) attributes.get("id");
     }
 
     @Override
     public String getEmail() {
-        return null;
+        return (String) attributes.get("email");
     }
 
     @Override
     public String getName() {
-        return null;
+        return (String) attributes.get("name");
     }
 
     @Override
     public String getNickname() {
-        return null;
+        return (String) attributes.get("nickname");
     }
 }
