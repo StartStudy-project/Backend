@@ -8,6 +8,14 @@
 ![example branch parameter](https://github.com/StartStudy-project/Backend/actions/workflows/CICD.yml/badge.svg?branch=develop)
 
 
+### 초기 데이터
+```
+아이디 : admin@naver.com 
+pwd : Y@3r9o$7aaak
+
+아이디 kimSky@naver.com
+pwd :Y@3r9o$7k
+```
 
 ## 프로젝트 소개
 
