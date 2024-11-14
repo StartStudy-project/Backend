@@ -16,6 +16,17 @@ pwd : Y@3r9o$7aaak
 아이디 kimSky@naver.com
 pwd :Y@3r9o$7k
 ```
+## commit-message
+feat: 새로운 기능 추가, 요구 사항 변경으로 인해 기존 기능 변경
+fix: 버그 수정
+docs: 문서 추가 및 수정 (주석 등)
+style: 코드 스타일 수정 (포매팅, 세미콜론 누락 등)
+refactor: 프로덕션 코드 리팩토링 (버그 수정이나 기능 추가를 제외한 코드 변경)
+test: 테스트 코드 추가 및 리팩토링 (기능을 구현할 때 테스트 코드를 함께 작성했다면 feat 사용)
+chore: 빌드, 배포 등 기타 작업들을 추가 및 수정
+rename: 파일명 변경
+remove: 파일 삭제
+revert: 작업 되돌리기
 
 ## 프로젝트 소개
 
