@@ -1,6 +1,7 @@
 package com.study.studyproject.member.dto;
 
 import com.study.studyproject.member.domain.Member;
+import com.study.studyproject.member.domain.SocialType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
@@ -24,13 +25,17 @@ public class UserInfoResponseDto {
     @Schema(description = "사용자 역할", defaultValue = "ROLE_USER")
     String role;
 
+    @Schema(description = "소셜 로그인", defaultValue = "KAKAO")
+    SocialType socialType;
+
     @Builder
-    public UserInfoResponseDto(Long seq, String username, String nickname, String email, String role) {
+    public UserInfoResponseDto(Long seq, String username, String nickname, String email, String role,SocialType socialType) {
         this.seq = seq;
         this.username = username;
         this.nickname = nickname;
         this.email = email;
         this.role = role;
+        this.socialType = socialType;
     }
 
 
@@ -43,6 +48,7 @@ public class UserInfoResponseDto {
                 .nickname(member.getNickname())
                 .email(member.getEmail())
                 .role(member.getRole().name())
+                .socialType(member.getSocialType())
                 .build();
     }
 
