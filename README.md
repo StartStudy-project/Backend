@@ -53,7 +53,7 @@ pwd :Y@3r9o$7k
 ## 서비스 화면
 |           메인화면                   |                        회원가입                    |     
 | :------------------------------------------: | :------------------------------------------------: |
-| <img width="100%" src="https://github.com/Study-Blog-Project/Backend/assets/70208747/a295d05c-ab3e-4761-8311-d91f01ad6917"/> | <img width="100%" src="https://github.com/Study-Blog-Project/Backend/assets/70208747/378f02a9-3614-435f-a33e-b8b3971862af"/> | 
+| <img width="100%" src="https://github.com/user-attachments/assets/b7c18dbc-2647-4e15-8c95-db4ecfd959e6"/> | <img width="100%" src="https://github.com/Study-Blog-Project/Backend/assets/70208747/378f02a9-3614-435f-a33e-b8b3971862af"/> | 
 
 |           비회원                   |                        상세페이지[관리자]               | 
 | :------------------------------------------: | :------------------------------------------------: |
@@ -112,11 +112,15 @@ pwd :Y@3r9o$7k
    </tr>
   <tr>
    <td align="left" width="350px" class="공통">
-    - 회원가입, 로그인
+    - 회원가입
+     <br/>
+    - 일반 로그인
+    <br/>
+    - OAuth 2.0 네이버, 카카오 로그인
     <br/>
     - 메인 페이지 게시글 조회 기능
          <br/>
-    - 게시글 상세 조회 및 댓글 조회 기능 
+    - 게시글 상세 조회 및 댓글 조회 기능
    </td>
    <td align="left" width="350px" class="사용자 및 관리자">
     - 게시글 관리 
@@ -145,26 +149,41 @@ pwd :Y@3r9o$7k
   <summary>회원 가입 및 로그인, 로그아웃 기능</summary>
 
 - **구현 기능** <br>
-    - 사용자 회원 가입 및 로그인 및 로그아웃 기능
+    - 사용자 회원 가입
+    - 일반 로그인과 OAuth 2.0로 네이버, 카카오 로그인 구현
+    - 로그아웃 기능
 
 - **구현 방법** <br>
     - 회원 가입 : 사용자 회원 정보를 받아 DB 저장
-      - 회원가입 : passwordEncoder를 통해 비밀번호 암호화
+      - 회원가입 : ```BCryptPasswordEncoder```를 이용하여 단방향 해시 암호화
       - 비밀번호와 비밀번호 확인이 같은지 체크
       - 이미 가입한 회원인지 확인
     - 로그인 : 로그인 양식을 받아 DB의 비밀번호와 같은지 확인 후, Access Token, Refresh Token 발급
+    - 네이버, 카카오 Oauth2.0 로그인 구현
+      - 성공 시, 메인으로 이동하며 loginSuccess=true 표시 및 Access Token, Refresh Token 발급
+      - 실패 시, 메인으로 이동하며 loginSuccess=false 표시
     - 로그아웃: 로그아웃 요청 시, Refresh Token 제거
 </details>
 
 <details>
-  <summary> Spring Security, JWT 토큰</summary>
+  <summary> Spring Security, JWT 발급 및 재발급 </summary>
 
 - **구현 기능** <br>
-    - Spring Security, JWT 
+    - Spring Security, JWT 발급
+    - JWT토큰 재발급
 - **구현 방법** <br>
     - JWT
       - 로그인 시,  Refresh Token DB에 저장
-      - Access Token 만료 시, 발급한 Refresh Token와 DB에 있는 Refresh Token과 비교 후 Access Token  재발급
+      - Access Token 재발급
+        ```/renew-token```로 요청
+          1.  기존 Access Token과 Refresh Token 일치하는 지 비교
+              - 기존 Access Token이 만료되었다면
+              - Access Token 재발급하여 header에 Access Token과 Refresh Token 전송
+          3.  둘다 만료가 되지 않았다면
+              - header에 기존의 Access Token과 Refresh Token 전송
+          4.  Refresh Token도 만료되었을 경우
+              - "토큰이 만료되었습니다. 다시 로그인해주세요" 예외 발생
+          
   - Spring Security 
     - 사용자, 관리자 권한 설정하여 API 요청에 따라 접근 제어
 </details>
@@ -176,8 +195,10 @@ pwd :Y@3r9o$7k
     - 모집 중인 게시글 조회 기능
     - 카테고리는 기타, CS, 전체, 코테, 프로젝트로 조회 가능
     - 조회 순서는 최신순, 인기순으로 조회 가능
+    - 오프라인/온라인 여부 : 전체, 온라인, 오프라인
 - **구현 방법** <br>
     - 기본 정렬은 최신순으로 조회되며, 카테고리는 전체 조회로 됨
+    - 기본 정렬은 전체로 조회됨.
     - 카테고리 및 주문 순서 별 게시글 조회
       - 카테고리 및 주문 순서에 대한 정보를 받아 Querydsl 동적 쿼리를 이용하여 모집중인 게시글만 조회
     -  `PageableExecutionUtils` 사용하여 페이징 처리하여 게시글 조회
