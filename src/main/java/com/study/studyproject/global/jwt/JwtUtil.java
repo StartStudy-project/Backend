@@ -7,6 +7,7 @@ import com.study.studyproject.login.repository.RefreshRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +75,21 @@ public class JwtUtil {
         response.addHeader(JwtUtil.ACCESS_TOKEN, JwtUtil.BEARER + tokensDto.getAccessToken());
         response.addHeader(JwtUtil.REFRESH_TOKEN, JwtUtil.BEARER + tokensDto.getRefreshToken());
     }
+
+    public void setCookie(HttpServletResponse response, TokenDtoResponse tokensDto) {
+        Cookie accessCookie = new Cookie(JwtUtil.ACCESS_TOKEN, tokensDto.getAccessToken());
+        accessCookie.setHttpOnly(false);
+        accessCookie.setPath("/");
+        response.addCookie(accessCookie);
+
+        Cookie refreshCookie = new Cookie(JwtUtil.REFRESH_TOKEN, tokensDto.getRefreshToken());
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setSecure(true);
+        refreshCookie.setPath("/");
+        response.addCookie(refreshCookie);
+
+    }
+
 
 
 

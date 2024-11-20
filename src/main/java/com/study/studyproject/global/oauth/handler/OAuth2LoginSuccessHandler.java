@@ -10,6 +10,7 @@ import com.study.studyproject.login.repository.RefreshRepository;
 import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.member.repository.MemberRepository;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -62,12 +63,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                             token -> refreshRepository.save(token.updateToken(allToken.getRefreshToken())), // 존재한다면
                             () -> refreshRepository.save(RefreshToken.toEntity(allToken, loginRequest)) //존재하지 않으면
                     );
-            jwtUtil.setHeader(response, allToken);
+            jwtUtil.setCookie(response, allToken);
 
             String redirectionUri = uriBuilder
                     .queryParam("loginSuccess", true)
                     .build()
                     .toUriString();
+
+
             response.sendRedirect(redirectionUri);
         }
     }
