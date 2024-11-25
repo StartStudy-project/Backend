@@ -80,13 +80,16 @@ pwd :Y@3r9o$7k
 
 
 ### Infra
-![image](https://github.com/user-attachments/assets/ce8d097f-5bae-4cf9-979d-df9869df3421)
+![image](https://github.com/user-attachments/assets/43f3ecb6-30fc-4d11-b1cf-f60e87437ae3)
 
 
 ## 프로젝트 아키텍처
-![starstudy drawio (2)](https://github.com/user-attachments/assets/eb0e80ea-828c-4b0f-bcaf-4d681c8620e6)
+![starstudy drawio](https://github.com/user-attachments/assets/ebf859ff-b08f-4b9c-9950-9aabe78856d6)
 
 
+
+## 백엔드 아키텍처 
+![image](https://github.com/user-attachments/assets/652126b7-a382-416a-ade8-671ec8e3ada9)
 
 
 ### CI/CD
