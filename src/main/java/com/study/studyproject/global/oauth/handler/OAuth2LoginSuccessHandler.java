@@ -1,5 +1,6 @@
 package com.study.studyproject.global.oauth.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.oauth2.sdk.TokenResponse;
 import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.jwt.JwtUtil;
@@ -17,7 +18,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -35,8 +41,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final MemberRepository memberRepository;
     private final RefreshRepository refreshRepository;
 
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
     @Value("${location}")
-    private  String location;
+    private String location;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -44,7 +52,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         UserDetailsImpl oAuth2User = (UserDetailsImpl) authentication.getPrincipal();
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(location);
-
 
         Optional<Member> findMember = memberRepository.findById(oAuth2User.getMemberId());
         if (findMember.isEmpty()) { // 존재하지 않는 다면
@@ -64,16 +71,15 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                             () -> refreshRepository.save(RefreshToken.toEntity(allToken, loginRequest)) //존재하지 않으면
                     );
             jwtUtil.setCookie(response, allToken);
-
             String redirectionUri = uriBuilder
                     .queryParam("loginSuccess", true)
                     .build()
                     .toUriString();
-
-
             response.sendRedirect(redirectionUri);
         }
+
     }
 
 }
+
 

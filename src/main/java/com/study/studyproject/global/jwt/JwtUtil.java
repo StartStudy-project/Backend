@@ -7,12 +7,12 @@ import com.study.studyproject.login.repository.RefreshRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,6 +42,8 @@ public class JwtUtil {
 
 
 
+    @Value("${location}")
+    private String serverIp;
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -77,16 +79,22 @@ public class JwtUtil {
     }
 
     public void setCookie(HttpServletResponse response, TokenDtoResponse tokensDto) {
-        Cookie accessCookie = new Cookie(JwtUtil.ACCESS_TOKEN, tokensDto.getAccessToken());
-        accessCookie.setHttpOnly(false);
-        accessCookie.setPath("/");
-        response.addCookie(accessCookie);
+        ResponseCookie accessTokenCookie = ResponseCookie.from(ACCESS_TOKEN, tokensDto.getAccessToken())
+                .path("/")
+                .httpOnly(false)
+                .secure(true)
+                .sameSite("None")
+                .build();
 
-        Cookie refreshCookie = new Cookie(JwtUtil.REFRESH_TOKEN, tokensDto.getRefreshToken());
-        refreshCookie.setHttpOnly(true);
-        refreshCookie.setSecure(true);
-        refreshCookie.setPath("/");
-        response.addCookie(refreshCookie);
+        ResponseCookie refreshTokenCookie = ResponseCookie.from(REFRESH_TOKEN, tokensDto.getRefreshToken())
+                .path("/")
+                .httpOnly(false)
+                .secure(true)
+                .sameSite("None")
+                .build();
+        response.addHeader("Set-Cookie", accessTokenCookie.toString());
+        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
+
 
     }
 
