@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import static jakarta.persistence.FetchType.LAZY;
 
 
@@ -42,6 +44,11 @@ public class PostLike extends BaseTimeEntity {
                 .board(board)
                 .build();
     }
+
+    public static boolean isPostLikes(List<PostLike> postLikes) {
+        return postLikes.size() != 0;
+    }
+
 
 
 

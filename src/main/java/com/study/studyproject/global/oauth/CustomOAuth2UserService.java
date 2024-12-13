@@ -58,10 +58,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 
     private SocialType getSocialType(String registrationId) {
-        if (NAVER.name().equalsIgnoreCase(registrationId)) {
+        if ("NAVER".equals(registrationId)) {
             return NAVER;
         }
-        if (KAKAO.name().equalsIgnoreCase(registrationId)) {
+        if ("KAKAO".equals(registrationId)) {
             return KAKAO;
         }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.ErrorCode;
 import com.study.studyproject.global.exception.ex.TokenNotValidationException;
+import com.study.studyproject.login.domain.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,22 +34,12 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("로그인");
 
-        String path = request.getRequestURI();
-        if (path.equals("/renew-token")) {
-            filterChain.doFilter(request, response); // 다음 필터로 이동
-            return;
-        }
-
         String accessToken = jwtUtil.getHeaderToken(request, JwtUtil.ACCESS_TOKEN);
-        log.info("accessToken : {}", accessToken);
 
         accessToken = jwtUtil.resolveToken(accessToken);
         if (accessToken == null) {
-            setAuthentication(null);
         }
-
-
-        if (accessToken != null) {//  회원일 경우,
+        if (accessToken != null ) {//  회원일 경우,
             if (jwtUtil.AccessTokenValidation(accessToken)) { // AccessToken 사용 가능
                 String emailFromToken = jwtUtil.getEmailFromToken(accessToken);
                 setAuthentication(emailFromToken);
@@ -57,7 +48,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 return;
             }
         }
+
         filterChain.doFilter(request, response);
+
 
 
 

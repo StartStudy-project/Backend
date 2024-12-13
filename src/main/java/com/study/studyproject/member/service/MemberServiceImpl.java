@@ -45,7 +45,6 @@ public class MemberServiceImpl implements MemberService{
 
         if (memberRepository.existsByNickname(memberUpdateResDto.getNickname())) {
             throw new DuplicateException(NICKNAME_DUPLICATED);
-
         }
 
 

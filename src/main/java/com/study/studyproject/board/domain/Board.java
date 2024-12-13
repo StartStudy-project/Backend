@@ -2,6 +2,7 @@ package com.study.studyproject.board.domain;
 
 import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.global.config.BaseTimeEntity;
+import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.postlike.domain.PostLike;
 import com.study.studyproject.reply.domain.Reply;
@@ -15,6 +16,9 @@ import org.hibernate.annotations.ColumnDefault;
 import java.util.List;
 
 import static com.study.studyproject.board.domain.Recruit.*;
+import static com.study.studyproject.global.exception.ex.ErrorCode.UNABLE_DELETE_BOARD;
+import static com.study.studyproject.postlike.domain.PostLike.isPostLikes;
+import static com.study.studyproject.reply.domain.Reply.isReplies;
 
 @Getter
 @Entity
@@ -116,6 +120,11 @@ public class Board extends BaseTimeEntity {
     }
 
 
+    public static void validateDeleteBoard(List<Reply> replies, List<PostLike> postLikes) throws NotFoundException {
+        if (isReplies(replies) || isPostLikes(postLikes)) {
+            throw new NotFoundException(UNABLE_DELETE_BOARD);
+        }
+    }
 
 
 
