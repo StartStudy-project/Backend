@@ -6,7 +6,9 @@ import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.reply.domain.Reply;
 import com.study.studyproject.global.exception.ex.NotFoundException;
 import com.study.studyproject.member.repository.MemberRepository;
+import com.study.studyproject.reply.dto.ReplyInfoResponseDto;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
+import com.study.studyproject.reply.dto.ReplyResponseDto;
 import com.study.studyproject.reply.dto.UpdateReplyRequest;
 import com.study.studyproject.reply.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +16,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static com.study.studyproject.global.exception.ex.ErrorCode.*;
+import static com.study.studyproject.reply.dto.ReplyInfoResponseDto.convertReplyToDto;
+import static com.study.studyproject.reply.dto.ReplyResponseDto.ReplyResponseToDto;
 
 @Slf4j
 @Service
@@ -26,6 +35,31 @@ public class ReplyServiceImpl implements ReplyService {
     private final BoardRepository boardRepository;
     private final ReplyRepository replyRepository;
     private final MemberRepository memberRepository;
+
+
+    public ReplyResponseDto getRepliesForOneBoard(Long boardId) {
+        List<Reply> comments = replyRepository.findByBoardReply(boardId);
+        List<ReplyInfoResponseDto> commentResponseDTOList = getReplyInfoResponseDtos(comments);
+        return ReplyResponseToDto(comments.size(), commentResponseDTOList);
+    }
+
+    private static List<ReplyInfoResponseDto> getReplyInfoResponseDtos(List<Reply> comments) {
+
+        List<ReplyInfoResponseDto> commentResponseDTOList = new ArrayList<>();
+        Map<Long, ReplyInfoResponseDto> commentDTOHashMap = new HashMap<>();
+
+
+        comments.forEach(c -> {
+            ReplyInfoResponseDto commentResponseDTO = convertReplyToDto(c);
+            commentDTOHashMap.put(commentResponseDTO.getReplyId(), commentResponseDTO);
+            if (c.getParent() != null) // 자식일 경우
+                commentDTOHashMap.get(c.getParent().getId()).getChildren().add(commentResponseDTO);
+            else commentResponseDTOList.add(commentResponseDTO); // 부모일 경우
+        });
+
+        return commentResponseDTOList;
+    }
+
 
     @Transactional
     public void insert(Long memberId, ReplyRequestDto replyRequestDto) {

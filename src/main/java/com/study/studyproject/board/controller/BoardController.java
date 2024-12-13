@@ -31,21 +31,21 @@ public class BoardController {
     //글쓰기 수정
     @PatchMapping("member")
     @Operation(summary = "글쓰기 수정", description = "글쓰기 수정 기능")
-    public ResponseEntity<GlobalResultDto> updateWriting(@RequestBody @Validated  BoardReUpdateRequestDto boardReUpdateRequestDto) {
+    public ResponseEntity<GlobalResultDto> updateWriting(@RequestBody @Validated BoardReUpdateRequestDto boardReUpdateRequestDto) {
         return ResponseEntity.ok(boardService.updateWrite(boardReUpdateRequestDto));
 
     }
 
     @PostMapping("member")
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
-    public ResponseEntity<GlobalResultDto> writing(@RequestBody @Validated  BoardWriteRequestDto boardWriteRequestDto,@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails)  {
-        return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto,userDetails.getMemberId()));
+    public ResponseEntity<GlobalResultDto> writing(@RequestBody @Validated BoardWriteRequestDto boardWriteRequestDto, @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto, userDetails.getMemberId()));
 
     }
 
     @Operation(summary = "모집구분 변경", description = "모집구분 변경")
     @PatchMapping("/member/recruit/{boardId}")
-    public ResponseEntity<GlobalResultDto> changeRecruit(@PathVariable(name = "boardId") Long boardId ) {
+    public ResponseEntity<GlobalResultDto> changeRecruit(@PathVariable(name = "boardId") Long boardId) {
         return ResponseEntity.ok(boardService.changeRecruit(boardId));
     }
 
@@ -53,25 +53,24 @@ public class BoardController {
     //삭제
     @DeleteMapping("member/{boardId}")
     @Operation(summary = "게시글 삭제 ", description = "해당 게시글 삭제")
-    public ResponseEntity<GlobalResultDto> deleteBoard(@PathVariable(name = "boardId",required = true) Long boardId) {
-        return ResponseEntity.ok(boardService.boardDeleteOne(boardId,null));
+    public ResponseEntity<GlobalResultDto> deleteBoard(@PathVariable(name = "boardId", required = true) Long boardId) {
+        return ResponseEntity.ok(boardService.boardDeleteOne(boardId, null));
     }
 
 
     //글 조회 1개 -
     @GetMapping("/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
-    public ResponseEntity<BoardOneResponseDto> getBoard(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId,	@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails
-,HttpServletRequest request,
-    HttpServletResponse response
+    public ResponseEntity<BoardOneResponseDto> getBoard(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId,
+                                                        @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails
+            , HttpServletRequest request,HttpServletResponse response
 
     ) {
-        boardService.updateView(boardId,  request,  response);
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId,userDetails);
+        boardService.updateView(boardId, request, response);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(boardId, userDetails);
         return ResponseEntity.ok(boardOneResponseDto);
 
     }
-
 
 
 }

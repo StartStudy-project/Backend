@@ -1,18 +1,15 @@
 package com.study.studyproject.reply.controller;
 
-import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.reply.dto.ReplyRequestDto;
+import com.study.studyproject.reply.dto.ReplyResponseDto;
 import com.study.studyproject.reply.dto.UpdateReplyRequest;
-import com.study.studyproject.reply.service.ReplyService;
 import com.study.studyproject.reply.service.ReplyServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +21,13 @@ public class ReplyController {
 
     private final ReplyServiceImpl replyService;
     private final JwtUtil jwtUtil;
+
+    @GetMapping("/view/{boardId}")
+    @Operation(summary = "댓글 조회", description = "댓글 조회")
+    public ResponseEntity<ReplyResponseDto> selectReply(@PathVariable("boardId") Long boardId) {
+        return ResponseEntity.ok(replyService.getRepliesForOneBoard(boardId));
+    }
+
     @PostMapping
     @Operation(summary = "댓글 추가", description = "댓글 추가")
     public void insertReply(@RequestHeader("Access_Token") String token
