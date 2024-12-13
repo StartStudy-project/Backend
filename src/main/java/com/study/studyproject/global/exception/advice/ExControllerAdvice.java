@@ -59,8 +59,6 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors()
                 .forEach(c -> errors.put(((FieldError) c).getField(), c.getDefaultMessage()));
-        log.error("error :{}" ,errors);
-
         return ResponseEntity.status(status.value()).body(errors);
     }
 

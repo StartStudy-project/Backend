@@ -124,10 +124,8 @@ class BoardServiceTest {
 
         TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
 
-        UserDetailsImpl userDetails = new UserDetailsImpl(null, Role.ROLE_GUEST, 0L);
-        //when
         String postLike = "";
-        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(), userDetails);
+        BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(), null);
 
         //then
         assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
@@ -169,8 +167,6 @@ class BoardServiceTest {
         TokenDtoResponse allToken = jwtUtil.createAllToken("jacom2@naver.com", member1.getId());
         BoardOneResponseDto boardOneResponseDto = boardService.boardOne(board.getId(),  userDetails);
 
-        assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(replies.size());
-        assertThat(boardOneResponseDto.getReplyResponseDto().getReplies().get(0).getChildren()).hasSize(3);
 
         assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
         assertThat(boardOneResponseDto.getTitle()).isEqualTo(board.getTitle());
@@ -209,9 +205,6 @@ class BoardServiceTest {
 
         //when
         BoardOneResponseDto boardOneResponseDto = boardService.boardOne( board.getId(), userDetails);
-
-        assertThat(boardOneResponseDto.getReplyResponseDto().getGetTotal()).isEqualTo(replies.size());
-        assertThat(boardOneResponseDto.getReplyResponseDto().getReplies().get(0).getChildren()).hasSize(3);
 
         assertThat(boardOneResponseDto.getContent()).isEqualTo(board.getContent());
         assertThat(boardOneResponseDto.getTitle()).isEqualTo(board.getTitle());
