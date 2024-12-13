@@ -37,11 +37,6 @@ public class UserDetailsImpl implements UserDetails, OAuth2User {
     }
 
 
-    public UserDetailsImpl guest() {
-        return new UserDetailsImpl(null,Role.ROLE_GUEST, 0L);
-    }
-
-    @Override
     public Map<String, Object> getAttributes() {
         return null;
     }
@@ -79,11 +74,6 @@ public class UserDetailsImpl implements UserDetails, OAuth2User {
 
     public String getEmail() {
         return member != null ? member.getEmail():null;
-    }
-
-
-    public boolean isGuest(){
-        return member == null;
     }
 
 
