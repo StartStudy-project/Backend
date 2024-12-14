@@ -99,9 +99,6 @@ public class JwtUtil {
     }
 
 
-
-
-
     // 토큰 생성
     public TokenDtoResponse createAllToken(String email, Long id) {
         String access = createToken(email, id, ACCESS_TOKEN);
@@ -156,8 +153,8 @@ public class JwtUtil {
 
     public boolean isValidRefreshAndInValidAccess(String accessToken, String refreshToken) {
         validateRefreshToken(refreshToken);
-        if(!AccessTokenValidation(accessToken)) return true;
-        return false;
+        if(AccessTokenValidation(accessToken)) return false;
+        return true;
     }
 
 

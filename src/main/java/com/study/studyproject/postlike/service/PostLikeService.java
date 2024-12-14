@@ -8,7 +8,8 @@ import com.study.studyproject.postlike.domain.PostLike;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.exception.ex.BadRequestException;
 import com.study.studyproject.global.exception.ex.NotFoundException;
-import com.study.studyproject.member.repository.MemberRepository;
+import com.study.studyproject.postlike.domain.PostLikeState;
+import com.study.studyproject.postlike.dto.PostLikeOneResponseDto;
 import com.study.studyproject.postlike.repository.PostLikeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,31 @@ import static com.study.studyproject.global.exception.ex.ErrorCode.*;
 @Transactional
 @RequiredArgsConstructor
 public class PostLikeService {
-
-    private final MemberRepository memberRepository;
     private final PostLikeRepository postLikeRepository;
     private final BoardRepository boardRepository;
+
+
+    public PostLikeOneResponseDto getPostLikeForOneBoard(Member member, Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
+        Long postLikeId = findByPostLikeId(member, boardId);
+        String  postLikeValue = findByPostLike(member, board);
+        return PostLikeOneResponseDto.of(postLikeValue,postLikeId);
+    }
+
+    public Long findByPostLikeId(Member member, long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BOARD));
+        Optional<PostLike> byBoardAndMember = postLikeRepository.findByBoardAndMember(board, member);
+        if (byBoardAndMember.isPresent()) {
+            return byBoardAndMember.get().getId();
+        }
+        return null;
+    }
+
+    private String findByPostLike(Member member, Board board) {
+            Optional<PostLike> byBoardAndMember = postLikeRepository.findByBoardAndMember(board, member);
+            return byBoardAndMember.isPresent() ? PostLikeState.LIKING.getName() : PostLikeState.LIKE.getName();
+    }
+
 
     public GlobalResultDto postLikeSave(Long boardId ,Member member) {
         Board board = boardRepository.findById(boardId).orElseThrow(()-> new NotFoundException(NOT_FOUND_BOARD));
@@ -42,4 +64,6 @@ public class PostLikeService {
         postLikeRepository.deleteById(postLikeId);
         return new GlobalResultDto("관심글이 삭제되었습니다.", HttpStatus.OK.value());
     }
+
+
 }

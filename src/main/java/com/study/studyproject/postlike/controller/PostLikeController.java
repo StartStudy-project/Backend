@@ -3,16 +3,16 @@ package com.study.studyproject.postlike.controller;
 
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
-import com.study.studyproject.global.jwt.JwtUtil;
-import com.study.studyproject.member.dto.UserInfoResponseDto;
+import com.study.studyproject.login.domain.Role;
+import com.study.studyproject.postlike.dto.PostLikeOneResponseDto;
 import com.study.studyproject.postlike.service.PostLikeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -20,9 +20,21 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/post-like/")
 @Tag(name = "사용자 관심 글",description = "사용장 관심 글 기능 수정 및 삭제")
+@Slf4j
 public class PostLikeController {
 
     private final PostLikeService postLikeService;
+
+    @Operation(summary = "관심 여부", description = "게시글 관심 조회")
+    @GetMapping("{boardId}")
+    public ResponseEntity<PostLikeOneResponseDto> postLikeView(@PathVariable("boardId") Long boardId, @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if(Role.isAnonymous()){
+            return null;
+        }
+        return ResponseEntity.ok(postLikeService.getPostLikeForOneBoard(userDetails.getMember(), boardId));
+
+    }
+
 
     @Operation(summary = "관심글 등록", description = "사용자의 관심글 등록합니다.")
     @PostMapping("{boardId}")

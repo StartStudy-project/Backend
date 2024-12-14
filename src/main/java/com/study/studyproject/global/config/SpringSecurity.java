@@ -14,14 +14,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.filter.CorsFilter;
@@ -58,13 +61,12 @@ public class SpringSecurity {
     }
 
 
-
     /**
      * 로그인 성공 시 호출되는 LoginSuccessJWTProviderHandler 빈 등록
      */
     @Bean
     public OAuth2LoginSuccessHandler loginSuccessHandler() {
-        return new OAuth2LoginSuccessHandler(jwtUtil,memberRepository,refreshRepository);
+        return new OAuth2LoginSuccessHandler(jwtUtil, memberRepository, refreshRepository);
     }
 
     /**
@@ -74,6 +76,14 @@ public class SpringSecurity {
     public OAuth2LoginFailureHandler loginFailureHandler() {
         return new OAuth2LoginFailureHandler();
     }
+
+
+    @Bean
+    public AnonymousAuthenticationFilter anonymousAuthenticationFilter() {
+        return new AnonymousAuthenticationFilter("anonymousKey", "anonymousUser",
+                AuthorityUtils.createAuthorityList("ROLE_GUEST"));
+    }
+
 
 
     @Bean
@@ -89,19 +99,20 @@ public class SpringSecurity {
                 );
 
         http.oauth2Login(
-                        oauth2 -> oauth2.userInfoEndpoint(userInfoEndpointConfig ->
-                                        userInfoEndpointConfig.userService(customOAuth2UserService))
-                                .successHandler(loginSuccessHandler())
-                                .failureHandler(loginFailureHandler()));
+                oauth2 -> oauth2.userInfoEndpoint(userInfoEndpointConfig ->
+                                userInfoEndpointConfig.userService(customOAuth2UserService))
+                        .successHandler(loginSuccessHandler())
+                        .failureHandler(loginFailureHandler()));
 
 
         http.authorizeHttpRequests(authorize ->
                 authorize
-                        .requestMatchers("/board/member/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("/reply/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("/postLike/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/reply/view/**").permitAll()
+                        .requestMatchers("/board/member/**").authenticated()
+                        .requestMatchers("/user/**").authenticated()
+                        .requestMatchers("/postLike/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/reply/**").authenticated()
                         .anyRequest().permitAll()
         );
 

@@ -63,7 +63,6 @@ public class Reply extends BaseTimeEntity {
 
 
 
-
     public static Reply toEntity(ReplyRequestDto replyRequestDto, Board board, Member member) {
         return Reply.builder()
                 .content(replyRequestDto.getContent())
@@ -97,6 +96,10 @@ public class Reply extends BaseTimeEntity {
 
     public void ChangeIsDeleted(Boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public static boolean isReplies(List<Reply> replies) {
+        return replies.size() != 0;
     }
 
 
