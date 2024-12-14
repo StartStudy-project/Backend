@@ -1,0 +1,12 @@
+version: "3.2"
+services:
+  frontend:
+    restart: always
+    command: npm run dev
+    container_name: studyproject # 원하는 이름으로 변경
+    build:
+      context: ./ # 프로젝트 경로에 맞게 변경
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173" # 원하는 포트로 변경
+    stdin_open: true
