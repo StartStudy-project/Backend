@@ -37,8 +37,6 @@ public class JwtFilter extends OncePerRequestFilter {
         String accessToken = jwtUtil.getHeaderToken(request, JwtUtil.ACCESS_TOKEN);
 
         accessToken = jwtUtil.resolveToken(accessToken);
-        if (accessToken == null) {
-        }
         if (accessToken != null ) {//  회원일 경우,
             if (jwtUtil.AccessTokenValidation(accessToken)) { // AccessToken 사용 가능
                 String emailFromToken = jwtUtil.getEmailFromToken(accessToken);
