@@ -107,14 +107,12 @@ public class SpringSecurity {
 
         http.authorizeHttpRequests(authorize ->
                 authorize
-                        .requestMatchers("/reply/view/**").permitAll()
-                        .requestMatchers("/board/member/**").authenticated()
-                        .requestMatchers("/user/**").authenticated()
-                        .requestMatchers("/postLike/**").authenticated()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/reply/**").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers("api/v*/reply/view/**", "api/v*/**").permitAll()
+                        .requestMatchers("api/v*/board/member/**", "**/user/**", "api/v*/postLike/**", "api/v*/reply/**").authenticated()
+                        .requestMatchers("api/v*/admin/**").hasRole("ADMIN")
         );
+
+
 
 
         http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);

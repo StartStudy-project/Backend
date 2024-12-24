@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping("api/")
 @Tag(name = "관리자 기능",description = "사용자 전체조회와 관리자 정보 조회")
 public class AdminController {
 
@@ -29,7 +29,7 @@ public class AdminController {
     private final BoardService boardService;
 
 
-    @GetMapping("/user-all")
+    @GetMapping("v1/admin/user-all")
     @Operation(summary = "전체 사용자 조회", description = "사용자 검색 조회 및 사용자 전체 조회 가능")
     public ResponseEntity<Page<UserInfoResponseDto>> userAllInfo(
             @RequestParam(required = false,value = "username") String username,
@@ -37,14 +37,14 @@ public class AdminController {
         return ResponseEntity.ok(adminService.userInfoAll(username,pageable));
     }
 
-    @GetMapping("/dash-board")
+    @GetMapping("v1/admin/dash-board")
     @Operation(summary = "관리자 대시보드 ", description = "관리자 정보와 게시글 정보 조회")
     public ResponseEntity<AdminDashBoardResponseDto> adminDashInfo(            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                    MemberListRequestDto memberListRequestDto, @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.ok(adminService.adminDashBoardInfo(userDetails.getMember(), memberListRequestDto, pageable));
     }
 
-    @DeleteMapping("/board/{boardId}")
+    @DeleteMapping("v1/admin/board/{boardId}")
     @Operation(summary = "관리자 게시글 삭제 ", description = "관리자 게시글 삭제")
     public ResponseEntity<GlobalResultDto> adminDelete(@PathVariable(name = "boardId") Long boardId) {
         return ResponseEntity.ok(boardService.boardDeleteOne(boardId,Role.ROLE_ADMIN));
