@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/")
+@RequestMapping("/api/")
 @Tag(name = "마이페이지 기능", description = "사용자 마이페이지 기능 구현 ")
 public class MemberController {
 

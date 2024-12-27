@@ -36,7 +36,7 @@ public class LoginController {
 
     //회원가입
     @Operation(summary = "회원가입", description = "사용자 회원가입")
-    @PostMapping("v1/sign")
+    @PostMapping("v1/auth/sign")
     public ResponseEntity<GlobalResultDto> sign(@Validated @RequestBody SignRequest signRequest) {
         return ResponseEntity.ok(loginService.sign(signRequest));
 
@@ -44,21 +44,21 @@ public class LoginController {
 
 
     @Operation(summary = "로그인", description = "사용자 로그인")
-    @PostMapping("v1/login")
+    @PostMapping("v1/auth/login")
     public ResponseEntity<LoginResponseDto> login(@Validated @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         return ResponseEntity.ok(loginService.loginService(loginRequest, response));
 
     }
 
     @Operation(summary = "로그아웃", description = "사용자 로그아웃")
-    @PostMapping("v1/service-logout")
+    @PostMapping("v1/auth/service-logout")
     public ResponseEntity<GlobalResultDto> logout(@RequestHeader("Access_Token") String token) {
         return ResponseEntity.ok(logoutService.logoutService(token));
     }
 
 
     @Operation(summary = "토큰 재발급", description = "토큰 재발급")
-    @PostMapping("v1//renew-token")
+    @PostMapping("/renew-token")
     public ResponseEntity<AccessTokenResponse> renewAccessToken(
             @RequestHeader("Access_Token") String access_token,
             @RequestHeader("Refresh_Token") String refresh_token,

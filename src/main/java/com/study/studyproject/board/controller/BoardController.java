@@ -44,7 +44,7 @@ public class BoardController {
     }
 
     @Operation(summary = "모집구분 변경", description = "모집구분 변경")
-    @PatchMapping("v1/member/recruit/{boardId}")
+    @PatchMapping("v1/board/member/recruit/{boardId}")
     public ResponseEntity<GlobalResultDto> changeRecruit(@PathVariable(name = "boardId") Long boardId) {
         return ResponseEntity.ok(boardService.changeRecruit(boardId));
     }
