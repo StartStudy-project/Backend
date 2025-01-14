@@ -21,7 +21,7 @@ public class MainController {
 
     private final ListService listService;
 
-    @GetMapping("/")
+    @GetMapping("/api/v1/")
     public ResponseEntity<Page<ListResponseDto>> mainList(
             @RequestParam(value = "title",required = false) String title,
              MainRequestDto mainRequestDto,

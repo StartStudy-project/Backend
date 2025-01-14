@@ -59,7 +59,7 @@ class PostLikeControllerTest {
         System.out.println("board.getId() = " + board.getId());
 
         //when then
-        mockMvc.perform(post("/post-like/" + board.getId())
+        mockMvc.perform(post("/api/v1/post-like/" +board.getId())
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                 )
@@ -80,7 +80,7 @@ class PostLikeControllerTest {
 
 
         //when then
-        mockMvc.perform(delete("/post-like/"+postLike1.getId())
+        mockMvc.perform(delete("/api/v1/post-like/"+postLike1.getId())
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                 )

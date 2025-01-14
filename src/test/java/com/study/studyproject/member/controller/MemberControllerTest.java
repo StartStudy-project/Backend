@@ -80,7 +80,7 @@ class MemberControllerTest {
         TokenDtoResponse allToken = jwtUtil.createAllToken(member.getEmail(), member.getId());
 
         //when         //then
-        mockMvc.perform(get("/user/info")
+        mockMvc.perform(get("/api/v1/user/info")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER+allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER+allToken.getRefreshToken())
                 )
@@ -98,7 +98,7 @@ class MemberControllerTest {
         //given
 
         //when         //then
-        mockMvc.perform(get("/user/info")
+        mockMvc.perform(get("/api/v1/user/info")
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isUnauthorized());
@@ -116,7 +116,7 @@ class MemberControllerTest {
         MemberUpdateResDto memberUpdateResDto = new MemberUpdateResDto("수정이름", "수정닉네임");
 
         //when
-        mockMvc.perform(patch("/user/info")
+        mockMvc.perform(patch("/api/v1/user/info")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(memberUpdateResDto))
@@ -140,7 +140,7 @@ class MemberControllerTest {
         MemberUpdateResDto memberUpdateResDto = new MemberUpdateResDto(null, "수정닉네임");
 
         //when
-        mockMvc.perform(patch("/user/info")
+        mockMvc.perform(patch("/api/v1/user/info")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(memberUpdateResDto))
@@ -162,7 +162,7 @@ class MemberControllerTest {
         MemberUpdateResDto memberUpdateResDto = new MemberUpdateResDto(null, null);
 
         //when //then
-        mockMvc.perform(patch("/user/info")
+        mockMvc.perform(patch("/api/v1/user/info")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(memberUpdateResDto))
@@ -190,7 +190,7 @@ class MemberControllerTest {
         query_param.add("size","10");
 
         //when then
-        mockMvc.perform(get("/user/lists")
+        mockMvc.perform(get("/api/v1/user/lists")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .params(query_param)
@@ -223,7 +223,7 @@ class MemberControllerTest {
 
 
         //when then
-        mockMvc.perform(get("/user/lists")
+        mockMvc.perform(get("/api/v1/user/lists")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .params(query_param)
@@ -255,7 +255,7 @@ class MemberControllerTest {
         int size = 10;
 
         //when //then
-        mockMvc.perform(get("/user/lists")
+        mockMvc.perform(get("/api/v1/user/lists")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .param("page", String.valueOf(page))
                         .param("size", String.valueOf(size))

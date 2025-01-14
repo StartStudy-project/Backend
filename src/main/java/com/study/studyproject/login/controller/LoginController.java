@@ -28,6 +28,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequiredArgsConstructor
 @Tag(name = "로그인/로그아웃/회원가입 기능", description = "사용자의 로그인과 로그아웃 회원가입 기능")
 @Slf4j
+@RequestMapping("/api/")
 public class LoginController {
 
     private final LoginService loginService;
@@ -35,7 +36,7 @@ public class LoginController {
 
     //회원가입
     @Operation(summary = "회원가입", description = "사용자 회원가입")
-    @PostMapping("/sign")
+    @PostMapping("v1/auth/sign")
     public ResponseEntity<GlobalResultDto> sign(@Validated @RequestBody SignRequest signRequest) {
         return ResponseEntity.ok(loginService.sign(signRequest));
 
@@ -43,14 +44,14 @@ public class LoginController {
 
 
     @Operation(summary = "로그인", description = "사용자 로그인")
-    @PostMapping("/login")
+    @PostMapping("v1/auth/login")
     public ResponseEntity<LoginResponseDto> login(@Validated @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         return ResponseEntity.ok(loginService.loginService(loginRequest, response));
 
     }
 
     @Operation(summary = "로그아웃", description = "사용자 로그아웃")
-    @PostMapping("/service-logout")
+    @PostMapping("v1/auth/service-logout")
     public ResponseEntity<GlobalResultDto> logout(@RequestHeader("Access_Token") String token) {
         return ResponseEntity.ok(logoutService.logoutService(token));
     }

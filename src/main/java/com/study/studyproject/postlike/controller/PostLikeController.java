@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/post-like/")
+@RequestMapping("/api/")
 @Tag(name = "사용자 관심 글",description = "사용장 관심 글 기능 수정 및 삭제")
 @Slf4j
 public class PostLikeController {
@@ -26,7 +26,7 @@ public class PostLikeController {
     private final PostLikeService postLikeService;
 
     @Operation(summary = "관심 여부", description = "게시글 관심 조회")
-    @GetMapping("{boardId}")
+    @GetMapping("v1/view/post-like/{boardId}")
     public ResponseEntity<PostLikeOneResponseDto> postLikeView(@PathVariable("boardId") Long boardId, @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if(Role.isAnonymous()){
             return null;
@@ -37,14 +37,15 @@ public class PostLikeController {
 
 
     @Operation(summary = "관심글 등록", description = "사용자의 관심글 등록합니다.")
-    @PostMapping("{boardId}")
-    public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable Long boardId, @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PostMapping("v1/post-like/{boardId}")
+    public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable("boardId") Long boardId, @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.info("들어옴");
         return ResponseEntity.ok(postLikeService.postLikeSave(boardId,userDetails.getMember()));
     }
 
 
     @Operation(summary = "관심글 삭제", description = "사용자의 관심글 삭제합니다.")
-    @DeleteMapping("{postLikeId}")
+    @DeleteMapping("v1/post-like/{postLikeId}")
     public ResponseEntity<GlobalResultDto> postLikeDelete(@PathVariable(name = "postLikeId") Long postLikeId) {
         return ResponseEntity.ok(postLikeService.postLikeDelete(postLikeId));
     }

@@ -62,7 +62,7 @@ class MainControllerTest {
         boardRepository.save(board2);
 
         //when & then
-        mockMvc.perform(get("/")
+        mockMvc.perform(get("/api/v1/")
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -86,7 +86,7 @@ class MainControllerTest {
         board1.updateViewCnt();
 
         //when & then
-        mockMvc.perform(get("/")
+        mockMvc.perform(get("/api/v1/")
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -117,7 +117,7 @@ class MainControllerTest {
 
 
         //when & then
-        mockMvc.perform(get("/")
+        mockMvc.perform(get("/api/v1/")
                         .param("title", title)
 
                 )
@@ -147,7 +147,7 @@ class MainControllerTest {
 
 
         //when & then
-        mockMvc.perform(get("/")
+        mockMvc.perform(get("/api/v1/")
                         .param("Category", "CS")
                         .param("connectionType", "OFFLINE")
 

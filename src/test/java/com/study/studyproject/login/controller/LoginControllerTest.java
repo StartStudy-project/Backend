@@ -59,7 +59,7 @@ class LoginControllerTest {
 
 
         //when then
-        mockMvc.perform(post("/sign")
+        mockMvc.perform(post("/api/v1/auth/sign")
                         .content(objectMapper.writeValueAsString(signRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -83,7 +83,7 @@ class LoginControllerTest {
                 .checkPwd("!12341234")
                 .build();
         //when & then
-        mockMvc.perform(post("/sign")
+        mockMvc.perform(post("/api/v1/auth/sign")
                         .content(objectMapper.writeValueAsString(signRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -105,7 +105,7 @@ class LoginControllerTest {
                 .build();
 
         //when & then
-        mockMvc.perform(post("/sign")
+        mockMvc.perform(post("/api/v1/auth/sign")
                         .content(objectMapper.writeValueAsString(signRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -126,7 +126,7 @@ class LoginControllerTest {
 
         //when then
         //when & then
-        mockMvc.perform(post("/login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .content(objectMapper.writeValueAsString(loginRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -145,7 +145,7 @@ class LoginControllerTest {
 
         //when then
         //when & then
-        mockMvc.perform(post("/login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .content(objectMapper.writeValueAsString(loginRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -166,7 +166,7 @@ class LoginControllerTest {
         TokenDtoResponse allToken = jwtUtil.createAllToken(member.getEmail(), member.getId());
 
         //when & then
-        mockMvc.perform(post("/service-logout")
+        mockMvc.perform(post("/api/v1/auth/service-logout")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .content(objectMapper.writeValueAsString(loginRequest))
                         .contentType(MediaType.APPLICATION_JSON)
