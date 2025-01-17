@@ -6,6 +6,7 @@ import com.study.studyproject.board.dto.BoardReUpdateRequestDto;
 import com.study.studyproject.board.dto.BoardWriteRequestDto;
 import com.study.studyproject.board.service.BoardService;
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.auth.AuthUser;
 import com.study.studyproject.global.auth.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,7 +39,7 @@ public class BoardController {
 
     @PostMapping("v1/board/member")
     @Operation(summary = "글쓰기 작성", description = "글쓰기 작성")
-    public ResponseEntity<GlobalResultDto> writing(@RequestBody @Validated BoardWriteRequestDto boardWriteRequestDto, @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<GlobalResultDto> writing(@RequestBody @Validated BoardWriteRequestDto boardWriteRequestDto, @Parameter(hidden = true) @AuthUser UserDetailsImpl userDetails) {
         return ResponseEntity.ok(boardService.boardSave(boardWriteRequestDto, userDetails.getMemberId()));
 
     }
@@ -62,7 +63,7 @@ public class BoardController {
     @GetMapping("v1/board/{boardId}")
     @Operation(summary = "게시글 상세", description = "게시글 상세페이지")
     public ResponseEntity<BoardOneResponseDto> getBoard(@Parameter(description = "게시판 ID") @PathVariable(name = "boardId") Long boardId,
-                                                        @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails
+                                                        @Parameter(hidden = true) @AuthUser UserDetailsImpl userDetails
             , HttpServletRequest request,HttpServletResponse response
 
     ) {

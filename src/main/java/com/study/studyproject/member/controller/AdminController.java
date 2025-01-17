@@ -1,6 +1,7 @@
 package com.study.studyproject.member.controller;
 
 import com.study.studyproject.board.service.BoardService;
+import com.study.studyproject.global.auth.AuthUser;
 import com.study.studyproject.login.domain.Role;
 import com.study.studyproject.global.GlobalResultDto;
 import com.study.studyproject.global.auth.UserDetailsImpl;
@@ -39,7 +40,7 @@ public class AdminController {
 
     @GetMapping("v1/admin/dash-board")
     @Operation(summary = "관리자 대시보드 ", description = "관리자 정보와 게시글 정보 조회")
-    public ResponseEntity<AdminDashBoardResponseDto> adminDashInfo(            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<AdminDashBoardResponseDto> adminDashInfo(            @Parameter(hidden = true) @AuthUser UserDetailsImpl userDetails,
                                                    MemberListRequestDto memberListRequestDto, @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.ok(adminService.adminDashBoardInfo(userDetails.getMember(), memberListRequestDto, pageable));
     }
