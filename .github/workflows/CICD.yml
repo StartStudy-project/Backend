@@ -68,7 +68,7 @@ jobs:
           script_stop: true
           script: |
             cd Backend
-            git pull
+            git pull main
             
             docker stop  backend || true
             docker rm  backend || true
