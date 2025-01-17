@@ -14,12 +14,14 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.study.studyproject.global.exception.ex.ErrorCode.INTERNAL_SEVER_ERROR;
+import static com.study.studyproject.global.exception.ex.ErrorCode.NOT_FOUND_BOARD;
 
 @Slf4j
 @RestControllerAdvice
@@ -29,6 +31,8 @@ public class ExControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<ExceptionResponse> exceptionHandler(BusinessException e) {
         return createErrorResponse(e.getErrorCode());
     }
+
+
 
 
     //500

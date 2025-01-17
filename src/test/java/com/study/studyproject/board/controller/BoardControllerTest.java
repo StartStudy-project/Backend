@@ -67,7 +67,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(MockMvcRequestBuilders.post("/board/member")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/board/member")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -96,7 +96,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(MockMvcRequestBuilders.post("/board/member")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/board/member")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -122,7 +122,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(patch("/board/member")
+        mockMvc.perform(patch("/api/v1/board/member")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -149,7 +149,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(patch("/board/member")
+        mockMvc.perform(patch("/api/v1/board/member")
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -171,7 +171,7 @@ class BoardControllerTest  {
 
 
         // when & then
-        mockMvc.perform(patch("/board/member/recruit/"+board.getId())
+        mockMvc.perform(patch("/api/v1/board/member/recruit/"+board.getId())
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                 )
@@ -193,7 +193,7 @@ class BoardControllerTest  {
         TokenDtoResponse allToken = jwtUtil.createAllToken(member1.getEmail(), member1.getId());
 
         //when then
-        mockMvc.perform(delete("/board/member/"+board.getId())
+        mockMvc.perform(delete("/api/v1/board/member/"+board.getId())
                         .header(jwtUtil.ACCESS_TOKEN, jwtUtil.BEARER + allToken.getAccessToken())
                         .header(jwtUtil.REFRESH_TOKEN, jwtUtil.BEARER + allToken.getRefreshToken())
                 )
@@ -206,7 +206,6 @@ class BoardControllerTest  {
 
     @Test
     @DisplayName("비회원이 게시글을 상세페이지를 조회한다.")
-    @WithMockUser
     void getBoard() throws Exception {
         //given
         Member member1 = createMember("jacom2@naver.com", "!12341234", "사용자명1", "닉네임0");
@@ -214,7 +213,7 @@ class BoardControllerTest  {
         memberRepository.save(member1);
         boardRepository.save(board);
         //when then
-        mockMvc.perform(get("/board/"+board.getId())
+        mockMvc.perform(get("/api/v1/board/"+board.getId())
                         .param("boardId", String.valueOf(board.getId()))
                 )
                 .andExpect(status().isOk())

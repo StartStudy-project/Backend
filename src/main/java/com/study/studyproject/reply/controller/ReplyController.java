@@ -16,19 +16,19 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "댓글 기능 구현", description = "댓글 기능 ")
-@RequestMapping("/reply")
+@RequestMapping("/api/")
 public class ReplyController {
 
     private final ReplyServiceImpl replyService;
     private final JwtUtil jwtUtil;
 
-    @GetMapping("/view/{boardId}")
+    @GetMapping("v1/reply/view/{boardId}")
     @Operation(summary = "댓글 조회", description = "댓글 조회")
     public ResponseEntity<ReplyResponseDto> selectReply(@PathVariable("boardId") Long boardId) {
         return ResponseEntity.ok(replyService.getRepliesForOneBoard(boardId));
     }
 
-    @PostMapping
+    @PostMapping("v1/reply")
     @Operation(summary = "댓글 추가", description = "댓글 추가")
     public void insertReply(@RequestHeader("Access_Token") String token
             , @RequestBody @Validated ReplyRequestDto replyRequestDto) {
@@ -37,13 +37,13 @@ public class ReplyController {
 
     }
 
-    @PatchMapping
+    @PatchMapping("v1/reply")
     @Operation(summary = "댓글 수정")
     public void update( @RequestBody @Validated UpdateReplyRequest updateReplyRequest) {
         replyService.updateReply(updateReplyRequest);
     }
 
-    @DeleteMapping("/{rno}")
+    @DeleteMapping("v1/reply/{rno}")
     @Operation(summary = "댓글 삭제")
     public void delete(@PathVariable("rno") Long rno) {
         replyService.deleteReply(rno);
