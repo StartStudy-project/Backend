@@ -2,6 +2,7 @@ package com.study.studyproject.postlike.controller;
 
 
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.global.auth.CurrentUser;
 import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.login.domain.Role;
 import com.study.studyproject.postlike.dto.PostLikeOneResponseDto;
@@ -27,7 +28,7 @@ public class PostLikeController {
 
     @Operation(summary = "관심 여부", description = "게시글 관심 조회")
     @GetMapping("{boardId}")
-    public ResponseEntity<PostLikeOneResponseDto> postLikeView(@PathVariable("boardId") Long boardId, @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<PostLikeOneResponseDto> postLikeView(@PathVariable("boardId") Long boardId, @Parameter(hidden = true) @CurrentUser UserDetailsImpl userDetails) {
         if(Role.isAnonymous()){
             return null;
         }
@@ -38,7 +39,7 @@ public class PostLikeController {
 
     @Operation(summary = "관심글 등록", description = "사용자의 관심글 등록합니다.")
     @PostMapping("{boardId}")
-    public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable Long boardId, @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<GlobalResultDto> postLikeSave(@PathVariable Long boardId, @Parameter(hidden = true) @CurrentUser UserDetailsImpl userDetails) {
         return ResponseEntity.ok(postLikeService.postLikeSave(boardId,userDetails.getMember()));
     }
 

@@ -1,5 +1,6 @@
 package com.study.studyproject.member.controller;
 
+import com.study.studyproject.global.auth.CurrentUser;
 import com.study.studyproject.global.auth.UserDetailsImpl;
 import com.study.studyproject.global.jwt.JwtUtil;
 import com.study.studyproject.list.dto.ListResponseDto;
@@ -34,14 +35,14 @@ public class MemberController {
     //사용자 정보 조회
     @Operation(summary = "사용자 정보 조회", description = "자신의 사용자 정보를 조회")
     @GetMapping("/info")
-    public ResponseEntity<UserInfoResponseDto> userInfo(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<UserInfoResponseDto> userInfo(@Parameter(hidden = true) @CurrentUser UserDetailsImpl userDetails) {
         return ResponseEntity.ok(memberService.userInfoService(userDetails.getMember()));
     }
 
     //수정
     @Operation(summary = "사용자 정보 수정", description = "사용자 정보 수정 기능")
     @PatchMapping("/info")
-    public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody @Validated MemberUpdateResDto memberUpdateResDto,@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails ) {
+    public ResponseEntity<GlobalResultDto> userInfoUpdate(@RequestBody @Validated MemberUpdateResDto memberUpdateResDto,@Parameter(hidden = true) @CurrentUser UserDetailsImpl userDetails ) {
         return ResponseEntity.ok(memberService.userInfoUpdate(userDetails.getMember(), memberUpdateResDto));
     }
 
@@ -49,7 +50,7 @@ public class MemberController {
     @Operation(summary = "내가 작성한 게시글 조회", description = "사용자 스터디 게시글 조회")
     @GetMapping("/lists")
     public ResponseEntity<Page<ListResponseDto>> mainList(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Parameter(hidden = true) @CurrentUser UserDetailsImpl userDetails,
              MemberListRequestDto memberListRequestDto,
             @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable) {
 
@@ -61,7 +62,7 @@ public class MemberController {
     @Operation(summary = "관심 게시글 조회", description = "사용자 관심 게시글 조회")
     @GetMapping("/post-likes")
     public ResponseEntity<Page<ListResponseDto>> userPostLike(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Parameter(hidden = true) @CurrentUser UserDetailsImpl userDetails,
             MemberListRequestDto memberListRequestDto,
             @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable) {
 
