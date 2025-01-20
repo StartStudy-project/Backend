@@ -2,9 +2,11 @@ package com.study.studyproject.member.service;
 
 import com.study.studyproject.global.exception.ex.DuplicateException;
 import com.study.studyproject.global.exception.ex.NotFoundException;
+import com.study.studyproject.global.oauth.OAuthAttributes;
 import com.study.studyproject.list.dto.ListResponseDto;
 import com.study.studyproject.member.domain.Member;
 import com.study.studyproject.global.GlobalResultDto;
+import com.study.studyproject.member.domain.SocialType;
 import com.study.studyproject.member.dto.MemberListRequestDto;
 import com.study.studyproject.member.dto.MemberUpdateResDto;
 import com.study.studyproject.member.dto.UserInfoResponseDto;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.study.studyproject.global.exception.ex.ErrorCode.*;
+import static com.study.studyproject.member.domain.Member.toEntity;
 
 @RequiredArgsConstructor
 @Service
@@ -63,7 +66,20 @@ public class MemberServiceImpl implements MemberService{
         return myPageQueryRepository.MyPageListPage(memberListRequestDto, pageable,memberId, GET_MEMBER);
     }
 
+    @Override
+    public Member getOrCreateUser(OAuthAttributes attributes, SocialType socialType) {
+        Member findMember = memberRepository.findBySocialTypeAndSocialId(socialType,
+                attributes.getOauth2UserInfo().getId()).orElse(null);
+        if (findMember == null) {
+            return saveMember(attributes, socialType);
+        }
+        return findMember;
+    }
 
+    private Member saveMember(OAuthAttributes attributes, SocialType socialType) {
+        Member createMember = toEntity(socialType, attributes.getOauth2UserInfo());
+        return memberRepository.save(createMember);
+    }
     public Page<ListResponseDto> postLikeBoard(Long memberId, MemberListRequestDto memberListRequestDto, Pageable pageable) {
         return myPagePostLikeQueryRepository.MyPageListPage(memberListRequestDto, pageable,memberId);
     }

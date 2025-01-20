@@ -1,6 +1,7 @@
 package com.study.studyproject.member.domain;
 
 import com.study.studyproject.board.domain.Board;
+import com.study.studyproject.global.oauth.provider.OAuth2UserInfo;
 import com.study.studyproject.postlike.domain.PostLike;
 import com.study.studyproject.reply.domain.Reply;
 import com.study.studyproject.login.domain.Role;
@@ -15,6 +16,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Entity
@@ -63,7 +65,15 @@ public class Member extends BaseTimeEntity {
     }
 
 
-
+    public static Member toEntity(SocialType socialType, OAuth2UserInfo oauth2UserInfo) {
+        return Member.builder().password("" + UUID.randomUUID())
+                .email(oauth2UserInfo.getEmail())
+                .socialId(oauth2UserInfo.getId())
+                .username(oauth2UserInfo.getName())
+                .nickname(oauth2UserInfo.getNickname())
+                .socialType(socialType)
+                .role(Role.ROLE_USER).build();
+    }
 
 
 

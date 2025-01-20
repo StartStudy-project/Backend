@@ -29,9 +29,9 @@ public class OAuthAttributes {
         this.oauth2UserInfo = oauth2UserInfo;
     }
 
+
     public static OAuthAttributes of(SocialType socialType,
                                      String userNameAttributeName, Map<String, Object> attributes) {
-
 
         if (socialType == NAVER) {
 
@@ -65,13 +65,5 @@ public class OAuthAttributes {
                 .build();
     }
 
-    public Member toEntity(SocialType socialType, OAuth2UserInfo oauth2UserInfo) {
-        return Member.builder().password("" + UUID.randomUUID())
-                .email(oauth2UserInfo.getEmail())
-                .socialId(oauth2UserInfo.getId())
-                .username(oauth2UserInfo.getName())
-                .nickname(oauth2UserInfo.getNickname())
-                .socialType(socialType)
-                .role(Role.ROLE_USER).build();
-    }
+
 }
