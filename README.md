@@ -95,10 +95,6 @@ pwd :Y@3r9o$7k
 ### CI/CD
 ![image](https://github.com/Study-Blog-Project/Backend/assets/70208747/339ad38b-8d54-4dcd-960c-e542c751169b)
 
-## ERD설계
- - [ERD 설계 이동](https://www.erdcloud.com/d/zAY3Zk8H7Eq3xAnsg)
-![image](https://github.com/Study-Blog-Project/Backend/assets/70208747/5ad6b003-f039-4b12-8439-f38e4c614fac)
-
 ## 주요 기능
 
 <table align="center"><!-- 팀원 표 -->
